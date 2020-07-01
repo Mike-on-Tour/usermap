@@ -1,0 +1,77 @@
+{% include 'overall_header.html' %}
+{% if not INCLUDED_USERMAP_ACP %}
+	{% INCLUDEJS 'admin_mot_usermap.js' %}
+    {% set INCLUDED_USERMAP_ACP = true %}
+{% endif %}
+
+<h1>{{ lang('ACP_USERMAP_DATABASE') }}</h1>
+<p>{{ lang('ACP_USERMAP_DATABASE_EXPLAIN') }}</p>
+
+	{% if pagination %}
+	<div class="pagination top-pagination">
+		{% include 'pagination.html' %}
+	</div>
+	{% endif %}
+
+	<h2>{{ lang('ACP_USERMAP_DATABASE_DATA') }}</h2>
+	<table class="table1 zebra-table">
+		<thead>
+			<tr>
+				<th>{{ lang('ACP_USERMAP_DATABASE_CC') }}</th>
+				<th>{{ lang('ACP_USERMAP_DATABASE_ZIPCODE') }}</th>
+				<th>{{ lang('ACP_USERMAP_DATABASE_LAT') }}</th>
+				<th>{{ lang('ACP_USERMAP_DATABASE_LNG') }}</th>
+				<th>{{ lang('OPTIONS') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for database in database %}
+			<tr>
+				<td style="text-align: center;">{{ database.COUNTRYCODE }}</td>
+				<td style="text-align: center;">{{ database.ZIPCODE }}</td>
+				<td style="text-align: right;">{{ database.LAT }}</td>
+				<td style="text-align: right;">{{ database.LNG }}</td>
+				<td style="text-align: center;"><a href="{{ database.U_DELETE }}">{{ lang('DELETE') }}</a></td>
+			</tr>
+		{% else %}
+		<tr>
+			<td colspan="5" style="text-align: center;">{{ lang('ACP_USERMAP_DATABASE_NOENTRY') }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	{% if pagination %}
+	<div class="pagination">
+		{% include 'pagination.html' %}
+	</div>
+	{% endif %}
+	
+<form id="acp_usermap_database" method="post" action="{{ U_ACTION }}" onsubmit="return chkDatabaseEntry('{{ lang('ACP_USERMAP_DATABASE_BIG_ERR') }}')">
+	<fieldset>
+		<legend>{{ lang('ACP_USERMAP_DATABASE_NEW') }}</legend>
+        <dl>
+			<dt><label for="mot_usermap_database_cc">{{ lang('ACP_USERMAP_DATABASE_CC') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_DATABASE_CC_EXP') }}</p></dt>
+			<dd><input id="mot_usermap_database_cc" type="text" size="2" maxlength="2" name="mot_usermap_database_cc" onblur="checkCountryAndZipCode('mot_usermap_database_cc', ccMatch, '{{ ERROR_CC }}')" value="{{ ACP_USERMAP_DATABASE_CC }}" /></dd>
+		</dl>
+        <dl>
+			<dt><label for="mot_usermap_database_zc">{{ lang('ACP_USERMAP_DATABASE_ZIPCODE') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_DATABASE_ZC_EXP') }}</p></dt>
+			<dd><input id="mot_usermap_database_zc" type="text" size="10" maxlength="10" name="mot_usermap_database_zc" onblur="checkCountryAndZipCode('mot_usermap_database_zc', zipMatch, '{{ ERROR_ZC }}')" value="{{ ACP_USERMAP_DATABASE_ZC }}" /></dd>
+		</dl>
+		<dl>
+            <dt><label for="mot_usermap_database_lat">{{ lang('ACP_USERMAP_DATABASE_LAT') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAT_EXP') }}</p></dt>
+            <dd><input id="mot_usermap_database_lat" type="text" size="11" maxlength="10" name="mot_usermap_database_lat" onblur="chkUsermapCoords('mot_usermap_database_lat', latMatch, '', -90.0, 90.0)" value="{{ ACP_USERMAP_DATABASE_LAT }}" /></dd>
+        </dl>
+        <dl>
+            <dt><label for="mot_usermap_database_lon">{{ lang('ACP_USERMAP_DATABASE_LNG') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LON_EXP') }}</dt>
+            <dd><input id="mot_usermap_database_lon" type="text" size="11" maxlength="11" name="mot_usermap_database_lon" onblur="chkUsermapCoords('mot_usermap_database_lon', lonMatch, '', -180.0, 180.0)" value="{{ ACP_USERMAP_DATABASE_LON }}" /></dd>
+        </dl>
+        <p class="submit-buttons">
+            <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+            <input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+        </p>
+	{{ S_FORM_TOKEN }}
+	</fieldset> 
+</form>
+
+{% include 'overall_footer.html' %}

@@ -1,0 +1,83 @@
+{% include 'overall_header.html' %}
+
+<h1>{{ lang('ACP_USERMAP_LANGS') }}</h1>
+<p>{{ lang('ACP_USERMAP_LANGS_EXPLAIN') }}</p>
+
+<form id="acp_usermap_langs" method="post" action="{{ U_ACTION }}">
+	<h2>{{ lang('ACP_USERMAP_INSTALLABLE_LANG') }}</h2>
+	<p>{{ lang('ACP_USERMAP_INSTALL_LANG_EXP') }}</p>
+	<table class="table1 zebra-table">
+		<thead>
+			<tr>
+				<th>{{ lang('ACP_USERMAP_LANGPACK_NAME') }}</th>
+				<th>{{ lang('ACP_USERMAP_LANGPACK_LOCAL') }}</th>
+				<th>{{ lang('ACP_USERMAP_LANGPACK_ISO') }}</th>
+				<th>{{ lang('OPTIONS') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for  notinst in notinst %}
+			<tr>
+				<td>{{ notinst.NAME }}</td>
+				<td>{{ notinst.LOCAL_NAME }}</td>
+				<td style="text-align: center;">{{ notinst.ISO }}</td>
+				<td style="text-align: center;"><a href="{{ notinst.U_INSTALL }}">{{ lang('INSTALL') }}</a></td>
+			</tr>
+		{% else %}
+		<tr>
+			<td colspan="4" style="text-align: center;">{{ lang('ACP_USERMAP_NO_ENTRIES') }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	
+	<h2>{{ lang('ACP_USERMAP_MISSING_LANG') }}</h2>
+	<p>{{ lang('ACP_USERMAP_MISSING_LANG_EXP') }}</p>
+	<table class="table1 zebra-table">
+		<thead>
+			<tr>
+				<th>{{ lang('ACP_USERMAP_LANGPACK_NAME') }}</th>
+				<th>{{ lang('ACP_USERMAP_LANGPACK_LOCAL') }}</th>
+				<th>{{ lang('ACP_USERMAP_LANGPACK_ISO') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for missing in missing %}
+			<tr>
+				<td>{{ missing.NAME }}</td>
+				<td>{{ missing.LOCAL_NAME }}</td>
+				<td style="text-align: center;">{{ missing.ISO }}</td>
+			</tr>
+		{% else %}
+		<tr>
+			<td colspan="3" style="text-align: center;">{{ lang('ACP_USERMAP_NO_ENTRIES') }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	
+	<h2>{{ lang('ACP_USERMAP_ADDITIONAL_LANG') }}</h2>
+	<p>{{ lang('ACP_USERMAP_ADD_LANG_EXP') }}</p>
+	<table class="table1 zebra-table">
+		<thead>
+			<tr>
+				<th style="text-align: center;">{{ lang('ACP_USERMAP_LANGPACK_ISO') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for additional in additional %}
+			<tr>
+				<td style="text-align: center;">{{ additional.ISO }}</td>
+			</tr>
+		{% else %}
+		<tr>
+			<td colspan="3" style="text-align: center;">{{ lang('ACP_USERMAP_NO_ENTRIES') }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	
+	{{ S_FORM_TOKEN }}
+</form>
+
+{% include 'overall_footer.html' %}

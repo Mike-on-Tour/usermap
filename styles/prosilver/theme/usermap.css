@@ -1,0 +1,53 @@
+#map_container {
+	height: 600px;
+	width: 100%;
+	padding: 0; margin: 0;
+}
+
+.usermap_search {
+/*	display: -webkit-flex;
+	display: flex;
+	-webkit-align-items: center;
+	align-items: center;*/
+	font-size:	12px;
+}
+/*
+.search-text{
+	display: flex;
+}
+
+.plz-search{
+	padding: 5px;
+}
+*/
+.search-form {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+}
+
+select .plz_search{
+	width: 45px;
+}
+
+.button1 {
+
+}
+
+.usermap-thanks {
+	font-size:	12px;
+	text-align:	center;
+}
+
+.usermap-thanks a{
+	font-weight:	bold;
+
+}
+
+.map_legend {
+
+}
+
+.usermap_group_legend {
+	font-style:	italic;
+}

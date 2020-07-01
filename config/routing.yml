@@ -1,0 +1,3 @@
+mot_usermap_route:
+    path: /usermap
+    defaults: { _controller: mot.usermap.controller:handle }

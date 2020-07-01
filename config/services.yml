@@ -1,0 +1,30 @@
+services:
+    mot.usermap.controller:
+        class: mot\usermap\controller\main
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@config_text'
+            - '@controller.helper'
+            - '@template'
+            - '@dbal.conn'
+            - '@user'
+            - '@language'
+            - '@ext.manager'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+
+    mot.usermap.listener:
+        class: mot\usermap\event\main_listener
+        arguments:
+            - '@config'
+            - '@config_text'
+            - '@controller.helper'
+            - '@template'
+            - '@dbal.conn'
+            - '@user'
+            - '@log'
+            - '@ext.manager'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }
