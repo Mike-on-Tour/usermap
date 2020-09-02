@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v0.7.x
+* @package Usermap v0.8.x
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -26,7 +26,6 @@ class main_listener implements EventSubscriberInterface
 			'core.delete_user_after'				=> 'delete_user_after',					// Event after a user is deleted
 			'core.ucp_profile_info_modify_sql_ary'	=> 'ucp_profile_info_modify_sql_ary',	// Modify profile data in UCP before submitting to the database
 			'core.acp_users_profile_modify_sql_ary'	=> 'acp_modify_users_profile',			// Modify profile data in ACP before submitting to the database
-//			'core.group_add_user_after'				=> 'set_user_colour',					// Event after users are added to a group
 			'core.user_set_default_group'			=> 'change_user_colour',				// Event when the default group is set for an array of users
 			'core.ucp_register_register_after'		=> 'ucp_register_register_after',		// Event after registration, used to process user data for the Usermap if no activation after registration is needed
 		);
@@ -50,11 +49,14 @@ class main_listener implements EventSubscriberInterface
 	/** @var \phpbb\user */
 	protected $user;
 
-	/** @var \phpbb\log $log */
+	/** @var \phpbb\log\log $log */
 	protected $log;
 
 	/* @var \phpbb\extension\manager */
 	protected $phpbb_extension_manager;
+
+	/** @var \phpbb\language\language $language Language object */
+	protected $language;
 
 	/** @var string PHP extension */
 	protected $php_ext;
@@ -67,7 +69,7 @@ class main_listener implements EventSubscriberInterface
 	 */
 	public function __construct(\phpbb\config\config $config, \phpbb\config\db_text $config_text, \phpbb\controller\helper $helper,
 								\phpbb\template\template $template, \phpbb\db\driver\driver_interface $db, \phpbb\user $user,
-								\phpbb\log\log $log, \phpbb\extension\manager $phpbb_extension_manager, $php_ext)
+								\phpbb\log\log $log, \phpbb\extension\manager $phpbb_extension_manager, \phpbb\language\language $language, $php_ext)
 	{
 		$this->config = $config;
 		$this->config_text = $config_text;
@@ -77,15 +79,16 @@ class main_listener implements EventSubscriberInterface
 		$this->user = $user;
 		$this->log = $log;
 		$this->phpbb_extension_manager 	= $phpbb_extension_manager;
+		$this->language = $language;
 		$this->php_ext = $php_ext;
 
 		$this->ext_path = $this->phpbb_extension_manager->get_extension_path('mot/usermap', true);
 		include_once($this->ext_path . 'includes/um_constants.' . $this->php_ext);
 		$this->gn_username = explode(",", $this->config['mot_usermap_geonamesuser']);	// get Geonames user(s) from config and make it an array
-		$this->country_codes = json_decode($this->config_text->get('mot_usermap_countrycodes'), false);
-		$this->cc_size = sizeof($this->country_codes);
-		$this->country_names = json_decode($this->config_text->get('mot_usermap_countrynames'), false);
-		$this->cn_size = sizeof($this->country_names);
+		$this->country_codes = (array) json_decode($this->config_text->get('mot_usermap_countrycodes'), false);
+		$this->cc_size = count($this->country_codes);
+		$this->country_names = (array) json_decode($this->config_text->get('mot_usermap_countrynames'), false);
+		$this->cn_size = count($this->country_names);
 		$this->google_enable = $this->config['mot_usermap_google_enable'];
 		$this->google_key = $this->config['mot_usermap_google_apikey'];
 		$this->google_cc = explode(",", $this->config['mot_usermap_google_countries']);
@@ -139,7 +142,7 @@ class main_listener implements EventSubscriberInterface
 		{
 			$j = 0;		// start with first geonames user
 			// set the error message for missing geonames users
-			$message = $this->user->lang['MOT_UCP_GEONAMES_ERROR'] . '<br /><br />' . sprintf($this->user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+			$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br /><br />' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
 			if ($this->gn_username[0] == '')
 			{
 				trigger_error($message, E_USER_ERROR);
@@ -163,7 +166,7 @@ class main_listener implements EventSubscriberInterface
 			{
 				$cp_data['pf_phpbb_location'] = '';	// if not set it to empty string
 			}
-			if ($cp_data['pf_mot_zip'] <> '' and $cp_data['pf_mot_land'] > 1 and $cp_data['pf_mot_land'] < $this->cc_size)	// check whether the profile fields data is correctly set
+			if ($cp_data['pf_mot_zip'] != '' and $cp_data['pf_mot_land'] > 1 and $cp_data['pf_mot_land'] < $this->cc_size)	// check whether the profile fields data is correctly set
 			{
 				$this->add_user($cp_data, $j);
 			}
@@ -185,11 +188,11 @@ class main_listener implements EventSubscriberInterface
 			// set the error messagefor missing geonmaes user according to activation mode
 			if ($event['mode'] == 'activate')	// activation by email
 			{
-				$message = $this->user->lang['MOT_UCP_GEONAMES_ERROR'] . '<br /><br />' . sprintf($this->user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+				$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br /><br />' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
 			}
 			if ($event['mode'] == 'flip')	// activation by administrator
 			{
-				$message = $this->user->lang['ACP_USERMAP_PROFILE_ERROR'] . adm_back_link($this->u_action);
+				$message = $this->language->lang('ACP_USERMAP_PROFILE_ERROR') . adm_back_link($this->u_action);
 			}
 			if ($this->gn_username[0] == '')
 			{
@@ -197,7 +200,7 @@ class main_listener implements EventSubscriberInterface
 				return;
 			}
 			// check if user(s) filled in the profile fields land, plz and location
-			foreach ($user_id_ary as &$value)		/* Ist die Parameterübergabe per Referenz so noch gültig??? (&$value) !!!!!!  */
+			foreach ($user_id_ary as $value)
 			{
 				$sql_arr = array(
 					'SELECT'	=> 'u.user_id, u.username, u.user_colour, pf.pf_phpbb_location, pf.pf_mot_zip, pf.pf_mot_land',
@@ -205,13 +208,13 @@ class main_listener implements EventSubscriberInterface
 						PROFILE_FIELDS_DATA_TABLE	=> 'pf',
 						USERS_TABLE					=> 'u',
 						),
-					'WHERE'		=> 'pf.user_id = ' . $value . ' AND u.user_id = ' . $value,
+					'WHERE'		=> 'pf.user_id = ' . (int) $value . ' AND u.user_id = ' . (int) $value,
 				);
 				$query = $this->db->sql_build_query('SELECT', $sql_arr);
 				$result = $this->db->sql_query($query);
 				$row = $this->db->sql_fetchrow($result);
 				$this->db->sql_freeresult($result);
-				if ($row['pf_mot_zip'] <> '' and $row['pf_mot_land'] > 1 and $row['pf_mot_land'] < $this->cc_size)	// check whether the profile fields data is correctly set
+				if ($row['pf_mot_zip'] != '' and $row['pf_mot_land'] > 1 and $row['pf_mot_land'] < $this->cc_size)	// check whether the profile fields data is correctly set
 				{
 					$this->add_user($row, $j);
 				}
@@ -269,7 +272,7 @@ class main_listener implements EventSubscriberInterface
 	*/
 	public function ucp_profile_info_modify_sql_ary($event)
 	{
-		$message = $this->user->lang['MOT_UCP_GEONAMES_ERROR'] . '<br /><br />' . sprintf($this->user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+		$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br /><br />' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
 		$this->process_user_profile_data($this->user->data['user_id'], $event['cp_data'], $message, E_USER_ERROR);
 	}
 
@@ -288,56 +291,16 @@ class main_listener implements EventSubscriberInterface
 	*/
 	public function acp_modify_users_profile($event)
 	{
-		$message = $this->user->lang['ACP_USERMAP_PROFILE_ERROR'] . adm_back_link($this->u_action);
-		$this->process_user_profile_data($event['user_id'], $event['cp_data'], $message, E_USER_WARNING);
-	}
-
-
-	/** DO I REALLY NEED THIS?????
-	* Gets the group id of a group a user was manually added to, if the user is only in this group we assume that this user was dropped from the "newly registered members" group
-	* as his only group and now we have to adjust the user colour in the usermap_users table
-	*
-	* @params:	group_id, group_name, pending, user_id_ary, username_ary
-	*		'group_id' holds the group id, eg. '2' for 'registered users'
-	*		'group_name' holds the group name, e. 'registered users'
-	*		'pending' holds a 'Zero' value
-	*		'user_id_ary' holds an array with the user id(s) of the selected user(s)
-	*		'username_ary' holds an array with the user name(s) of the selected user(s)
-	*
-	*/
-	public function set_user_colour($event)
-	{
-		$user_ary = $event['user_id_ary'];
-		$group_id = $event['group_id'];
-		foreach ($user_ary as $value)
+		$user_row = $event['user_row'];
+		// to prevent errors during activation if the admin edited the user profile prior to activation (e.g. to correct or delete the content of a CPF) we check here if the user in question is a new (and so far not activated) user
+		// errors to occur during activation are e.g. sql errors due to inserting an already existing user into the usermap_users table
+		if ($user_row['user_type'] != USER_INACTIVE)
 		{
-			$sql_arr = array(
-				'user_id'	=> $value,
-			);
-			$query = 'SELECT * FROM ' . USER_GROUP_TABLE . '
-					WHERE ' . $this->db->sql_build_array('SELECT', $sql_arr);
-			$result = $this->db->sql_query($query);
-			$groups = $this->db->sql_fetchrowset($result);
-			$count_groups = sizeof($groups);
-			$this->db->sql_freeresult($result);
-			if ($count_groups == 1)
-			{
-				$sql_arr = array(
-					'group_id'	=> $group_id,
-				);
-				$query = 'SELECT group_colour FROM ' . GROUPS_TABLE . '
-						WHERE ' . $this->db->sql_build_array('SELECT', $sql_arr);
-				$result = $this->db->sql_query($query);
-				$row = $this->db->sql_fetchrow($result);
-				$this->db->sql_freeresult($result);
-				$sql_in = array($value);
-				$query = "UPDATE " . USERMAP_USERS_TABLE . "
-						 SET user_colour = '" . $row['group_colour'] . "'
-						 WHERE " . $this->db->sql_in_set('user_id', $sql_in);
-				$this->db->sql_query($query);
-			}
+			$message = $this->language->lang('ACP_USERMAP_PROFILE_ERROR') . adm_back_link($this->u_action);
+			$this->process_user_profile_data($event['user_id'], $event['cp_data'], $message, E_USER_WARNING);
 		}
 	}
+
 
 	/**
 	* Change the user colour in the usermap_users table when an admin or the system changes the default (main) group of a user
@@ -408,7 +371,7 @@ class main_listener implements EventSubscriberInterface
 				PROFILE_FIELDS_DATA_TABLE	=> 'pf',
 				USERS_TABLE					=> 'u',
 				),
-			'WHERE'		=> 'pf.user_id = ' . $user_id . ' AND u.user_id = ' . $user_id,
+			'WHERE'		=> 'pf.user_id = ' . (int) $user_id . ' AND u.user_id = ' . (int) $user_id,
 		);
 		$query = $this->db->sql_build_query('SELECT', $sql_arr);
 		$result = $this->db->sql_query($query);
@@ -420,7 +383,7 @@ class main_listener implements EventSubscriberInterface
 		$row['pf_mot_land'] = $cp_data['pf_mot_land'];
 		$row['pf_phpbb_location'] = $cp_data['pf_phpbb_location'];
 		// and now we can do the necessary checks
-		if ($row['pf_mot_zip'] <> '' and $row['pf_mot_land'] > 1 and $row['pf_mot_land'] < $this->cc_size)	// check whether the profile fields data is correctly set
+		if ($row['pf_mot_zip'] != '' and $row['pf_mot_land'] > 1 and $row['pf_mot_land'] < $this->cc_size)	// check whether the profile fields data is correctly set
 		{
 			$this->add_user($row, $j);
 		}
@@ -583,7 +546,7 @@ class main_listener implements EventSubscriberInterface
 				case 19:								// hourly limit of credits exceeded
 				case 20:								// weekly limit of credits exceeded
 					$j++;
-					if ($j <= sizeof($this->gn_username))	// try with another username for geonames.org if one is available?
+					if ($j <= count($this->gn_username))	// try with another username for geonames.org if one is available?
 					{
 						$json_request = "http://api.geonames.org/postalCodeSearchJSON?username=".$this->gn_username[$j]."&style=short&postalcode=".$postal_code."&country=".$country;
 						$json=file_get_contents($json_request);
@@ -610,7 +573,7 @@ class main_listener implements EventSubscriberInterface
 		if (array_key_exists('postalCodes', $xml))
 		{
 			$xml_array = $xml['postalCodes'];
-			$ary_size = sizeof($xml_array);
+			$ary_size = count($xml_array);
 			switch ($ary_size)
 			{
 				case 0:
@@ -754,7 +717,7 @@ class main_listener implements EventSubscriberInterface
 			{
 				// yes, country code and zip code already exist, now we have to check for empty entry (user_id equals 0)
 				$i = 0;
-				$size = sizeof($doubles[$country][$zip_code])-1;
+				$size = count($doubles[$country][$zip_code])-1;
 				while ($i <= $size)										// for all stored user_ids:
 				{
 					if ($doubles[$country][$zip_code][$i] == 0)			// do we have user_id = 0 (earlier deleted user)?
@@ -765,7 +728,7 @@ class main_listener implements EventSubscriberInterface
 					$i++;
 				}
 				array_push($doubles[$country][$zip_code], $user_id);	// if we get here there was no empty slot and we have to add the user at the end
-				return sizeof($doubles[$country][$zip_code])-1;			// and return the new offset
+				return count($doubles[$country][$zip_code])-1;			// and return the new offset
 			}
 			else
 			{
@@ -798,9 +761,9 @@ class main_listener implements EventSubscriberInterface
 			return;		// no, it doesn't exist, there is no known user, so we leave the function
 		}
 		// first we check whether there is a single user for this country / zipcode pair
-		if (sizeof($doubles[$country][$zip_code]) == 1)
+		if (count($doubles[$country][$zip_code]) == 1)
 		{
-			if ($user_id <> $doubles[$country][$zip_code][0])	// is this really the user we want to remove?
+			if ($user_id != $doubles[$country][$zip_code][0])	// is this really the user we want to remove?
 			{
 				return;											// no, leave the function
 			}
@@ -815,7 +778,7 @@ class main_listener implements EventSubscriberInterface
 			$deletable = true;
 			foreach ($doubles[$country][$zip_code] as $value)
 			{
-				if ($value <> 0 or $value <> $user_id)
+				if ($value != 0 or $value != $user_id)
 				{
 					$deletable = false;
 				}
@@ -826,7 +789,7 @@ class main_listener implements EventSubscriberInterface
 			}
 			else		// there are other users, so we have to set the entry to 0 which signales an empty value
 			{
-				$size = sizeof($doubles[$country][$zip_code]);
+				$size = count($doubles[$country][$zip_code]);
 				$i = 0;
 				foreach ($doubles[$country][$zip_code] as $value)
 				{

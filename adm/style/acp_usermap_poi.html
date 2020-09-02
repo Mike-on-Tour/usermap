@@ -1,6 +1,6 @@
 {% include 'overall_header.html' %}
 {% if not INCLUDED_USERMAP_ACP %}
-	{% INCLUDEJS 'admin_mot_usermap.js' %}
+	{% INCLUDEJS '@mot_usermap/admin_mot_usermap.js' %}
     {% set INCLUDED_USERMAP_ACP = true %}
 {% endif %}
 
@@ -13,6 +13,10 @@
 	var upload = false;
 	var imageTag = false;
 
+	function scrollToElement(inputName) {
+		var domElement = document.getElementById(inputName);
+		window.scrollTo(domElement.offsetLeft,domElement.offsetTop);
+	}
 // ]]>
 </script>
 
@@ -122,6 +126,10 @@
 {# if this variable was originally set to false we have to set it to this state again #}
 {% if not S_LINKS_ALLOWED_ORIG %}
 	{% set S_LINKS_ALLOWED = false %}
+{% endif %}
+
+{% if !NEW_POI || ACP_USERMAP_POPUP_PREVIEW %}
+	<script>scrollToElement('acp_usermap_poi');</script>
 {% endif %}
 
 {% include 'overall_footer.html' %}

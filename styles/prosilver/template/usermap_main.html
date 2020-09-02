@@ -1,16 +1,16 @@
-<!-- INCLUDE overall_header.html -->
-<!-- IF not $INCLUDED_LEAFLETJS -->
-	<!-- INCLUDEJS @mot_usermap/leaflet.js -->
-	<!-- INCLUDEJS @mot_usermap/mot_usermap.js -->
-	<!-- INCLUDECSS @mot_usermap/usermap.css -->
-	<!-- INCLUDECSS @mot_usermap/leaflet.css -->
-	<!-- DEFINE $INCLUDED_LEAFLETJS = true -->
-<!-- ENDIF -->
+{% include 'overall_header.html' %}
+{% if not INCLUDED_LEAFLETJS %}
+	{% INCLUDEJS '@mot_usermap/leaflet.js' %}
+	{% INCLUDEJS '@mot_usermap/mot_usermap.js' %}
+	{% INCLUDECSS '@mot_usermap/usermap.css' %}
+	{% INCLUDECSS '@mot_usermap/leaflet.css' %}
+	{% set INCLUDED_LEAFLETJS = true %}
+{% endif %}
 
 <div id="page-body" class="page-body">
 
-<!-- IF AUTH_USER || (POI_ENABLED && POI_SHOWTOALL) -->
-	<!-- IF AUTH_USER -->	<!-- Shows the segment with search form only to authorised users if POIs are displayed for everybody -->
+{% if AUTH_USER || (POI_ENABLED && POI_SHOWTOALL) %}
+	{% if AUTH_USER %}	{# Shows the segment with search form only to authorised users if POIs are enabled for everybody #}
 		<div class="forabg">
 			<div class="inner">
 				<ul class="topiclist">
@@ -18,7 +18,7 @@
 						<dl class="row-item">
 							<dt>
 								<div class="list-inner">
-									{L_USERMAP_SEARCHFORM}
+									{{ lang('USERMAP_SEARCHFORM') }}
 								</div>
 							</dt>
 						</dl>
@@ -27,7 +27,7 @@
 			</div>
 			<div class="panel bg1">
 				<div class="usermap_search">
-					<div class="search-form"><span class="search-text">{MAP_SEARCH}&nbsp;</span>
+					<div class="search-form"><span class="search-text">{{ MAP_SEARCH }}&nbsp;</span>
 						<form id="plz_search">
 							<select id="plz_choice">
 							   <option value="1">1</option>
@@ -39,7 +39,7 @@
 							   <option value="100">100</option>
 							</select>
 							&nbsp;km&nbsp;
-							<input class="button1" type="submit" value="{L_SUBMIT}" />
+							<input class="button1" type="submit" value="{{ lang('SUBMIT') }}" />
 						</form>
 					</div>
 					<div id="seperation_hr"></div>
@@ -47,10 +47,10 @@
 				</div>
 			</div>
 		</div>
-	<!-- ELSE -->
-		<!--  The following div's are necessary to provide valid id's for the js functions if no authorised user is looking at the map -->
+	{% else %}
+		{#  The following div's are only necessary to provide valid id's for the js functions if an unauthorised user is looking at the map #}
 		<div id="plz_search"></div><div id="seperation_hr"></div><div id="solution"></div>
-	<!-- ENDIF -->
+	{% endif %}
 	
 	<div class="forabg">
 		<div class="inner">
@@ -59,7 +59,7 @@
 					<dl class="row-item">
 						<dt>
 							<div class="list-inner">
-								{L_USERMAP}
+								{{ lang('USERMAP') }}
 							</div>
 						</dt>
 					</dl>
@@ -79,7 +79,7 @@
 					<dl class="row-item">
 						<dt>
 							<div class="list-inner">
-								{L_USERMAP_LEGEND}
+								{{ lang('USERMAP_LEGEND') }}
 							</div>
 						</dt>
 					</dl>
@@ -87,26 +87,26 @@
 			</ul>
 		</div>
 		<div class="panel bg1">
-			<!-- IF AUTH_USER -->
+			{% if AUTH_USER %}
 				<div id="map-legend">
-					<p class="usermap_group_legend">{MAP_LEGEND}</p>
-					<p>{L_USERMAP_LEGEND_TEXT}<br><br>{MAP_USERS}</p>
+					<p class="usermap_group_legend">{{ MAP_LEGEND }}</p>
+					<p>{{ lang('USERMAP_LEGEND_TEXT') }}<br><br>{{ MAP_USERS }}</p>
 				</div>
-			<!-- ENDIF -->
-			<!-- IF POI_ENABLED -->
-				<!-- IF AUTH_USER -->
+			{% endif %}
+			{% if POI_ENABLED %}
+				{% if AUTH_USER %}
 					<hr>
-				<!-- ENDIF -->
-				<p>{L_POI_LEGEND_TITLE}</p>
+				{% endif %}
+				<p>{{ lang('POI_LEGEND_TITLE') }}</p>
 				<div>
-					<p>{POI_LEGEND}</p>
+					<p>{{ POI_LEGEND }}</p>
 				</div>
-			<!-- ENDIF -->
+			{% endif %}
 		</div>
 	</div>
-	<p class="usermap-thanks">{L_USERMAP_CREDENTIALS}<a href="http://www.geonames.org" target="_blank">www.geonames.org</a></p>
+	<p class="usermap-thanks">{{ lang('USERMAP_CREDENTIALS') }}<a href="http://www.geonames.org" target="_blank">www.geonames.org</a></p>
 
-<!-- ELSE -->
+{% else %}
 
 	<div class="forabg">
 		<div class="inner">
@@ -115,7 +115,7 @@
 					<dl class="row-item">
 						<dt>
 							<div class="list-inner">
-								{L_USERMAP}
+								{{ lang('USERMAP') }}
 							</div>
 						</dt>
 					</dl>
@@ -123,35 +123,35 @@
 			</ul>
 		</div>
 		<div class="panel bg1">
-			<div>{L_USERMAP_NOT_AUTHORIZED}</div>
+			<div>{{ lang('USERMAP_NOT_AUTHORIZED') }}</div>
 		</div>
 	</div>
 
-<!-- ENDIF -->
+{% endif %}
 </div>
 
-<!-- Handover of all necessary data to the js script -->
+{# Handover of all necessary data to the js script #}
 <script>
-	var jsConfig = {MAPCONFIG};
-	var jsServerConfig = {SERVERCONFIG};
-	var jsMapData = {MAPDATA};
-	var jsAuthUser = {AUTH_USER};
-	var jsCurrentUser = {USER};
-	var jsMapResult = '{L_MAP_RESULT}';
-	var jsMapNoResult = '{L_MAP_NORESULT}';
-	var jsPoiEnabled = {POI_ENABLED};
-	var jsStreetDesc = '{L_STREET_DESC}';
-	var jsTopoDesc = '{L_TOPO_DESC}';
-	var jsUserDesc = '{L_USER_DESC}';
-	var jsPoiDesc = '{L_POI_DESC}';
+	var jsConfig = {{ MAPCONFIG }};
+	var jsServerConfig = {{ SERVERCONFIG }};
+	var jsMapData = {{ MAPDATA }};
+	var jsAuthUser = {{ AUTH_USER }};
+	var jsCurrentUser = {{ USER }};
+	var jsMapResult = '{{ lang('MAP_RESULT') }}';
+	var jsMapNoResult = '{{ lang('MAP_NORESULT') }}';
+	var jsPoiEnabled = {{ POI_ENABLED }};
+	var jsStreetDesc = '{{ lang('STREET_DESC') }}';
+	var jsTopoDesc = '{{ lang('TOPO_DESC') }}';
+	var jsUserDesc = '{{ lang('USER_DESC') }}';
+	var jsPoiDesc = '{{ lang('POI_DESC') }}';
 </script>
 	
-<!-- if POIs are enabled the following data must be handed over, too -->
-<!-- IF POI_ENABLED -->
+{# if POIs are enabled the following data must be handed over, too #}
+{% if POI_ENABLED %}
 	<script>
-		var jsPoiShowToAll = {POI_SHOWTOALL};
-		var jsPoiData = {POIDATA};
+		var jsPoiShowToAll = {{ POI_SHOWTOALL }};
+		var jsPoiData = {{ POIDATA }};
 	</script>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- INCLUDE overall_footer.html -->
+{% include 'overall_footer.html' %}

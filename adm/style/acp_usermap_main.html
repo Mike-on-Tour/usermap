@@ -1,6 +1,6 @@
 {% include 'overall_header.html' %}
 {% if not INCLUDED_USERMAP_ACP %}
-	{% INCLUDEJS 'admin_mot_usermap.js' %}
+	{% INCLUDEJS '@mot_usermap/admin_mot_usermap.js' %}
     {% set INCLUDED_USERMAP_ACP = true %}
 {% endif %}
 
@@ -8,11 +8,15 @@
 // <![CDATA[
 
 	var form_name = 'acp_usermap_poi_legend';
-	var text_name = 'mot_usermap_poi_legend';
+	var text_name = 'mot_usermap_poi_legend_text';
 	var load_draft = false;
 	var upload = false;
 	var imageTag = false;
 
+	function scrollToElement(inputName) {
+		var domElement = document.getElementById(inputName);
+		window.scrollTo(domElement.offsetLeft,domElement.offsetTop);
+	}
 // ]]>
 </script>
 
@@ -100,41 +104,47 @@
 	</fieldset>
 </form>
 
-<h2>{{ lang('ACP_USERMAP_POI_LEGEND') }}</h2>
+{% if ACP_USERMAP_POI_ENABLE %}
+	<h2>{{ lang('ACP_USERMAP_POI_LEGEND') }}</h2>
 
-{# set this varible to disable display of URL bbcode #}
-{% if S_LINKS_ALLOWED %}
-	{% set S_LINKS_ALLOWED_ORIG = S_LINKS_ALLOWED %}
-	{% set S_LINKS_ALLOWED = false %}
+	{# set this varible to disable display of URL bbcode #}
+	{% if S_LINKS_ALLOWED %}
+		{% set S_LINKS_ALLOWED_ORIG = S_LINKS_ALLOWED %}
+		{% set S_LINKS_ALLOWED = false %}
+	{% endif %}
+
+	<form id="acp_usermap_poi_legend" name="acp_usermap_poi_legend" method="post" action="{{ U_ACTION_LEGEND }}" >
+		<fieldset>
+			<dl class="responsive-columns">
+				<dt>
+					<label for="mot_usermap_poi_legend_text">{{ lang('ACP_USERMAP_POI_LGND') }}{{ lang('COLON') }}</label>
+					<p>{{ lang('ACP_USERMAP_POI_LGND_EXP') }}</p>
+					<p>{% include('acp_posting_buttons.html') %}</p>
+					<p id="color_palette_placeholder" data-orientation="h" data-height="12" data-width="15" data-bbcode="true"></p>
+				</dt>
+				<dd>
+					<textarea id="mot_usermap_poi_legend_text" name="mot_usermap_poi_legend_text" rows="12" cols="50" maxlength="1000" accept-charset="utf-8" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true">{{ ACP_USERMAP_POI_LGND }}</textarea>
+					<br><input class="button2" type="submit" name="preview" formaction="{{ U_ACTION_LGND_PREVIEW }}" value="{{ lang('PREVIEW') }}" />
+				</dd>
+			</dl>
+			<dl>
+				<dt><label for="preview">{{ lang('PREVIEW') }}</label></dt>
+				<dd id="preview">{{ PREVIEW_TEXT }}</dd>
+			</dl>
+			<p class="submit-buttons">
+				<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
+			</p>
+		{{ S_FORM_TOKEN }}
+		</fieldset>
+	</form>
+	{# if this variable was originally set to true we have to set it to this state again #}
+	{% if S_LINKS_ALLOWED_ORIG %}
+		{% set S_LINKS_ALLOWED = true %}
+	{% endif %}
 {% endif %}
 
-<form id="acp_usermap_poi_legend" name="acp_usermap_poi_legend" method="post" action="{{ U_ACTION_LEGEND }}" >
-	<fieldset>
-		<dl class="responsive-columns">
-			<dt>
-				<label for="mot_usermap_poi_legend">{{ lang('ACP_USERMAP_POI_LGND') }}{{ lang('COLON') }}</label>
-				<p>{{ lang('ACP_USERMAP_POI_LGND_EXP') }}</p>
-				<p>{% include('acp_posting_buttons.html') %}</p>
-				<p id="color_palette_placeholder" data-orientation="h" data-height="12" data-width="15" data-bbcode="true"></p>
-			</dt>
-			<dd>
-				<textarea id="mot_usermap_poi_legend" name="mot_usermap_poi_legend" rows="12" cols="50" maxlength="1000" accept-charset="utf-8" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true">{{ ACP_USERMAP_POI_LGND }}</textarea>
-				<br><input class="button2" type="submit" name="preview" formaction="{{ U_ACTION_LGND_PREVIEW }}" value="{{ lang('PREVIEW') }}" />
-			</dd>
-		</dl>
-		<dl>
-			<dt><label for="preview">{{ lang('PREVIEW') }}</label></dt>
-			<dd id="preview">{{ PREVIEW_TEXT }}</dd>
-		</dl>
-        <p class="submit-buttons">
-            <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
-		</p>
-	{{ S_FORM_TOKEN }}
-	</fieldset>
-</form>
-{# if this variable was originally set to true we have to set it to this state again #}
-{% if S_LINKS_ALLOWED_ORIG %}
-	{% set S_LINKS_ALLOWED = true %}
+{% if JUMP_TO_POI_LEGEND %}
+	<script>scrollToElement('acp_usermap_poi_legend');</script>
 {% endif %}
 
 {% include 'overall_footer.html' %}

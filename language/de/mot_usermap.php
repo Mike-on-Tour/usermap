@@ -95,7 +95,7 @@ $lang = array_merge($lang, array(
 										Dazu wird ein API Key benötigt, den du durch Anmeldung bei
 										<a href="https://developers.google.com/maps/documentation/embed/get-api-key" target="_blank">
 										<span style="text-decoration: underline;">Google Maps API Key</span></a> erhälst. Folge bitte den dortigen Anweisungen
-										und beachte, dass du die "Geocoding API" aktivieren musst.',
+										und beachte, dass du die ´Geocoding API´ aktivieren musst.',
 	'ACP_USERMAP_GOOGLE_ENABLE'		=> 'Nutzung der Google Maps API einschalten?',
 	'ACP_USERMAP_GOOGLE_KEY'		=> 'Gib hier den Google Maps API Key ein',
 	'ACP_USERMAP_APIKEY_ERROR'		=> 'Du musst einen Google Maps API Key angeben, wenn du die Google Maps API aktivierst!',
@@ -109,7 +109,7 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_DATABASE_TITLE'	=> 'Nutzung der internen Datenbank',
 	'ACP_USERMAP_DATABASE_TEXT'		=> 'Da auch Google Maps für manche Länder (z.B. Israel) kein Ergebnis liefert, kannst du eine Tabelle der internen Datanbank
 										für die Abfrage nutzen, allerdings musst du dafür die Daten bereitstellen. Dies kannst du durch Auswahl des Reiters
-										"Interne Datenbank" tun.<br>
+										´Interne Datenbank´ tun.<br>
 										Du kannst für Nutzer, die in einem von geonames.org nicht unterstützten Land leben, auch ohne Nutzung der Google Maps API
 										diese Möglichkeit nutzen.',
 	'ACP_USERMAP_DATABASE_ENABLE'	=> 'Nutzung der internen Datenbank einschalten?',
@@ -120,9 +120,9 @@ $lang = array_merge($lang, array(
 										Im nächsten Abschnitt kann eine Legende zur Bedeutung verschiedener Kategorien eingegeben werden, diese Legende
 										wird dann ebenfalls unter der Mitgliederkarte angezeigt.<br>
 										Die Eingabe und das Bearbeiten der POIs muss durch den Administrator erfolgen, die Elemente dazu können über den
-										Reiter "POI Bearbeitung" erreicht werden.',
+										Reiter ´POI Bearbeitung´ erreicht werden.',
 	'ACP_USERMAP_POI_ENABLE'		=> 'Anzeige der POIs aktivieren?',
-	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Wird hier "Ja" ausgewählt, wird das POI-Overlay bei der Anzeige der Mitgliederkarte aktiviert. Gleichzeitig werden
+	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Wird hier ´Ja´ ausgewählt, wird das POI-Overlay bei der Anzeige der Mitgliederkarte aktiviert. Gleichzeitig werden
 										die folgende Einstellung und die Anzeige der Legende aktiviert.',
 	'ACP_USERMAP_POI_SHOWTOALL'		=> 'Soll das POI-Overlay allen Mitgliedern angezeigt werden?',
 	'ACP_USERMAP_POI_SHOWTOALL_EXP'	=> 'Die Mitgliederkarte und das POI-Overlay wird nur den Mitgliedern angezeigt, die sich in die Mitgliederkarte eingetragen
@@ -164,7 +164,7 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_DATABASE_NEW'		=> 'Neuer Datenbank-Eintrag',
 	'ACP_USERMAP_DATABASE_CC_EXP'	=> 'Gib hier den aus 2 Buchstaben bestehenden Ländercode für das Land ein, dem der Eintrag zugeordnet werden soll.',
 	'ACP_USERMAP_DATABASE_ZC_EXP'	=> 'Gib hier die Postleitzahl ein, der der Eintrag zugeordnet werden soll, es sind Großbuchstaben, Ziffern und der Bindestrich erlaubt.',
-	'ACP_USERMAP_DATABASE_ERROR'	=> 'Das Feld >%1$s<darf nicht leer sein!',
+	'ACP_USERMAP_DATABASE_ERROR'	=> 'Das Feld >%1$s< darf nicht leer sein!',
 	'ACP_USERMAP_DATABASE_BIG_ERR'	=> 'Das Feld darf nicht leer sein!',
 	'ACP_USERMAP_DATABASE_SUCCESS'	=> 'Die Änderung der internen Datenbank wurde erfolgreich gespeichert.',
 	'ACP_USERMAP_DATABASE_INVALID'	=> 'Die verwendete Kombination aus Ländercode und Postleitzahl existiert bereits, sie darf kein weiteres Mal verwendet werden!<br>

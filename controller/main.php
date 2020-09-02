@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v0.6.x
+* @package Usermap v0.8.x
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -73,18 +73,13 @@ class main
 	*/
 	public function handle()
 	{
-		/*
-		*	include the user functions file, because these functions are not accessible from $this->user
-		*/
-		include($this->root_path . 'includes/functions_user.' . $this->php_ext);
-
 		page_header($this->language->lang('USERMAP'));
 
 		/*
 		*	get configuration values to send them to javascript for initialising the map
 		*/
 		$usermap_config = $this->config['mot_usermap_lat']."|".$this->config['mot_usermap_lon']."|".$this->config['mot_usermap_zoom'];
-		$server_config = $this->config['server_protocol'].$this->config['server_name'].$this->config['script_path'];
+		$server_config = $this->config['server_protocol'] . $this->config['server_name'] . $this->config['script_path'];
 		$poi_enabled = $this->config['mot_usermap_poi_enable'];
 
 		/*
@@ -135,7 +130,7 @@ class main
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$colour_text = ($row['group_colour']) ? ' style="color:#' . $row['group_colour'] . '"' : '';
-			$group_name = ($row['group_type'] == GROUP_SPECIAL) ? $this->user->lang['G_' . $row['group_name']] : $row['group_name'];
+			$group_name = ($row['group_type'] == GROUP_SPECIAL) ? $this->language->lang('G_' . $row['group_name']) : $row['group_name'];
 
 			if ($row['group_name'] == 'BOTS' || ($this->user->data['user_id'] != ANONYMOUS && !$this->auth->acl_get('u_viewprofile')))
 			{

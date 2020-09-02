@@ -160,11 +160,13 @@ if (jsAuthUser) {
 	}
 }
 
+var poiSeperator = (jsServerConfig[jsServerConfig.length - 1] == '/') ? '' : '/';
+
 // prepare the layer with POI locations
 if (jsPoiEnabled) {
 	var poiLayer = new L.layerGroup();
 	var i = 0;
-	var jsIconPath = jsServerConfig + '/ext/mot/usermap/styles/all/theme/images/poi/';
+	var jsIconPath = jsServerConfig + poiSeperator + 'ext/mot/usermap/styles/all/theme/images/poi/';
 	var poiLocation;
 	var poiIconPath = '';
 	var poiDataLength = jsPoiData.length;

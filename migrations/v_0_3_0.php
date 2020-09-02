@@ -20,13 +20,7 @@ class v_0_3_0 extends \phpbb\db\migration\migration
 	{
 		return isset($this->config['mot_usermap_lat']);
 	}
-/*
-	// Für die nächste Version:
-	static public function depends_on()
-	{
-		return array('\mot\usermap\migrations\v_0_3_0');
-	}
-*/
+
 	public function update_data()
 	{
 		return array(

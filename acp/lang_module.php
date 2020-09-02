@@ -76,7 +76,7 @@ class lang_module
 				fclose($handle);
 
 				// and insert it into the profile_fields_lang table
-				$max_i = sizeof($countrycodes) - 1;
+				$max_i = count($countrycodes) - 1;
 				$insert_buffer = new \phpbb\db\sql_insert_buffer($db, PROFILE_FIELDS_LANG_TABLE);
 				for ($i = 0; $i < $max_i; $i++)
 				{

@@ -27,6 +27,7 @@ class main_module
 		$uid = $bitfield = '';
 		$flags = OPTION_FLAG_BBCODE;	// === 0b0001   ( this really is of no interest since this variable gets set in the called function according to every flag set to true
 		$preview_text = '';
+		$jump_to_poi_legend = false;
 
 		$language->add_lang(array('posting'));
 
@@ -43,18 +44,19 @@ class main_module
 					trigger_error($language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
-				$config_value = $request->variable('mot_usermap_poi_legend', '', true);
+				$config_value = $request->variable('mot_usermap_poi_legend_text', '', true);
 				generate_text_for_storage($config_value, $uid, $bitfield, $flags, true);
 				$this->config_text->set('mot_usermap_poi_legend', $config_value);
 				trigger_error($language->lang('ACP_USERMAP_SETTING_SAVED') . adm_back_link($this->u_action), E_USER_NOTICE);
 				break;
 
 			case 'preview':
-				$config_value = $request->variable('mot_usermap_poi_legend', '', true);
+				$config_value = $request->variable('mot_usermap_poi_legend_text', '', true);
 				generate_text_for_storage($config_value, $uid, $bitfield, $flags, true);
 				$preview_text = generate_text_for_display($config_value, $uid, $bitfield, $flags);
 				$result = generate_text_for_edit($config_value, $uid, $flags);
 				$config_value = $result['text'];
+				$jump_to_poi_legend = true;
 				break;
 
 			default:
@@ -107,6 +109,7 @@ class main_module
 			'U_ACTION_LGND_PREVIEW'			=> $this->u_action . '&amp;action_legend=preview',
 			'ACP_USERMAP_POI_LGND'			=> $config_value,
 			'PREVIEW_TEXT'					=> $preview_text,
+			'JUMP_TO_POI_LEGEND'			=> $jump_to_poi_legend,
 		));
 	}
 }

@@ -25,6 +25,7 @@ services:
             - '@user'
             - '@log'
             - '@ext.manager'
+            - '@language'
             - '%core.php_ext%'
         tags:
             - { name: event.listener }

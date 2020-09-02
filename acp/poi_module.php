@@ -30,6 +30,7 @@ class poi_module
 		$preview_text = '';
 		$act = '';
 		$new_poi = true;
+		$poi_popup_preview = false;
 		$this->u_action_preview = $this->u_action . '&amp;action=preview';
 
 		$language->add_lang(array('posting'));
@@ -141,6 +142,7 @@ class poi_module
 				$preview_text = generate_text_for_display($popup_value, $uid, $bitfield, $flags);
 				$result = generate_text_for_edit($popup_value, $uid, $flags);
 				$popup_value = $result['text'];
+				$poi_popup_preview = true;
 
 				$template->assign_vars(array(
 					'ACP_USERMAP_POI_NAME'		=> $name_value,
@@ -148,6 +150,7 @@ class poi_module
 					'MOT_USERMAP_POI_ICON'		=> $icon,
 					'ACP_USERMAP_POI_LAT'		=> $lat,
 					'ACP_USERMAP_POI_LON'		=> $lng,
+					'ACP_USERMAP_POPUP_PREVIEW'	=> $poi_popup_preview,
 				));
 
 				if ($poi_id > 0)		// Preview was called from inside the Edit mode

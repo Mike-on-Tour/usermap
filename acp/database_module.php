@@ -95,7 +95,7 @@ class database_module
 		$query = 'SELECT * FROM ' . USERMAP_ZIPCODE_TABLE;
 		$result = $db->sql_query($query);
 		$codes = $db->sql_fetchrowset($result);
-		$db_size = sizeof($codes);
+		$db_size = count($codes);
 		$db->sql_freeresult($result);
 
 		$result = $db->sql_query_limit( $query, $limit, $start );

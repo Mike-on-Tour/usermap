@@ -95,7 +95,7 @@ $lang = array_merge($lang, array(
 										Dazu wird ein API Key benötigt, den Sie durch Anmeldung bei
 										<a href="https://developers.google.com/maps/documentation/embed/get-api-key" target="_blank">
 										<span style="text-decoration: underline;">Google Maps API Key</span></a> erhalten. Folgen Sie bitte den dortigen Anweisungen
-										und beachten Sie, dass Sie die "Geocoding API" aktivieren müssen.',
+										und beachten Sie, dass Sie die ´Geocoding API´ aktivieren müssen.',
 	'ACP_USERMAP_GOOGLE_ENABLE'		=> 'Nutzung der Google Maps API einschalten?',
 	'ACP_USERMAP_GOOGLE_KEY'		=> 'Geben Sie hier den Google Maps API Key ein',
 	'ACP_USERMAP_APIKEY_ERROR'		=> 'Sie müssen einen Google Maps API Key angeben, wenn Sie die Google Maps API aktivieren!',
@@ -109,7 +109,7 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_DATABASE_TITLE'	=> 'Nutzung der internen Datenbank',
 	'ACP_USERMAP_DATABASE_TEXT'		=> 'Da auch Google Maps für manche Länder (z.B. Israel) kein Ergebnis liefert, können Sie eine Tabelle der internen Datanbank
 										für die Abfrage nutzen, allerdings müssen Sie dafür die Daten bereitstellen. Dies können Sie durch Auswahl des Reiters
-										"Interne Datenbank" tun.<br>
+										´Interne Datenbank´ tun.<br>
 										Sie können für Nutzer, die in einem von geonames.org nicht unterstützten Land leben, auch ohne Nutzung der Google Maps API
 										diese Möglichkeit nutzen.',
 	'ACP_USERMAP_DATABASE_ENABLE'	=> 'Nutzung der internen Datenbank einschalten?',
@@ -120,9 +120,9 @@ $lang = array_merge($lang, array(
 										Im nächsten Abschnitt kann eine Legende zur Bedeutung verschiedener Kategorien eingegeben werden, diese Legende
 										wird dann ebenfalls unter der Mitgliederkarte angezeigt.<br>
 										Die Eingabe und das Bearbeiten der POIs muss durch den Administrator erfolgen, die Elemente dazu können über den
-										Reiter "POI Bearbeitung" erreicht werden.',
+										Reiter ´POI Bearbeitung´ erreicht werden.',
 	'ACP_USERMAP_POI_ENABLE'		=> 'Anzeige der POIs aktivieren?',
-	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Wird hier "Ja" ausgewählt, wird das POI-Overlay bei der Anzeige der Mitgliederkarte aktiviert. Gleichzeitig werden
+	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Wird hier ´Ja´ ausgewählt, wird das POI-Overlay bei der Anzeige der Mitgliederkarte aktiviert. Gleichzeitig werden
 										die folgende Einstellung und die Anzeige der Legende aktiviert.',
 	'ACP_USERMAP_POI_SHOWTOALL'		=> 'Soll das POI-Overlay allen Mitgliedern angezeigt werden?',
 	'ACP_USERMAP_POI_SHOWTOALL_EXP'	=> 'Die Mitgliederkarte und das POI-Overlay wird nur den Mitgliedern angezeigt, die sich in die Mitgliederkarte eingetragen

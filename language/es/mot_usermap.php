@@ -47,11 +47,11 @@ $lang = array_merge($lang, array(
 	'MAP_SEARCH'					=> 'Buscar miembros en el código postal %1$s en un rango de ',
 	'MAP_RESULT'					=> 'muestra el siguiente resultado: ',
 	'MAP_NORESULT'					=> 'No se encontraron miembros dentro del rango de ',
-'POI_LEGEND_TITLE'				=> 'Legend for the POIs',
-'STREET_DESC'					=> 'Street map',
-'TOPO_DESC'						=> 'Topografical map',
-'USER_DESC'						=> 'Users',
-'POI_DESC'						=> 'POIs',
+	'POI_LEGEND_TITLE'				=> 'Leyenda para los Puntos de Interés',
+	'STREET_DESC'					=> 'Mapa de la calle',
+	'TOPO_DESC'						=> 'Mapa topográfico',
+	'USER_DESC'						=> 'Usuarios',
+	'POI_DESC'						=> 'Puntos de Interés',
 	// ACP
 	'ACP_USERMAP'					=> 'Mapa del Usuario',
 	// Settings tab
@@ -82,7 +82,7 @@ $lang = array_merge($lang, array(
 										<span style="text-decoration: underline;">enlace</span></a>!!',
 	'ACP_USERMAP_GEONAMESUSER'		=> 'Nombre(s) de usuario(s) para geonames.org',
 	'ACP_USERMAP_GEONAMESUSER_ERR'	=> '¡Es obligatorio proporcionar al menos un nombre de usuario válido para geonames.org!',
-	'ACP_USERMAP_PROFILE_ERROR'		=> 'Esta acción no pudo concluirse con éxito ya que no se proporcionó un usuario de Geonames.org en la pestaña de configuración de Mapa de usuario. ¡Por favor hazlo inmediatamente!',
+	'ACP_USERMAP_PROFILE_ERROR'		=> 'Esta acción no pudo concluirse con éxito ya que no se proporcionó un usuario de Geonames.org en la pestaña de configuración de Mapa del usuario. ¡Por favor hazlo inmediatamente!',
 	'ACP_USERMAP_GOOGLE_TITLE'		=> 'Configuración para usar la API de Google Maps',
 	'ACP_USERMAP_GOOGLE_TEXT'		=> 'geonames.org solo admite una lista limitada de países (ver lista
 										<a href="https://www.geonames.org/postal-codes/" target="_blank">
@@ -92,7 +92,7 @@ $lang = array_merge($lang, array(
 										Si eliges utilizar el servicio Google Maps, necesitas obtener una clave API suscribiéndote en
 										<a href="https://developers.google.com/maps/documentation/embed/get-api-key" target="_blank">
 										<span style="text-decoration: underline;">Clave API de Google Maps</span></a>. Por favor sigue las instrucciones
-										y presta atención a la activación de la "API de geocodificación".',
+										y presta atención a la activación de la ´API de geocodificación´.',
 	'ACP_USERMAP_GOOGLE_ENABLE'		=> '¿Habilitar el uso de la API de Google Maps?',
 	'ACP_USERMAP_GOOGLE_KEY'		=> 'Ingresa tu clave de API de Google Maps',
 	'ACP_USERMAP_APIKEY_ERROR'		=> '¡Esta acción no se pudo concluir con éxito ya que no se proporcionó una clave API de Google Maps después de activar esta API. ¡Por favor proporciona una clave válida!',
@@ -106,30 +106,30 @@ $lang = array_merge($lang, array(
 										por comas.',
 	'ACP_USERMAP_DATABASE_TITLE'	=> 'Usando la base de datos interna',
 	'ACP_USERMAP_DATABASE_TEXT'		=> 'Incluso Google Maps puede no proporcionar una solución válida para algunos países (por ejemplo Israel). En este caso puedes usar una
-										base de datos interna para la cual debe proporcionar los datos, por favor elige la pestaña "Base de datos interna" para obtener más información.<br>
+										base de datos interna para la cual debe proporcionar los datos, por favor elige la pestaña ´Base de datos interna´ para obtener más información.<br>
 										Es posible que desees utilizarlo de esta manera para los usuarios que viven en un país no compatible con geonames.org si no deseas utilizar
 										la API de Google Maps.',
 	'ACP_USERMAP_DATABASE_ENABLE'	=> '¿Habilitar el uso de la base de datos interna?',
-'ACP_USERMAP_POI_TITLE'			=> 'Display points of Interest (POIs)',
-'ACP_USERMAP_POI_TEXT'			=> 'Besides displaying member locations Usermap is capable of displaying an additional overlay with locations which might
-										be of particular interest to your members, e.g. hangouts and hotels for bikers or locations of sports arenas.
-										You can choose the settings for this overlay in this section.<br>
-										The following section allows you to write and edit a description defining the meaning of your different POI categories,
-										which will be displayed below the map as a legend.<br>
-										Input and editing of your POIs is the administrators task, all elements necessary to do this are accessible through
-										the "POI handling" tab.',
-'ACP_USERMAP_POI_ENABLE'		=> 'Enable display of POIs?',
-'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Choosing "Yes" enables displaying the POI overlay with the Usermap. It also activates your choice for the following
+	'ACP_USERMAP_POI_TITLE'			=> 'Mostrar puntos de interés (PDI)',
+	'ACP_USERMAP_POI_TEXT'			=> 'Además de mostrar ubicaciones de miembros, El mapa del usuario es capaz de mostrar una superposición adicional con ubicaciones que podrían
+										ser de particular interés para tus miembros, por ejemplo, lugares de reunión y hoteles para ciclistas o arenas deportivas.
+										Puedes elegir la configuración de esta superposición en esta sección.<br>
+										La siguiente sección le permite escribir y editar una descripción que define el significado de sus diferentes categorías de PDI,
+										que se mostrará debajo del mapa como una leyenda.<br>
+										El ingreso y edición de los PDI es tarea de los administradores, todos los elementos necesarios para hacer esto están accesibles a través
+										de la pestaña ´Administración de PDI´.',
+	'ACP_USERMAP_POI_ENABLE'		=> '¿Habilitar visualización de PDI?',
+	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Choosing ´Yes´ enables displaying the POI overlay with the Usermap. It also activates your choice for the following
 										setting and displaying the legend which you can write and edit in the section below.',
-'ACP_USERMAP_POI_SHOWTOALL'		=> 'Enable display of POIs to all members?',
-'ACP_USERMAP_POI_SHOWTOALL_EXP'	=> 'The Usermap and the POI overlay are shown by default only to those members who have put their location into the
-										Usermap. If you want all other members to see the POI overlay, too, you can enable this here; those members then can
-										see the POI overlay only but not the member locations.',
-'ACP_USERMAP_POI_LEGEND'		=> 'POI legend',
-'ACP_USERMAP_POI_LGND'			=> 'Write and edit the POI legend',
-'ACP_USERMAP_POI_LGND_EXP'		=> 'Text you are entering here must not exceed 1,000 characters including all BBCode and will be displayed below the
-										Usermap as legend if displaying of POIs is enabled.<br>
-										Writing and editing is independent of all other settings on this tab.',
+	'ACP_USERMAP_POI_SHOWTOALL'		=> '¿Permitir la visualización de PDI a todos los miembros?',
+	'ACP_USERMAP_POI_SHOWTOALL_EXP'	=> 'El mapa del usuario y la superposición de PDI se muestran de forma predeterminada solo para aquellos miembros que han puesto su ubicación en el
+										Mapa del usuario. Si deseas que todos los demás miembros vean también la superposición de PDI, puedes habilitar esto aquí; esos miembros podrán entonces
+										ver solo la superposición de PDI pero no las ubicaciones de los miembros.',
+	'ACP_USERMAP_POI_LEGEND'		=> 'Leyenda de PDI',
+	'ACP_USERMAP_POI_LGND'			=> 'Escribir y editar la leyenda de PDI',
+	'ACP_USERMAP_POI_LGND_EXP'		=> 'El texto que ingreses aquí no debe exceder los 1,000 caracteres, incluidos todos los códigos BBCode y se mostrará debajo del
+										Mapa de usuarios como leyenda si la visualización de PDI está habilitada.<br>
+										Escribir y editar es independiente de todas las demás configuraciones en esta pestaña.',
 	// Language packs tab
 	'ACP_USERMAP_LANGS'				=> 'Paquetes de idiomas',
 	'ACP_USERMAP_LANGS_EXPLAIN'		=> 'Aquí es donde puedes instalar los paquetes de idiomas adicionales para el Mapa del Usuario. Esto puede ser necesario después de agregar
@@ -166,24 +166,24 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_DATABASE_SUCCESS'	=> 'Los cambios en la base de datos interna han sido guardados con éxito.',
 	'ACP_USERMAP_DATABASE_INVALID'	=> 'Esta combinación de código de país y código postal ya existe, ¡no debe usarse por segunda vez!<br>
 										¡No se pudo guardar esta entrada en la base de datos interna!',
-'ACP_USERMAP_CONFIRM_DELETE'	=> 'Are you really certain that you want to delete this item from the database?<br>
-										<strong>This removes the item permenantly from the data base and cannot be undone!</strong>',
+	'ACP_USERMAP_CONFIRM_DELETE'	=> '¿Estás realmente seguro de que desea eliminar este elemento de la base de datos?<br>
+										<strong>¡Esto elimina el elemento permanentemente de la base de datos y no se puede deshacer!</strong>',
 	// POI tab
-'ACP_USERMAP_POI'				=> 'POI handling',
-'ACP_USERMAP_POI_EXPLAIN'		=> 'In this table all POIs entered so far into the database are listed.<br>
-										Below this table you can insert a new entry, in addition this is where you can edit an existing entry after selecting
-										the <i>Edit</i> link in the last column of each line in the table.<br>
-										By selecting the <i>Delete</i> link you can delete an entry from your database.',
-'ACP_USERMAP_POI_DATA'			=> 'POI entries currently available',
-'ACP_USERMAP_POI_NAME'			=> 'Name of POI',
-'ACP_USERMAP_POI_POPUP'			=> 'Descreption of POI',
-'ACP_USERMAP_POI_ICON'			=> 'Icon file',
-'ACP_USERMAP_POI_NEW'			=> 'Enter a new POI',
-'ACP_USERMAP_POI_EDIT'			=> 'Edit selected POI',
-'ACP_USERMAP_POI_NAME_EXP'		=> 'Name of this POI, is displayed as a tooltip bubble when the mouse pointer moves over the POI marker.',
-'ACP_USERMAP_POI_POPUP_EXP'		=> 'Description of this POI, can use up to 500 characters and may contain BBCode.<br>
-										This text is displayed in a popup bubble when the POI marker gets clicked with the mouse pointer.',
-'ACP_USERMAP_POI_ICON_EXP'		=> 'To facilitate a rudimentary categorisation of your POIs you can select from marker icons with different colours.',
+	'ACP_USERMAP_POI'				=> 'Administración de PDI',
+	'ACP_USERMAP_POI_EXPLAIN'		=> 'En esta tabla se enumeran todos los PDI ingresados hasta ahora en la base de datos.<br>
+										Debajo de esta tabla puedes insertar una nueva entrada, además, aquí es donde puedes editar una entrada existente después de seleccionar
+										el enlace de <i>Edit</i> en la última columna de cada línea en la tabla.<br>
+										Al seleccionar el enlace de <i>Eliminar</i> puedes eliminar una entrada de la base de datos.',
+	'ACP_USERMAP_POI_DATA'			=> 'Entradas de PDI actualmente disponibles',
+	'ACP_USERMAP_POI_NAME'			=> 'Nombre de PDI',
+	'ACP_USERMAP_POI_POPUP'			=> 'Descripción de PDI',
+	'ACP_USERMAP_POI_ICON'			=> 'Archivo de icono',
+	'ACP_USERMAP_POI_NEW'			=> 'Ingrese un nuevo PDI',
+	'ACP_USERMAP_POI_EDIT'			=> 'Editar PDI seleccionado',
+	'ACP_USERMAP_POI_NAME_EXP'		=> 'El nombre de este PDI se muestra como una burbuja de información sobre herramientas cuando el puntero del mouse se mueve sobre el marcador de PDI.',
+	'ACP_USERMAP_POI_POPUP_EXP'		=> 'La descripción de este PDI puede usar hasta 500 caracteres y puede contener BBCode.<br>
+										Este texto se muestra en una burbuja emergente cuando se hace clic en el marcador de PDI con el puntero del mouse.',
+	'ACP_USERMAP_POI_ICON_EXP'		=> 'Para facilitar una categorización básica de tus PDI, puedes seleccionar entre los iconos de marcadores con diferentes colores.',
 	// ERROR LOG
 	'LOG_USERMAP_GOOGLE_ERROR'		=> 'La API de Google Maps falló durante la ejecución con el siguiente mensaje de error<br>» %s',
 	// UCP

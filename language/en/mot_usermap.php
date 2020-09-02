@@ -94,7 +94,7 @@ $lang = array_merge($lang, array(
 										If you choose to use the Google Maps service you need to obtain an API Key by subscribing at
 										<a href="https://developers.google.com/maps/documentation/embed/get-api-key" target="_blank">
 										<span style="text-decoration: underline;">Google Maps API Key</span></a>. Please follow the instructions there
-										and heed activating the "Geocoding API".',
+										and heed activating the ´Geocoding API´.',
 	'ACP_USERMAP_GOOGLE_ENABLE'		=> 'Enable the usage of the Google Maps API?',
 	'ACP_USERMAP_GOOGLE_KEY'		=> 'Please enter your Google Maps API Key',
 	'ACP_USERMAP_APIKEY_ERROR'		=> 'This action could not be concluded successfully since you neglected to provide a Google Maps API Key after activating this API. Please provide a valid key!',
@@ -108,7 +108,7 @@ $lang = array_merge($lang, array(
 										by commas.',
 	'ACP_USERMAP_DATABASE_TITLE'	=> 'Using the internal data base',
 	'ACP_USERMAP_DATABASE_TEXT'		=> 'Even Google Maps may not provide a valid solution for some countries (e.g. Israel). In this case you can use an
-										internal data base for which you must provide the data, please choose the tab "Internal database" for more information.<br>
+										internal data base for which you must provide the data, please choose the tab ´Internal database´ for more information.<br>
 										You might want to use this way for users living in a country not supported by geonames.org if you do not wish to use
 										the Google Maps API.',
 	'ACP_USERMAP_DATABASE_ENABLE'	=> 'Enable the usage of the internal data base?',
@@ -119,9 +119,9 @@ $lang = array_merge($lang, array(
 										The following section allows you to write and edit a description defining the meaning of your different POI categories,
 										which will be displayed below the map as a legend.<br>
 										Input and editing of your POIs is the administrators task, all elements necessary to do this are accessible through
-										the "POI handling" tab.',
+										the ´POI handling´ tab.',
 	'ACP_USERMAP_POI_ENABLE'		=> 'Enable display of POIs?',
-	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Choosing "Yes" enables displaying the POI overlay with the Usermap. It also activates your choice for the following
+	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Choosing ´Yes´ enables displaying the POI overlay with the Usermap. It also activates your choice for the following
 										setting and displaying the legend which you can write and edit in the section below.',
 	'ACP_USERMAP_POI_SHOWTOALL'		=> 'Enable display of POIs to all members?',
 	'ACP_USERMAP_POI_SHOWTOALL_EXP'	=> 'The Usermap and the POI overlay are shown by default only to those members who have put their location into the
@@ -178,7 +178,7 @@ $lang = array_merge($lang, array(
 										By selecting the <i>Delete</i> link you can delete an entry from your database.',
 	'ACP_USERMAP_POI_DATA'			=> 'POI entries currently available',
 	'ACP_USERMAP_POI_NAME'			=> 'Name of POI',
-	'ACP_USERMAP_POI_POPUP'			=> 'Descreption of POI',
+	'ACP_USERMAP_POI_POPUP'			=> 'Description of POI',
 	'ACP_USERMAP_POI_ICON'			=> 'Icon file',
 	'ACP_USERMAP_POI_NEW'			=> 'Enter a new POI',
 	'ACP_USERMAP_POI_EDIT'			=> 'Edit selected POI',
