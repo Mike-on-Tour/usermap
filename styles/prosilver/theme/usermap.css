@@ -51,3 +51,8 @@ select .plz_search{
 .usermap_group_legend {
 	font-style:	italic;
 }
+
+/* To protect dropdown menus from being hidden by leaflet elements we set their z-index to a higher value than any of those (the highest of those is 1000 with leaflet 1.6) */
+.dropdown {
+	z-index: 1024;
+}

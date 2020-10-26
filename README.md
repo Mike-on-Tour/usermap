@@ -1,9 +1,12 @@
 # **Usermap for phpBB**
 
-![phpBB 3.2.x Compatible](./phpBB-3.2.x_kl.jpg) ![phpBB 3.2.x Compatible](./phpBB-3.3.x_kl.jpg)
+![Version: 0.9.0](https://img.shields.io/badge/Version-0.9.0-green)  
+  
+![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
+![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)  
 
 ### **Description**
-Usermap is an extension for phpbb boards versions 3.2.x and 3.3.x which adds a map with your users locations - and if you choose so, an additional layer with
+Usermap is an extension for phpbb board versions 3.2.x and 3.3.x which adds a map with your users locations - and if you choose so, an additional layer with
 points of interest (POI) for your users - to the board. It is accessible through a link in the board's header.  
 To determine your users' locations Usermap uses the country and the postal code of the municipality a user lives in and looks up its coordinates primarily in
 the database of *[geonames.org][]* which means that it is **mandatory** for you to register an account there. Without this account Usermap will not function!  
@@ -34,13 +37,13 @@ now why users are effected during registration, it is quite simple: Usermap crea
 registration process. The first one is a text field for input of the user's postal code and the second one is a dropdown field listing all countries of the
 world for the user to easily select the country matching his or her location. If a user provides this data during registration Usermap will try to get a
 coordinate from the enabled database(s) during the activation process and adds this user to the Usermap users table if it was successful.  
-If a user chooses to not provide this information during registration he or she can do this anytime through the `Profile` tab in his or her UCP. As soon
+If a user chooses to not provide this information during registration he or she can do this anytime through the `Profile` tab in the UCP. As soon
 as the user hits the enter key Usermap will try to get a coordinate as described above.  
 PLEASE NOTE: Users must provide a valid pair of postal code and country, otherwise the lookup in the database will fail and the user is not listed in the
 Usermap users table. Since only users listed in this table are displayed on the map with the coordinates provided by the database all others are assumed to
 be unauthorized and will see an error message instead of the map!  
   
-Clicking the Usermap link in the header bar will open the map itself, its display is divided in three parts:
+Clicking the Usermap link in the header bar will open the map itself, its content is divided in three parts:
 1.  Search Form  
 In this part the user will find his or her postal code prefixed by his/her country's two letter country code and a hyphen and followed by a dropdown field to
 select a range in kilometers which determines the radius around that location in which Usermap will look for other users after the `Submit` button was hit. 
@@ -53,7 +56,7 @@ upper right corner. The first one should be rather self-explanatory, the second 
 topographical map and (if points of interest are enabled and the user is viewed as an authorized user with his or her location on the map) select buttons 
 for the user and the POI overlay. The user overlay is displayed by default and users can add the POI overlay by ticking this field. Unauthorized users may
 see the POI overlay by default if this is enabled by the administrator.  
-User locations are displayed with circle markers coloured with the respective users main group color and POIs are displayed with a triangle standing on its
+User locations are displayed with circle markers coloured with the respective user´s main group color and POIs are displayed with a triangle standing on its
 point, coloured as the administrator has chosen during input.  
 If more than one user selected the same combination of country and postal code all markers at this position would be overlapping entirely with only one user
 visible. To prevent this the locations of the second and all subsequent users with identical country/postal code combinations are calculated with a dynamic
@@ -67,7 +70,8 @@ Administrators will find the `User Map` section within the ACP's `Extensions` ta
 1.  Settings  
 	Please read the descriptions within the sections of this tab carefully since they provide vital information to the individual settings.  
 	+  Map Settings  
-		to define latitude and longitude of the map's center when opening the Usermap window as well as the initial zoom (aka scale).  
+		to define latitude and longitude of the map's center when opening the Usermap window as well as the initial zoom (aka scale);
+		in addition you can set the size of the marker used to display users' locations on the map independently for computers and for mobile devices.
 	+  Username for geonames.org  
 		should be self-explanatory; if no input was provided, the form keeps going back to this text field when hitting the `Submit` button. Please keep in
 		mind that this setting MUST NOT be empty since geonames is the extensions primary means to get coordinates.  
@@ -109,14 +113,20 @@ Administrators will find the `User Map` section within the ACP's `Extensions` ta
 	Underneath that table you can input new locations. Each combination of country and postal code must be unique, entering an already existing combination
 	a second time will result in an error message, this input will be rejected.
 	
-4.  POI handling
-	A Point of Interest (POI) could be any landmark you wish to show to your users. Usermap stores them in a table entered into the database at instalarion.
+4.  POI handling  
+	A Point of Interest (POI) could be any landmark you wish to show to your users. Usermap stores them in a table entered into the database at installation.
 	If you have enabled the display of POIs you need to enter the data somewhere, this is the place you are looking for.  
 	As with the internal database this tab starts with a table displaying the current content of the database table. Every POI has a name which is displayed
-	as a tool tip when the mouse pointer hovers over the icon, a decription which is displayed in a popup bubble when the user clicks the icon, an icon file
+	as a tool tip when the mouse pointer hovers over the icon, a description which is displayed in a popup bubble when the user clicks the icon, an icon file
 	which holds the icon with which the POI is marked on the map and a pair of coordinates.  
 	Underneath this table you find a form to input new POIs or edit existing POIs. The input fields of this form are pretty selfexplanatory, please note
-	that you can use bbcodes (including linking to external web sites) in the description text field.
+	that you can use bbcodes (including linking to external web sites) in the description text field.  
+	Since the icons are scalable vector graphic (SVG) files it is possible for the administrator to build own graphics or acquire them from the internet.
+	If the administrator would like to use additional or other icons (they must be stored in Usermap's `styles/all/theme/images/poi` directory) their size
+	and anchor point (the coordinate with the upper left corner as 0,0 counting to the right and downwards within the icon which is centered on the map
+	coordinates) must be defined. For this purpose there are two fields to input these settings. Since SVG is a scalable format you can even display indivual
+	icons smaller or bigger than others.  
+	For the convenience of the users who are using the icons shipped with Usermap the initial values for those icons are already pre-selected.
   
 Please note that a basic check is done when you input something in the form fields of the ACP, e.g. the coordinates need a dot as decimal separator but in
 countries using a comma as separator it is easy to forget this, Usermap checks for a comma and automatically changes it into a dot. Usermap checks most inputs
@@ -124,7 +134,7 @@ respectively and either corrects the input or rejects it by deleting your input 
 
 ### **Requirements**
 
-As mentioned above a (free) account with *[geonames.org][]* is mandatory and if you choose to use Google Maps as well you need to set up an account
+As mentioned above a (free) account with *[geonames.org][]* is mandatory and if you choose to additionally use Google Maps you need to set up an account
 with the *[Google Maps API][]* as well, links are provided within the `ACP Settings` tab of Usermap.  
 In order to display member profiles and POI markers as intended it is crucial that the values `Server protocol`, `Domain name` and `Script path` (the last
 one only if your board's root is within a subdirectory of the path your domain name points to) are properly set. If you experience any difficulties displaying

@@ -5,9 +5,9 @@ document.getElementById('plz_search').onsubmit = function (evt) {
 	evt.preventDefault();
 }
 
-function addUserLayer(myLayerGroup, lat, lng, colour, myName) {
+function addUserLayer(myLayerGroup, lat, lng, colour, myName, circleRadius) {
 	var circleMarkerOptions = {
-		radius:			4,
+		radius:			circleRadius,
 		color:			'black',
 		weight:			1,
 		opacity:		1.0,
@@ -19,11 +19,11 @@ function addUserLayer(myLayerGroup, lat, lng, colour, myName) {
 	myLayerGroup.addLayer(circleMarker);
 }
 
-function addPoiLayer(myLayerGroup, iconName, lat, lng, myName, myPopup) {
+function addPoiLayer(myLayerGroup, iconName, lat, lng, myName, myPopup, myIconSize, myIconAnchor) {
 	var iconOptions = {
 		iconUrl:	iconName,
-		iconAnchor:	[5, 9],
-		iconSize:	[10, 10],
+		iconAnchor:	myIconAnchor.split(","),
+		iconSize:	myIconSize.split(","),
 	}
 	var customIcon = L.icon(iconOptions);
 	var markerOptions = {
@@ -33,7 +33,9 @@ function addPoiLayer(myLayerGroup, iconName, lat, lng, myName, myPopup) {
 		icon: customIcon
 	}
 	var marker = new L.Marker([lat, lng], markerOptions);
-	marker.bindPopup(myPopup);
+	if (myPopup != '') {
+		marker.bindPopup(myPopup);
+	}
 	myLayerGroup.addLayer(marker);
 }
 
@@ -111,12 +113,21 @@ zoomFactor[25] = 10;
 zoomFactor[50] = 9;
 zoomFactor[100] = 8;
 
-var mapConfig, Lat, Lng, Zoom;	// variables used to initialize the map
+var mapConfig, Lat, Lng, Zoom, radiusPC, radiusMobile;	// variables used to initialize the map
 
 mapConfig = jsConfig.split("|");
 Lat = parseFloat(mapConfig[0]);
 Lng = parseFloat(mapConfig[1]);
 Zoom = mapConfig[2];
+radiusPC = mapConfig[3];
+radiusMobile = mapConfig[4];
+
+var userAgent = navigator.userAgent.toLowerCase();
+if(userAgent.match('iphone') || userAgent.match('android') || userAgent.match('windows phone')) {
+	var markerRadius = radiusMobile;
+} else {
+	var markerRadius = radiusPC;
+}
 
 var mapOptions = {
 	center: [Lat, Lng],
@@ -154,8 +165,7 @@ if (jsAuthUser) {
 	var mapDataLength = jsMapData.length;								// get the number of user markers in the list
 	while (i < mapDataLength) {											// show all user markers on the map
 		userLocation = jsMapData[i];
-	//	addMapPoint(map, parseFloat(userLocation['user_lat']), parseFloat(userLocation['user_lng']), '#'+userLocation['user_colour'], userLocation['username']);
-		addUserLayer(userLayer, parseFloat(userLocation['user_lat']), parseFloat(userLocation['user_lng']), '#'+userLocation['user_colour'], userLocation['username']);
+		addUserLayer(userLayer, parseFloat(userLocation['user_lat']), parseFloat(userLocation['user_lng']), '#'+userLocation['user_colour'], userLocation['username'], markerRadius);
 		i++;
 	}
 }
@@ -173,7 +183,7 @@ if (jsPoiEnabled) {
 	while (i < poiDataLength) {
 		poiLocation = jsPoiData[i];
 		poiIconPath = jsIconPath + poiLocation['icon'];
-		addPoiLayer(poiLayer, poiIconPath, parseFloat(poiLocation['lat']), parseFloat(poiLocation['lng']), poiLocation['name'], poiLocation['popup']);
+		addPoiLayer(poiLayer, poiIconPath, parseFloat(poiLocation['lat']), parseFloat(poiLocation['lng']), poiLocation['name'], poiLocation['popup'], poiLocation['icon_size'], poiLocation['icon_anchor']);
 		i++;
 	}
 }

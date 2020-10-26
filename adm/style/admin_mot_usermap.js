@@ -168,3 +168,32 @@ function checkCountryAndZipCode(inputName, matchString, errorMsg)
 		return false;
 	}
 }
+
+/*
+* First replaces some characters with a comma in case somebody hit the wrong key, then erases all characters which are not a digit or a comma, erases all multible, trailing or leading commas
+* and checks whether the expression is of 'dd,dd' to make sure we get only two numbers seperated by a comma
+*
+* @params:	inputName:	string, name of the DOM element we want to check
+*		defaultValue: string, the value which gets set if we encounter an invalid input
+*
+* @return:	a pair of integer numbers seperated by a comma
+*/
+function cleanInput(inputName, defaultValue)
+{
+	var pairMatch = /\d{1,2}\,\d{1,2}/;
+	var domElement = document.getElementById(inputName);
+	var elementValue = domElement.value;
+	if (elementValue != '') {
+		elementValue = elementValue.replace(/[;:\._-]/g, ",");		// replace some characters with a comma (in case someone fooled while typing)
+		elementValue = elementValue.replace(/[^,\d]/g, "");			// erase all characters which are not a digit or a comma
+		elementValue = elementValue.replace(/,{2,10}/g, ",");		// erase multiple commas
+		elementValue = elementValue.replace(/^,*/, "");				// erase all leading commas
+		elementValue = elementValue.replace(/,*$/, "");				// erase all trailing commas
+	}
+	var result = elementValue.match(pairMatch);
+	if (result == null) {
+		domElement.value = defaultValue;		// input doesn't match the pattern, we use the default value
+	} else {
+		domElement.value = result[0];			// input matches th search pattern, we use it
+	}
+}

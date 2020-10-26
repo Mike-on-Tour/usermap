@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v0.6.x
+* @package Usermap v0.9.x
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -65,6 +65,11 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_LON'				=> 'Longitud del centro del mapa',
 	'ACP_USERMAP_LON_EXP'			=> 'Valores entre 180.0 (Este) y -180.0 (Oeste)',
 	'ACP_USERMAP_ZOOM'				=> 'Zoom inicial del Mapa del Usuario',
+	'ACP_USERMAP_MARKERS_TEXT'		=> 'Aquí se puede seleccionar el tamaño de los marcadores que indican las posiciones de los usuarios en el mapa de forma independiente para la visualización en
+										pantallas de computadoras (de escritorio, portátiles, notebook, netbook, tablet) así como en dispositivos móviles (teléfonos celulares).<br>
+										El tamaño es ingresado como el radio del círculo usado como marcador, la unidad de medida son los píxeles.',
+	'ACP_USERMAP_MARKERS_PC'		=> 'El radio del círculo en las pantallas de los ordenadores',
+	'ACP_USERMAP_MARKERS_MOB'		=> 'El radio del círculo en la pantalla de los dispositivos móviles',
 	'ACP_USERMAP_GEONAMES_TITLE'	=> 'Nombre de usuario para geonames.org',
 	'ACP_USERMAP_GEONAMES_TEXT'		=> 'Mapa del Usuario se basa en los servicios de geonames.org para obtener las coordenadas geográficas de la ubicación del miembro identificado por el código postal y el país, además de la ubicación proporcionada en el perfil del miembro.
 										Por lo tanto hay que registrarse en
@@ -119,8 +124,8 @@ $lang = array_merge($lang, array(
 										El ingreso y edición de los PDI es tarea de los administradores, todos los elementos necesarios para hacer esto están accesibles a través
 										de la pestaña ´Administración de PDI´.',
 	'ACP_USERMAP_POI_ENABLE'		=> '¿Habilitar visualización de PDI?',
-	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Choosing ´Yes´ enables displaying the POI overlay with the Usermap. It also activates your choice for the following
-										setting and displaying the legend which you can write and edit in the section below.',
+	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Elegir "Sí" permite mostrar la superposición de puntos de interés con el mapa de usuario. También activa su elección para lo siguiente
+										ajuste y la visualización de la leyenda que puede escribir y editar en la sección de abajo.',
 	'ACP_USERMAP_POI_SHOWTOALL'		=> '¿Permitir la visualización de PDI a todos los miembros?',
 	'ACP_USERMAP_POI_SHOWTOALL_EXP'	=> 'El mapa del usuario y la superposición de PDI se muestran de forma predeterminada solo para aquellos miembros que han puesto su ubicación en el
 										Mapa del usuario. Si deseas que todos los demás miembros vean también la superposición de PDI, puedes habilitar esto aquí; esos miembros podrán entonces
@@ -178,12 +183,18 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_POI_NAME'			=> 'Nombre de PDI',
 	'ACP_USERMAP_POI_POPUP'			=> 'Descripción de PDI',
 	'ACP_USERMAP_POI_ICON'			=> 'Archivo de icono',
+	'ACP_USERMAP_POI_SIZE'			=> 'Tamaño del icono',
+	'ACP_USERMAP_POI_ANCHOR'		=> 'Icono de anclaje',
 	'ACP_USERMAP_POI_NEW'			=> 'Ingrese un nuevo PDI',
 	'ACP_USERMAP_POI_EDIT'			=> 'Editar PDI seleccionado',
 	'ACP_USERMAP_POI_NAME_EXP'		=> 'El nombre de este PDI se muestra como una burbuja de información sobre herramientas cuando el puntero del mouse se mueve sobre el marcador de PDI.',
 	'ACP_USERMAP_POI_POPUP_EXP'		=> 'La descripción de este PDI puede usar hasta 500 caracteres y puede contener BBCode.<br>
 										Este texto se muestra en una burbuja emergente cuando se hace clic en el marcador de PDI con el puntero del mouse.',
 	'ACP_USERMAP_POI_ICON_EXP'		=> 'Para facilitar una categorización básica de tus PDI, puedes seleccionar entre los iconos de marcadores con diferentes colores.',
+	'ACP_USERMAP_POI_SIZE_EXP'		=> 'El tamaño del icono en píxeles según la notación ´ancho´, ´alto´. El valor inicial es el tamaño por defecto
+										de los iconos enviados con Mapa de Usuario.',
+	'ACP_USERMAP_POI_ANCHOR_EXP'	=> 'El icono de anclaje en píxeles comenzando en la esquina superior izquierda en la notación ´valor horizontal´, ´valor vertical´.
+										Valor inicial del ancho por defecto de los iconos enviados con Mapa de Usuario.',
 	// ERROR LOG
 	'LOG_USERMAP_GOOGLE_ERROR'		=> 'La API de Google Maps falló durante la ejecución con el siguiente mensaje de error<br>» %s',
 	// UCP

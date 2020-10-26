@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v0.7.x
+* @package Usermap v0.9.x
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -18,19 +18,25 @@ class poi_module
 
 	public function main()
 	{
-		global $language, $template, $request, $db, $phpbb_container, $phpbb_root_path, $phpEx;
+		global $template, $request, $db, $phpbb_container, $phpbb_root_path, $phpEx;
 
+		$language = $phpbb_container->get('language');
 		$this->tpl_name = 'acp_usermap_poi';
 		$this->page_title = $language->lang('ACP_USERMAP') . ' ' . $language->lang('ACP_USERMAP_POI');
 		$this->icon_path = $phpbb_root_path . 'ext/mot/usermap/styles/all/theme/images/poi/';
 		$this->include_path = $phpbb_root_path . 'ext/mot/usermap/includes/';
-		include_once($this->include_path . 'um_constants.' . $phpEx);
+		if (!defined('USERMAP_POI_TABLE'))
+		{
+			include($this->include_path . 'um_constants.' . $phpEx);
+		}
 		$uid = $bitfield = '';
 		$flags = OPTION_FLAG_LINKS + OPTION_FLAG_BBCODE;	// === 0b0101   ( this really is of no interest since this variable gets set in the called function according to every flag set to true
 		$preview_text = '';
 		$act = '';
 		$new_poi = true;
 		$poi_popup_preview = false;
+		$icon_size_default = '11,10';
+		$icon_anchor_default = '5,9';
 		$this->u_action_preview = $this->u_action . '&amp;action=preview';
 
 		$language->add_lang(array('posting'));
@@ -56,12 +62,14 @@ class poi_module
 				$result = generate_text_for_edit($row['popup'], $uid, $flags);
 				$popup = $result['text'];
 				$template->assign_vars(array(
-					'ACP_USERMAP_POI_NAME'		=> $row['name'],
-					'ACP_USERMAP_POI_POPUP'		=> $row['popup'],
-					'ACP_USERMAP_POI_POPUP'		=> $popup,
-					'MOT_USERMAP_POI_ICON'		=> $row['icon'],
-					'ACP_USERMAP_POI_LAT'		=> $row['lat'],
-					'ACP_USERMAP_POI_LON'		=> $row['lng'],
+					'ACP_USERMAP_POI_NAME'			=> $row['name'],
+					'ACP_USERMAP_POI_POPUP'			=> $row['popup'],
+					'ACP_USERMAP_POI_POPUP'			=> $popup,
+					'MOT_USERMAP_POI_ICON'			=> $row['icon'],
+					'ACP_USERMAP_POI_ICON_SIZE'		=> $row['icon_size'],
+					'ACP_USERMAP_POI_ICON_ANCHOR'	=> $row['icon_anchor'],
+					'ACP_USERMAP_POI_LAT'			=> $row['lat'],
+					'ACP_USERMAP_POI_LON'			=> $row['lng'],
 				));
 				$this->u_action_preview = $this->u_action_preview . '&amp;poi_id='.$poi_id;
 				$act = '&amp;action=submit_changes&amp;poi_id='.$poi_id;
@@ -79,11 +87,13 @@ class poi_module
 				generate_text_for_storage($popup_value, $uid, $bitfield, $flags, true, true);
 
 				$sql_arr = array(
-					'name'		=> $request->variable('mot_usermap_poi_name', '', true),
-					'popup'		=> $popup_value,
-					'icon'		=> $request->variable('mot_usermap_poi_icon', ''),
-					'lat'		=> $request->variable('mot_usermap_poi_lat', ''),
-					'lng'		=> $request->variable('mot_usermap_poi_lon', ''),
+					'name'			=> $request->variable('mot_usermap_poi_name', '', true),
+					'popup'			=> $popup_value,
+					'icon'			=> $request->variable('mot_usermap_poi_icon', ''),
+					'lat'			=> $request->variable('mot_usermap_poi_lat', ''),
+					'lng'			=> $request->variable('mot_usermap_poi_lon', ''),
+					'icon_size'		=> $request->variable('mot_usermap_poi_icon_size', ''),
+					'icon_anchor'	=> $request->variable('mot_usermap_poi_icon_anchor', ''),
 				);
 				$sql = 'UPDATE ' . USERMAP_POI_TABLE . '
 						SET ' . $db->sql_build_array('UPDATE', $sql_arr) . '
@@ -119,11 +129,13 @@ class poi_module
 				generate_text_for_storage($popup_value, $uid, $bitfield, $flags, true, true);
 
 				$sql_arr = array(
-					'name'		=> $request->variable('mot_usermap_poi_name', '', true),
-					'popup'		=> $popup_value,
-					'icon'		=> $request->variable('mot_usermap_poi_icon', ''),
-					'lat'		=> $request->variable('mot_usermap_poi_lat', ''),
-					'lng'		=> $request->variable('mot_usermap_poi_lon', ''),
+					'name'			=> $request->variable('mot_usermap_poi_name', '', true),
+					'popup'			=> $popup_value,
+					'icon'			=> $request->variable('mot_usermap_poi_icon', ''),
+					'lat'			=> $request->variable('mot_usermap_poi_lat', ''),
+					'lng'			=> $request->variable('mot_usermap_poi_lon', ''),
+					'icon_size'		=> $request->variable('mot_usermap_poi_icon_size', ''),
+					'icon_anchor'	=> $request->variable('mot_usermap_poi_icon_anchor', ''),
 				);
 				$sql = 'INSERT INTO ' . USERMAP_POI_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_arr);
 				$db->sql_query($sql);
@@ -137,6 +149,8 @@ class poi_module
 				$icon = $request->variable('mot_usermap_poi_icon', '');
 				$lat = $request->variable('mot_usermap_poi_lat', '');
 				$lng = $request->variable('mot_usermap_poi_lon', '');
+				$icon_size = $request->variable('mot_usermap_poi_icon_size', '');
+				$icon_anchor = $request->variable('mot_usermap_poi_icon_anchor', '');
 
 				generate_text_for_storage($popup_value, $uid, $bitfield, $flags, true, true);
 				$preview_text = generate_text_for_display($popup_value, $uid, $bitfield, $flags);
@@ -145,12 +159,14 @@ class poi_module
 				$poi_popup_preview = true;
 
 				$template->assign_vars(array(
-					'ACP_USERMAP_POI_NAME'		=> $name_value,
-					'ACP_USERMAP_POI_POPUP'		=> $popup_value,
-					'MOT_USERMAP_POI_ICON'		=> $icon,
-					'ACP_USERMAP_POI_LAT'		=> $lat,
-					'ACP_USERMAP_POI_LON'		=> $lng,
-					'ACP_USERMAP_POPUP_PREVIEW'	=> $poi_popup_preview,
+					'ACP_USERMAP_POI_NAME'			=> $name_value,
+					'ACP_USERMAP_POI_POPUP'			=> $popup_value,
+					'MOT_USERMAP_POI_ICON'			=> $icon,
+					'ACP_USERMAP_POI_ICON_SIZE'		=> $icon_size,
+					'ACP_USERMAP_POI_ICON_ANCHOR'	=> $icon_anchor,
+					'ACP_USERMAP_POI_LAT'			=> $lat,
+					'ACP_USERMAP_POI_LON'			=> $lng,
+					'ACP_USERMAP_POPUP_PREVIEW'		=> $poi_popup_preview,
 				));
 
 				if ($poi_id > 0)		// Preview was called from inside the Edit mode
@@ -195,6 +211,8 @@ class poi_module
 				'LAT'			=> $row['lat'],
 				'LNG'			=> $row['lng'],
 				'ICON'			=> $row['icon'],
+				'SIZE'			=> $row['icon_size'],
+				'ANCHOR'		=> $row['icon_anchor'],
 				'U_DELETE'		=> $this->u_action . '&amp;action=delete&amp;poi_id=' . ($row['poi_id']),
 				'U_EDIT'		=> $this->u_action . '&amp;action=edit&amp;poi_id=' . ($row['poi_id']),
 			));
@@ -211,11 +229,18 @@ class poi_module
 
 		$act = ($act == '') ? '&amp;action=submit' : $act;
 		$template->assign_vars(array(
-			'NEW_POI'					=> $new_poi,
-			'U_ACTION'					=> $this->u_action . $act,
-			'U_ACTION_PREVIEW'			=> $this->u_action_preview,
-			'PREVIEW_TEXT'				=> $preview_text,
+			'NEW_POI'						=> $new_poi,
+			'U_ACTION'						=> $this->u_action . $act,
+			'U_ACTION_PREVIEW'				=> $this->u_action_preview,
+			'PREVIEW_TEXT'					=> $preview_text,
 		));
+		if ($new_poi)
+		{
+			$template->assign_vars(array(
+				'ACP_USERMAP_POI_ICON_SIZE'		=> $icon_size_default,
+				'ACP_USERMAP_POI_ICON_ANCHOR'	=> $icon_anchor_default,
+			));
+		}
 	}
 
 	function get_icons($dir)

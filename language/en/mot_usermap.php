@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v0.6.x
+* @package Usermap v0.9.x
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -65,6 +65,11 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_LON'				=> 'Longitude of the map center',
 	'ACP_USERMAP_LON_EXP'			=> 'Values between 180.0 (East) and -180.0 (West)',
 	'ACP_USERMAP_ZOOM'				=> 'Initial zoom of the user map',
+	'ACP_USERMAP_MARKERS_TEXT'		=> 'Here you can select the size of the markers indicating the users` positions on the map independently for the display on
+										computer screens (desktop, laptop, notebook, netbook, tablet) as well as on mobile devices (cell phones).<br>
+										The size is entered as the radius of the circle used as a marker, measurement unit is pixels.',
+	'ACP_USERMAP_MARKERS_PC'		=> 'The circle´s radius on computer screens',
+	'ACP_USERMAP_MARKERS_MOB'		=> 'The circle´s radius on the display of mobile devices',
 	'ACP_USERMAP_GEONAMES_TITLE'	=> 'Username for geonames.org',
 	'ACP_USERMAP_GEONAMES_TEXT'		=> 'User Map relies on the services of geonames.org to get the geographical coordinates
 										of the member location identified by the postal code (zip code) and country and additionally
@@ -180,12 +185,18 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_POI_NAME'			=> 'Name of POI',
 	'ACP_USERMAP_POI_POPUP'			=> 'Description of POI',
 	'ACP_USERMAP_POI_ICON'			=> 'Icon file',
+	'ACP_USERMAP_POI_SIZE'			=> 'Icon size',
+	'ACP_USERMAP_POI_ANCHOR'		=> 'Icon anchor',
 	'ACP_USERMAP_POI_NEW'			=> 'Enter a new POI',
 	'ACP_USERMAP_POI_EDIT'			=> 'Edit selected POI',
 	'ACP_USERMAP_POI_NAME_EXP'		=> 'Name of this POI, is displayed as a tooltip bubble when the mouse pointer moves over the POI marker.',
 	'ACP_USERMAP_POI_POPUP_EXP'		=> 'Description of this POI, can use up to 500 characters and may contain BBCode.<br>
 										This text is displayed in a popup bubble when the POI marker gets clicked with the mouse pointer.',
 	'ACP_USERMAP_POI_ICON_EXP'		=> 'To facilitate a rudimentary categorisation of your POIs you can select from marker icons with different colours.',
+	'ACP_USERMAP_POI_SIZE_EXP'		=> 'Size of the icon in pixels in the notation ´width´,´height´. Initial value is the default size
+										of the icons shipped with Usermap.',
+	'ACP_USERMAP_POI_ANCHOR_EXP'	=> 'Anchor of the icon in pixels starting in the upper left corner in the notation ´horizontal value´,´vertical value´.
+										Initial value is the default anchor of the icons shipped with Usermap.',
 	// ERROR LOG
 	'LOG_USERMAP_GOOGLE_ERROR'		=> 'The Google Maps API failed the execution with the following error message<br>» %s',
 	// UCP

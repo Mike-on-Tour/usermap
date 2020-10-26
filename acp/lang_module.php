@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v0.6.x
+* @package Usermap v0.9.x
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -18,8 +18,9 @@ class lang_module
 
 	public function main()
 	{
-		global $language, $template, $request, $db, $phpbb_root_path, $phpEx;
+		global $template, $request, $db, $phpbb_container, $phpbb_root_path, $phpEx;
 
+		$language = $phpbb_container->get('language');
 		$this->tpl_name = 'acp_usermap_lang';
 		$this->page_title = $language->lang('ACP_USERMAP') . ' ' . $language->lang('ACP_USERMAP_LANGS');
 		$this->lang_path = $phpbb_root_path . 'ext/mot/usermap/language/';

@@ -4,6 +4,42 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
   
+## [0.9.0] - 2020-10-26
+**Please note:** Due to changes regarding the `$language` variable in the ACP files Usermap is now compatible with ALL versions of phpBB 3.2.x and 3.3.x!
+
+### Added
+-	A check for the user agent to enable two settings for marker sizes (mobile devices and all other) in `style/all/template/mot_usermap.js`
+-	Two new settings to allow the admin to define the radius of the markers showing user locations on the map, one for PCs, laptops, notebooks, netbooks etc.
+	and one for mobile devices. Affected files are `acp/main_module.php`, `adm/style/acp_usermap_main.html`, `controller/main.php`,
+	`styles/all/template/mot_usermap.js` and all language files.
+-	The facility to define the size and the anchor of POI icons in order to better generate user defined icons or to set size and anchor point of individual
+	icons. Affected files are `acp/poi_module.php`, `adm/style/acp_usermap_poi.html`, `adm/style/admin_mot_usermap.js`, `styles/all/template/mot_usermap.js`
+	and all language files.
+-	Two new migration files, `v_0_9_0_0` to add the new config variables for marker sizes and the two additional columns in the `phpbb_usermap_poi` table
+	and `v_0_9_0_1` to fill those new columns with the so far static values for all icons delivered with Usermap
+	
+### Changed
+-	Leaflet from version 1.6 to version 1.7.1
+-	If a POI has no description `styles/all/template/mot_usermap.js` will no longer open an empty popup window.
+-	In the files `acp/database_module.php`, `acp/lang_module.php`, `acp/main_module.php` and `acp/poi_module.php` the global variable `$language` was used.
+	Since this global variable was introduced in phpBB 3.2.6 with Usermap 0.8.0 an `ext.php` file was added to prevent installation on phpBB version 3.2.5
+	and earlier. In Usermap 0.9.0 the variable `$language` is no longer acquired from the global variable but instead from the `phpbb_container` where it
+	was introduced with phpBB 3.2.0. So the four ACP files are changed accordingly and the `ext.php` file checks now for phpBB versions later or equal to
+	3.2.0.
+-	The `README.md` file according to the new features.
+
+### Fixed
+-	Quick links and user dropdown menus are partially hidden by the Usermap's map object due to high numbers for z-index for several leaflet elements
+	(as high as 1000). Solved by assigning a z-index of 1024 to phpBB's `.dropdown` class in `styles/prosilver/theme/usermap.css`
+-	In answering some reports of SQL errors with `user_id` and `username` set to NULL whilst writing new users to the `usermap_users` table after
+	editing user profiles in the ACP or UCP it is now checked whether this user is already in the `profile_fields_data` table in the `event/main_listener.php`
+	files `process_user_profile_data` function; if he is not then no data from this table is queried to prevent an empty result (and thus NULL values for
+	`user_id` and `username`.
+
+### Removed
+-	An unnecessary check for BOTs while building the user group list in `controller/main.php`
+
+
 ## [0.8.0] - 2020-09-02
 **Please note:** Due to switching from the (deprecated) usage of the `user` classes `lang` element to the `$language->lang` class methods Usermap completely
 lost the (never intended anyway) backwards compatibility with phpBB 3.1.x and phpBB versions prior to version 3.2.6. This is the main reason for the minor

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v0.6.x
+* @package Usermap v0.9.x
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -65,6 +65,12 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_LON'				=> 'Geogr. Länge des Kartenzentrums',
 	'ACP_USERMAP_LON_EXP'			=> 'Werte zwischen 180.0 (Osten) und -180.0 (Westen)',
 	'ACP_USERMAP_ZOOM'				=> 'Zoom-Faktor der Mitgliederkarte beim Aufruf',
+	'ACP_USERMAP_MARKERS_TEXT'		=> 'Hier können Sie die Größe der Marker zur Darstellung der Mitglieder in der Karte unabhängig voneinander sowohl für die
+										Anzeige auf Computern (Desktop, Laptop, Notebook, Netbook, Tablet) als auch auf mobilen Geräten (Smartphone)
+										auswählen.<br>
+										Die Größe wird als Radius des als Marker verwendeten Kreises angegeben, die Einheit sind Pixel.',
+	'ACP_USERMAP_MARKERS_PC'		=> 'Radius des Kreises auf Computern',
+	'ACP_USERMAP_MARKERS_MOB'		=> 'Radius des Kreises auf mobilen Geräten',
 	'ACP_USERMAP_GEONAMES_TITLE'	=> 'Benutzername für geonames.org',
 	'ACP_USERMAP_GEONAMES_TEXT'		=> 'Die Mitgliederkarte verwendet den Service von geonames.org zum Ermitteln der geogr.
 										Koordinaten des über Postleitzahl und Land angegebenen Ortes sowie zur Verfeinerung den
@@ -181,12 +187,18 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_POI_NAME'			=> 'Name des Eintrages',
 	'ACP_USERMAP_POI_POPUP'			=> 'Beschreibung des Eintrages',
 	'ACP_USERMAP_POI_ICON'			=> 'Icon-Datei',
+	'ACP_USERMAP_POI_SIZE'			=> 'Icon-Größe',
+	'ACP_USERMAP_POI_ANCHOR'		=> 'Icon-Ankerpunkt',
 	'ACP_USERMAP_POI_NEW'			=> 'Eingabe eines neuen POI',
 	'ACP_USERMAP_POI_EDIT'			=> 'Bearbeitung eines vorhandenen POI',
 	'ACP_USERMAP_POI_NAME_EXP'		=> 'Name des Eintrags, wird in der Karte beim Überfahren des POI mit dem Mauszeiger als Tooltip angezeigt.',
 	'ACP_USERMAP_POI_POPUP_EXP'		=> 'Beschreibung des Eintrages, kann bis zu 500 Zeichen lang sein und darf BB-Code enthalten.<br>
 										Wird in der Karte beim Anklicken des POI als Popup-Blase dargestellt.',
 	'ACP_USERMAP_POI_ICON_EXP'		=> 'Zur Darstellung von verschiedenen POI-Kategorien kann hier aus verschiedenfarbigen Markern ausgewählt werden.',
+	'ACP_USERMAP_POI_SIZE_EXP'		=> 'Größe des Icons in Pixeln in der Notation ´Breite´,´Höhe´. Voreingestellt ist die Standardgröße
+										der mit der Mitgliederkarte ausgelieferten Icons.',
+	'ACP_USERMAP_POI_ANCHOR_EXP'	=> 'Ankerpunkt des Icons in Pixeln ausgehend von der linken oberen Ecke in der Notation ´Horizontaler Wert´,´Vertikaler Wert´.
+										Voreingestellt ist der Standardwert für die mit der Mitgliederkarte ausgelieferten Icons.',
 	// ERROR LOG
 	'LOG_USERMAP_GOOGLE_ERROR'		=> 'Die Google Maps API gab bei der Ausführung folgende Fehlermeldung zurück<br>» %s',
 	// UCP

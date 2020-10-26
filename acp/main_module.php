@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v0.7.x
+* @package Usermap v0.9.x
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -18,8 +18,9 @@ class main_module
 
 	public function main()
 	{
-		global $language, $template, $request, $config, $phpbb_container;
+		global $template, $request, $config, $phpbb_container;
 
+		$language = $phpbb_container->get('language');
 		$this->tpl_name = 'acp_usermap_main';
 		$this->page_title = $language->lang('ACP_USERMAP') . ' ' . $language->lang('ACP_USERMAP_SETTINGS');
 		$this->config_text = $phpbb_container->get('config_text');
@@ -74,6 +75,8 @@ class main_module
 			$config->set('mot_usermap_lat', substr($request->variable('mot_usermap_lat', ''), 0, 5));
 			$config->set('mot_usermap_lon', substr($request->variable('mot_usermap_lon', ''), 0, 6));
 			$config->set('mot_usermap_zoom', $request->variable('mot_usermap_zoom', 0));
+			$config->set('mot_usermap_markers_pc', $request->variable('mot_usermap_markers_pc', 0));
+			$config->set('mot_usermap_markers_mob', $request->variable('mot_usermap_markers_mob', 0));
 			$geonames_user = $request->variable('mot_usermap_geonamesuser', '', true);
 			$geonames_user = preg_replace('/[ ]/', '', $geonames_user); // get rid of any spaces
 			$config->set('mot_usermap_geonamesuser', $geonames_user);
@@ -97,6 +100,8 @@ class main_module
 			'ACP_USERMAP_LAT'				=> $config['mot_usermap_lat'],
 			'ACP_USERMAP_LON'				=> $config['mot_usermap_lon'],
 			'ACP_USERMAP_ZOOM'				=> $config['mot_usermap_zoom'],
+			'ACP_USERMAP_MARKERS_PC'		=> $config['mot_usermap_markers_pc'],
+			'ACP_USERMAP_MARKERS_MOB'		=> $config['mot_usermap_markers_mob'],
 			'ACP_USERMAP_GEONAMESUSER'		=> $config['mot_usermap_geonamesuser'],
 			'ACP_USERMAP_GOOGLE_ENABLE'		=> $config['mot_usermap_google_enable'] ? true : false,
 			'ACP_USERMAP_GOOGLE_KEY'		=> $config['mot_usermap_google_apikey'],

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v0.8.x
+* @package Usermap v0.9.x
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -136,6 +136,7 @@ class main_listener implements EventSubscriberInterface
 	*/
 	function ucp_register_register_after($event)
 	{
+		$user_id = $event['user_id'];
 		$cp_data = $event['cp_data'];
 		$user_row = $event['user_row'];
 		if ($user_row['user_actkey'] == '' && $user_row['user_inactive_reason'] == 0 && $user_row['user_inactive_time'] == 0)	// conditions if user registration w/o activation
@@ -150,7 +151,7 @@ class main_listener implements EventSubscriberInterface
 			}
 			// get some data not supplied by this functions event variable
 			$sql_arr = array(
-				'user_id'	=> $event['user_id'],
+				'user_id'	=> $user_id,
 			);
 			$query = 'SELECT user_id, username, user_colour
 					FROM ' . USERS_TABLE . '
@@ -291,10 +292,9 @@ class main_listener implements EventSubscriberInterface
 	*/
 	public function acp_modify_users_profile($event)
 	{
-		$user_row = $event['user_row'];
-		// to prevent errors during activation if the admin edited the user profile prior to activation (e.g. to correct or delete the content of a CPF) we check here if the user in question is a new (and so far not activated) user
+		// to prevent errors during activation if the admin edited the user profile prior to activation (e.g. to correct or delete the content of a CPF) we check here if the user in question is a new (and so far not activated) user;
 		// errors to occur during activation are e.g. sql errors due to inserting an already existing user into the usermap_users table
-		if ($user_row['user_type'] != USER_INACTIVE)
+		if ($event['user_row']['user_type'] != USER_INACTIVE)
 		{
 			$message = $this->language->lang('ACP_USERMAP_PROFILE_ERROR') . adm_back_link($this->u_action);
 			$this->process_user_profile_data($event['user_id'], $event['cp_data'], $message, E_USER_WARNING);
@@ -365,15 +365,32 @@ class main_listener implements EventSubscriberInterface
 
 		// get the user's data from the users and profile_fields_data tables
 		$row = array();
-		$sql_arr = array(
-			'SELECT'	=> 'u.user_id, u.username, u.user_colour, pf.pf_phpbb_location, pf.pf_mot_zip, pf.pf_mot_land',
-			'FROM'		=> array(
-				PROFILE_FIELDS_DATA_TABLE	=> 'pf',
-				USERS_TABLE					=> 'u',
-				),
-			'WHERE'		=> 'pf.user_id = ' . (int) $user_id . ' AND u.user_id = ' . (int) $user_id,
-		);
-		$query = $this->db->sql_build_query('SELECT', $sql_arr);
+		// first check whether this user is already in the profile_fields_data table
+		$query = 'SELECT COUNT(*) FROM ' . PROFILE_FIELDS_DATA_TABLE . '
+				WHERE ' . $this->db->sql_in_set('user_id', $user_id);
+		$result = $this->db->sql_query($query);
+		$amount = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		// this user is not in the profile_fields_data table, so we use a simple query to prevent NULL in user_id and username due to this user not being in the profile_fields_data table and therefore getting no result
+		if ($amount['COUNT(*)'] == 0)
+		{
+			$query = 'SELECT user_id, username, user_colour FROM ' . USERS_TABLE . '
+					WHERE ' . $this->db->sql_in_set('user_id', $user_id);
+		}
+		// this user is in the profile_fields_data table, so we use a more sophisticated query in case we want to check for changed profile fields in a later version
+		else
+		{
+			$sql_arr = array(
+				'SELECT'	=> 'u.user_id, u.username, u.user_colour, pf.pf_phpbb_location, pf.pf_mot_zip, pf.pf_mot_land',
+				'FROM'		=> array(
+					PROFILE_FIELDS_DATA_TABLE	=> 'pf',
+					USERS_TABLE					=> 'u',
+					),
+				'WHERE'		=> 'pf.user_id = ' . (int) $user_id . ' OR u.user_id = ' . (int) $user_id,
+			);
+			$query = $this->db->sql_build_query('SELECT', $sql_arr);
+		}
 		$result = $this->db->sql_query($query);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -382,6 +399,7 @@ class main_listener implements EventSubscriberInterface
 		$row['pf_mot_zip'] = $cp_data['pf_mot_zip'];
 		$row['pf_mot_land'] = $cp_data['pf_mot_land'];
 		$row['pf_phpbb_location'] = $cp_data['pf_phpbb_location'];
+
 		// and now we can do the necessary checks
 		if ($row['pf_mot_zip'] != '' and $row['pf_mot_land'] > 1 and $row['pf_mot_land'] < $this->cc_size)	// check whether the profile fields data is correctly set
 		{
@@ -498,6 +516,8 @@ class main_listener implements EventSubscriberInterface
 	*/
 	function gn_search(&$j, $postal_code, $country, $city, &$gn_lat, &$gn_lng)
 	{
+		global $http_response_header;
+
 		if ($this->gn_username[$j] == '')
 		{
 			return false;
