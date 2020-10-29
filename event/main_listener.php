@@ -387,7 +387,7 @@ class main_listener implements EventSubscriberInterface
 					PROFILE_FIELDS_DATA_TABLE	=> 'pf',
 					USERS_TABLE					=> 'u',
 					),
-				'WHERE'		=> 'pf.user_id = ' . (int) $user_id . ' OR u.user_id = ' . (int) $user_id,
+				'WHERE'		=> 'pf.user_id = ' . (int) $user_id . ' AND u.user_id = ' . (int) $user_id,
 			);
 			$query = $this->db->sql_build_query('SELECT', $sql_arr);
 		}

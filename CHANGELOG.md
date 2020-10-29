@@ -3,6 +3,19 @@ All changes to `Usermap for phpBB` will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [0.9.1] - 2020-10-29
+
+### Added
+	
+### Changed
+	
+### Fixed
+-	Faulty SQL query in `event/main_listener.php`, line 390 which led to an undesired result (ALL users got selected and the first to be processed was
+	the anonymous [guest] user).
+	
+### Removed
+
   
 ## [0.9.0] - 2020-10-26
 **Please note:** Due to changes regarding the `$language` variable in the ACP files Usermap is now compatible with ALL versions of phpBB 3.2.x and 3.3.x!
