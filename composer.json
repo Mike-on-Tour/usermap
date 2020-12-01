@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Adds a usermap to your forum.",
 	"homepage": "https://www.mike-on-tour.com",
-	"version": "0.9.1",
-	"time": "2020-10-29 12:11:57",
+	"version": "0.9.2",
+	"time": "2020-12-01 12:11:57",
 	"license": "GPL-2.0-only",
 	"authors": [
 		{
@@ -16,6 +16,10 @@
         {
             "name": "Jorge (Jorup16)",
             "role": "Spanish translation"
+        },
+        {
+            "name": "Nico (NicoM)",
+            "role": "French translation"
         }
 	],
 	"require": {
@@ -27,7 +31,7 @@
 	"extra": {
 		"display-name": "Usermap for phpbb",
 		"soft-require": {
-			"phpbb/phpbb": ">=3.2.6"
+			"phpbb/phpbb": ">=3.2.0"
 		},
 		"version-check": {
 			"host": "www.mike-on-tour.com",
