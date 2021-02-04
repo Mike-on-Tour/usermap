@@ -1,0 +1,12 @@
+Subject: Nuevo PDI creado
+
+Hola {USERNAME},
+
+Estás recibiendo este correo electrónico porque se ha creado recientemente un PDI para el mapa de usuario en "{SITENAME}" y querías ser notificado en este caso:
+El usuario "{CREATOR}" creó un nuevo PDI llamado "{POI_NAME}"; si quieres verlo, haz clic en el siguiente enlace:
+
+{U_APPROVE}
+
+Si no quieres recibir notificaciones sobre los PDI recién creados que están pendientes de aprobación, puedes cambiarlo en las opciones de notificación del Panel de Control de Usuario.
+
+{EMAIL_SIG}

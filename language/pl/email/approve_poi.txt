@@ -1,0 +1,14 @@
+Subject: Nowe POI czekające na zatwierdzenie
+
+Cześć {USERNAME},
+
+Otrzymujesz tę wiadomość e-mail, ponieważ niedawno utworzono punkt POI dla Mapy Użytkowników na "{SITENAME}", który oczekuje na zatwierdzenie:
+Użytkownik "{CREATOR}" utworzył nowy punkt POI o nazwie "{POI_NAME}" , który oczekuje na zatwierdzenie.
+
+Jeśli chcesz zatwierdzić ten POI, kliknij poniższe łącze:
+
+{U_APPROVE}
+
+Jeśli nie chcesz otrzymywać powiadomień o nowo utworzonych POI oczekujących na zatwierdzenie, możesz to zmienić w opcjach powiadamiania w Panelu użytkownika.
+
+{EMAIL_SIG}

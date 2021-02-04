@@ -1,4 +1,4 @@
-﻿xx-Choisis ton pays
+xx-Choisis ton pays
 AD-Andorre
 AE-Émirats Arabes Unis
 AF-Afghanistan
@@ -28,7 +28,7 @@ BL-Saint Barthélemy
 BM-Bermudes
 BN-Brunei
 BO-Bolivie
-BQ-Saba, Saint-Eustache et Bonaire 
+BQ-Saba, Saint-Eustache et Bonaire
 BR-Brésil
 BS-Bahamas
 BT-Bhoutan
@@ -42,17 +42,17 @@ CD-République démocratique du Congo
 CF-République centrafricaine
 CG-République du Congo
 CH-Suisse
-CI-Côte-d'Ivoire
+CI-Côte-d’Ivoire
 CK-Îles Cook
 CL-Chili
 CM-Cameroun
 CN-Chine
 CO-Colombie
 CR-Costa Rica
-CU-Serbie et Montenegro
-CV-Cuba
-CW-Cap vert
-CX-Curaçao
+CU-Cuba
+CV-Cap vert
+CW-Curaçao
+CX-Île Christmas
 CY-Chypre
 CZ-République Tchèque
 DE-Allemagne
@@ -197,7 +197,7 @@ SC-Seychelles
 SD-Soudan
 SE-Suède
 SG-Singapour
-SH-Sainte-Hélène
+SH-"Sainte-Hélène"
 SI-Slovénie
 SJ-Svalbard et Jan Mayen
 SK-Slovaquie

@@ -1,4 +1,5 @@
 {% include 'overall_header.html' %}
+{% INCLUDECSS '@mot_usermap/mot_usermap_acp.css' %}
 
 <h1>{{ lang('ACP_USERMAP_LANGS') }}</h1>
 <p>{{ lang('ACP_USERMAP_LANGS_EXPLAIN') }}</p>
@@ -79,5 +80,9 @@
 	
 	{{ S_FORM_TOKEN }}
 </form>
+
+<p class="centered_text">
+<br>Usermap ver {{ USERMAP_VERSION }} &copy; 2020 - {{ ACP_USERMAP_YEAR }} by Mike-on-Tour
+</p>
 
 {% include 'overall_footer.html' %}

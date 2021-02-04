@@ -1,4 +1,5 @@
 {% include 'overall_header.html' %}
+{% INCLUDECSS '@mot_usermap/mot_usermap_acp.css' %}
 {% if not INCLUDED_USERMAP_ACP %}
 	{% INCLUDEJS '@mot_usermap/admin_mot_usermap.js' %}
     {% set INCLUDED_USERMAP_ACP = true %}
@@ -99,10 +100,28 @@
 			<dd><label><input type="radio" class="radio" name="mot_usermap_poi_enable" value="1"{% if ACP_USERMAP_POI_ENABLE %} id="mot_usermap_poi_enable" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
 				<label><input type="radio" class="radio" name="mot_usermap_poi_enable" value="0"{% if not ACP_USERMAP_POI_ENABLE %} id="mot_usermap_poi_enable" checked="checked"{%  endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
- 		<dl>
-			<dt><label for="mot_usermap_poi_showtoall">{{ lang('ACP_USERMAP_POI_SHOWTOALL') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_POI_SHOWTOALL_EXP') }}</p></dt>
-			<dd><label><input type="radio" class="radio" name="mot_usermap_poi_showtoall" value="1"{% if ACP_USERMAP_POI_SHOWTOALL %} id="mot_usermap_poi_showtoall" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="mot_usermap_poi_showtoall" value="0"{% if not ACP_USERMAP_POI_SHOWTOALL %} id="mot_usermap_poi_showtoall" checked="checked"{%  endif %} /> {{ lang('NO') }}</label></dd>
+	</fieldset>
+	
+	<fieldset>
+		<legend>{{ lang('ACP_USERMAP_ICON_TITLE') }}</legend>
+		<p>{{ lang('ACP_USERMAP_ICON_TEXT') }}</p>
+		<dl>
+			<dt>
+				<label for='mot_usermap_iconsize_default'>{{ lang('ACP_USERMAP_POI_SIZE') }}{{ lang('COLON') }}</label>
+				<p>{{ lang('ACP_USERMAP_ICONSIZE_EXP') }}</p>
+			</dt>
+			<dd>
+				<input id="mot_usermap_iconsize_default" type="text" size="11" maxlength="10" name="mot_usermap_iconsize_default" onblur="cleanInput('mot_usermap_iconsize_default', '{{ MOT_USERMAP_ICONSIZE_DEFAULT }}')" value="{{ MOT_USERMAP_ICONSIZE_DEFAULT }}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>
+				<label for='mot_usermap_iconanchor_default'>{{ lang('ACP_USERMAP_POI_ANCHOR') }}{{ lang('COLON') }}</label>
+				<p>{{ lang('ACP_USERMAP_ICONANCHOR_EXP') }}</p>
+			</dt>
+			<dd>
+				<input id="mot_usermap_iconanchor_default" type="text" size="11" maxlength="10" name="mot_usermap_iconanchor_default" onblur="cleanInput('mot_usermap_iconanchor_default', '{{ ACP_USERMAP_ICONANCHOR_DEFAULT }}')" value="{{ ACP_USERMAP_ICONANCHOR_DEFAULT }}" />
+			</dd>
 		</dl>
 	</fieldset>
 	
@@ -157,5 +176,14 @@
 {% if JUMP_TO_POI_LEGEND %}
 	<script>scrollToElement('acp_usermap_poi_legend');</script>
 {% endif %}
+
+<p class="centered_text">
+Usermap ver {{ USERMAP_VERSION }} &copy; 2020 - {{ ACP_USERMAP_YEAR }} by Mike-on-Tour
+</p>
+
+<p class="centered_text">
+{{ lang('SUPPORT_USERMAP') }}
+<a href="https://paypal.me/MichaelVormwald?locale.x=de_DE">{{ ICON_PAYPAL }}</a>
+</p>
 
 {% include 'overall_footer.html' %}

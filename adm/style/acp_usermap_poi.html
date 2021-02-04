@@ -1,4 +1,5 @@
 {% include 'overall_header.html' %}
+{% INCLUDECSS '@mot_usermap/mot_usermap_acp.css' %}
 {% if not INCLUDED_USERMAP_ACP %}
 	{% INCLUDEJS '@mot_usermap/admin_mot_usermap.js' %}
     {% set INCLUDED_USERMAP_ACP = true %}
@@ -46,14 +47,14 @@
 		<tbody>
 		{% for poi in poi %}
 			<tr>
-				<td style="text-align: center;">{{ poi.NAME }}</td>
-				<td style="text-align: center;">{{ poi.POPUP }}</td>
-				<td style="text-align: center;">{{ poi.ICON }}</td>
-				<td style="text-align: center;">{{ poi.SIZE }}</td>
-				<td style="text-align: center;">{{ poi.ANCHOR }}</td>
-				<td style="text-align: right;">{{ poi.LAT }}</td>
-				<td style="text-align: right;">{{ poi.LNG }}</td>
-				<td style="text-align: center;"><a href="{{ poi.U_DELETE }}">{{ lang('DELETE') }}</a><br><a href="{{ poi.U_EDIT }}">{{ lang('EDIT') }}</a></td>
+				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.NAME }}</td>
+				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.POPUP }}</td>
+				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.ICON }}</td>
+				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.SIZE }}</td>
+				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.ANCHOR }}</td>
+				<td style="text-align: right;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.LAT }}</td>
+				<td style="text-align: right;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.LNG }}</td>
+				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}"><a href="{{ poi.U_DELETE }}">{{ lang('DELETE') }}</a><br><a href="{{ poi.U_EDIT }}">{{ lang('EDIT') }}</a></td>
 			</tr>
 		{% else %}
 		<tr>
@@ -75,7 +76,7 @@
 	<h2>{{ lang('ACP_USERMAP_POI_EDIT') }}</h2>
 {% endif %}
 
-{# set this varible to enable display of URL bbcode #}
+{# set this variable to enable display of URL bbcode #}
 {% if not S_LINKS_ALLOWED %}
 	{% set S_LINKS_ALLOWED_ORIG = S_LINKS_ALLOWED %}
 	{% set S_LINKS_ALLOWED = true %}
@@ -122,7 +123,7 @@
 				<p>{{ lang('ACP_USERMAP_POI_SIZE_EXP') }}</p>
 			</dt>
 			<dd>
-				<input id="mot_usermap_poi_icon_size" type="text" size="11" maxlength="10" name="mot_usermap_poi_icon_size" onblur="cleanInput('mot_usermap_poi_icon_size', '11,10')" value="{{ ACP_USERMAP_POI_ICON_SIZE }}" />
+				<input id="mot_usermap_poi_icon_size" type="text" size="11" maxlength="10" name="mot_usermap_poi_icon_size" onblur="cleanInput('mot_usermap_poi_icon_size', '{{ DEFAULT_POI_ICON_SIZE }}')" value="{{ ACP_USERMAP_POI_ICON_SIZE }}" />
 			</dd>
 		</dl>
 		<dl>
@@ -131,7 +132,7 @@
 				<p>{{ lang('ACP_USERMAP_POI_ANCHOR_EXP') }}</p>
 			</dt>
 			<dd>
-				<input id="mot_usermap_poi_icon_anchor" type="text" size="11" maxlength="10" name="mot_usermap_poi_icon_anchor" onblur="cleanInput('mot_usermap_poi_icon_anchor', '5,9')" value="{{ ACP_USERMAP_POI_ICON_ANCHOR }}" />
+				<input id="mot_usermap_poi_icon_anchor" type="text" size="11" maxlength="10" name="mot_usermap_poi_icon_anchor" onblur="cleanInput('mot_usermap_poi_icon_anchor', '{{ DEFAULT_POI_ICON_ANCHOR }}')" value="{{ ACP_USERMAP_POI_ICON_ANCHOR }}" />
 			</dd>
 		</dl>
 		<hr>
@@ -140,15 +141,16 @@
             <dd><input id="mot_usermap_poi_lat" type="text" size="11" maxlength="10" name="mot_usermap_poi_lat" onblur="chkUsermapCoords('mot_usermap_poi_lat', latMatch, '0', -90.0, 90.0)" value="{{ ACP_USERMAP_POI_LAT }}" /></dd>
         </dl>
         <dl>
-            <dt><label for="mot_usermap_poi_lon">{{ lang('ACP_USERMAP_DATABASE_LNG') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LON_EXP') }}</dt>
+            <dt><label for="mot_usermap_poi_lon">{{ lang('ACP_USERMAP_DATABASE_LNG') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LON_EXP') }}</p></dt>
             <dd><input id="mot_usermap_poi_lon" type="text" size="11" maxlength="11" name="mot_usermap_poi_lon" onblur="chkUsermapCoords('mot_usermap_poi_lon', lonMatch, '0', -180.0, 180.0)" value="{{ ACP_USERMAP_POI_LON }}" /></dd>
         </dl>
         <p class="submit-buttons">
             <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
         </p>
-	{{ S_FORM_TOKEN }}
 	</fieldset> 
+	{{ S_FORM_TOKEN }}
 </form>
+
 {# if this variable was originally set to false we have to set it to this state again #}
 {% if not S_LINKS_ALLOWED_ORIG %}
 	{% set S_LINKS_ALLOWED = false %}
@@ -157,5 +159,9 @@
 {% if !NEW_POI || ACP_USERMAP_POPUP_PREVIEW %}
 	<script>scrollToElement('acp_usermap_poi');</script>
 {% endif %}
+
+<p class="centered_text">
+Usermap ver {{ USERMAP_VERSION }} &copy; 2020 - {{ ACP_USERMAP_YEAR }} by Mike-on-Tour
+</p>
 
 {% include 'overall_footer.html' %}

@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v0.9.x
-* @copyright (c) 2020 Mike-on-Tour
+* @package Usermap v0.10.0
+* @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -28,8 +28,12 @@ class main_listener implements EventSubscriberInterface
 			'core.acp_users_profile_modify_sql_ary'	=> 'acp_modify_users_profile',			// Modify profile data in ACP before submitting to the database
 			'core.user_set_default_group'			=> 'change_user_colour',				// Event when the default group is set for an array of users
 			'core.ucp_register_register_after'		=> 'ucp_register_register_after',		// Event after registration, used to process user data for the Usermap if no activation after registration is needed
+			'core.permissions'						=> 'load_permissions',
 		);
 	}
+
+	/** @var \phpbb\auth\auth */
+	protected $auth;
 
 	/** @var \phpbb\config\config */
 	protected $config;
@@ -67,10 +71,11 @@ class main_listener implements EventSubscriberInterface
 	 * @param \phpbb\controller\helper $helper   Controller helper object
 	 * @param \phpbb\template\template $template Template object
 	 */
-	public function __construct(\phpbb\config\config $config, \phpbb\config\db_text $config_text, \phpbb\controller\helper $helper,
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\config\db_text $config_text, \phpbb\controller\helper $helper,
 								\phpbb\template\template $template, \phpbb\db\driver\driver_interface $db, \phpbb\user $user,
 								\phpbb\log\log $log, \phpbb\extension\manager $phpbb_extension_manager, \phpbb\language\language $language, $php_ext)
 	{
+		$this->auth = $auth;
 		$this->config = $config;
 		$this->config_text = $config_text;
 		$this->helper = $helper;
@@ -122,7 +127,10 @@ class main_listener implements EventSubscriberInterface
 	public function add_page_header_link()
 	{
 		$this->template->assign_vars(array(
-			'U_USERMAP' => $this->helper->route('mot_usermap_route', array()),
+			'U_USERMAP' 			=> $this->helper->route('mot_usermap_route', array()),
+			'U_VIEW_MAP_ALWAYS'		=> $this->auth->acl_get('u_view_map_always'),
+			'U_VIEW_MAP_INSCRIBED'	=> $this->auth->acl_get('u_view_map_inscribed'),
+			'U_VIEW_POI'			=> $this->auth->acl_get('u_view_poi'),
 		));
 	}
 
@@ -328,6 +336,23 @@ class main_listener implements EventSubscriberInterface
 					 WHERE " . $this->db->sql_in_set('user_id', $sql_in);
 			$this->db->sql_query($query);
 		}
+	}
+
+	public function load_permissions($event)
+	{
+		$permissions_cat = $event['categories'];
+		$permissions_cat['usermap'] = 'ACP_USERMAP';
+		$event['categories'] = $permissions_cat;
+
+		$permissions = $event['permissions'];
+		$permissions['a_manage_usermap'] = array('lang' => 'ACL_A_MANAGE_USERMAP', 'cat' => 'misc');
+		$permissions['m_release_poi'] = array('lang' => 'ACL_M_RELEASE_POI', 'cat' => 'misc');
+		$permissions['u_view_map_always'] = array('lang' => 'ACL_U_VIEW_MAP_ALWAYS', 'cat' => 'usermap');
+		$permissions['u_view_map_inscribed'] = array('lang' => 'ACL_U_VIEW_MAP_INSCRIBED', 'cat' => 'usermap');
+		$permissions['u_view_poi'] = array('lang' => 'ACL_U_VIEW_POI', 'cat' => 'usermap');
+		$permissions['u_add_poi'] = array('lang' => 'ACL_U_ADD_POI', 'cat' => 'usermap');
+		$permissions['u_add_poi_with_mod'] = array('lang' => 'ACL_U_ADD_POI_WITH_MOD', 'cat' => 'usermap');
+		$event['permissions'] = $permissions;
 	}
 
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -580,11 +605,12 @@ class main_listener implements EventSubscriberInterface
 
 				default:
 					// log it for later investigation
-					$handle = fopen ($this->ext_path . 'json_error.log', 'a');
+					/*$handle = fopen ($this->ext_path . 'json_error.log', 'a');
 					$msg = date(DATE_RSS) . "\n";
 					fwrite ($handle, $msg);
 					fwrite ($handle, $json);
-					fclose ($handle);
+					fclose ($handle);*/
+					$this->log->add('critical', $this->user->data['user_id'], $this->user->ip, 'LOG_USERMAP_GEONAMES_ERROR', false, array($json));
 					return false;
 					break;
 			}
@@ -673,7 +699,7 @@ class main_listener implements EventSubscriberInterface
 		if (!in_array($status, $status_ary))	// something went wrong
 		{
 			$error_msg = $status . ': ' . $xml['error_message'];
-			$this->log->add('critical', $this->user->data['user_id'], $this->user->ip, 'LOG_USERMAP_GOOGLE_ERROR', time(), array($error_msg));
+			$this->log->add('critical', $this->user->data['user_id'], $this->user->ip, 'LOG_USERMAP_GOOGLE_ERROR', false, array($error_msg));
 		}
 
 		return $return;

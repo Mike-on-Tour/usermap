@@ -1,0 +1,14 @@
+Subject: Nuevo PDI a la espera de ser liberado
+
+Hola {USERNAME},
+
+Estás recibiendo este correo electrónico porque se ha creado recientemente un PDI para el mapa de usuario en "{SITENAME}" que está pendiente de aprobación:
+El usuario "{CREATOR}" creó un nuevo PDI llamado "{POI_NAME}" que tiene que ser aprobado.
+
+Si deseas aprobar este PDI, haz clic en el siguiente enlace:
+
+{U_APPROVE}
+
+Si no quieres recibir notificaciones sobre los PDI recién creados que están pendientes de aprobación, puedes cambiarlo en las opciones de notificación del Panel de Control de Usuario.
+
+{EMAIL_SIG}

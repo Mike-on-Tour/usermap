@@ -1,0 +1,107 @@
+<script>
+// <![CDATA[
+	var form_name = 'poi_edit';
+	var text_name = 'usermap_poi_popup';
+
+	// Define the bbCode tags
+	var bbcode = new Array();
+	var bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[url]','[/url]','[size=]','[/size]','[color]','[/color]');
+
+// ]]>
+</script>
+
+<div id="map_box" >
+</div>
+
+<div id="input_box">
+	<form  id="poi_edit" name="poi_edit" method="post" action="{{ U_ACTION }}" onsubmit="return checkPoiName('{{ ERROR_MSG }}')">
+		<fieldset>
+			<p class="block-para">{{ EXPLANATION }}</p>
+			{% if POI_ALREADY_APPROVED %}
+				<p class="heads-up">{{ lang('POI_ALREADY_APPROVED') }}</p>
+			{% endif %}
+			<dl>
+				<dt><label for="usermap_poi_name">{{ lang('ACP_USERMAP_POI_NAME') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_POI_NAME_EXP') }}</p></dt>
+				<dd><input id="usermap_poi_name" type="text" size="50" maxlength="50" name="usermap_poi_name" value="{{ USERMAP_POI_NAME }}" onchange="changePoiName('usermap_poi_name')" /></dd>
+			</dl>
+			<dl>
+				<dt>
+					<label for="usermap_poi_popup">{{ lang('ACP_USERMAP_POI_POPUP') }}{{ lang('COLON') }}</label>
+					<p>{{ lang('ACP_USERMAP_POI_POPUP_EXP') }}</p>
+					<p>{% include('@mot_usermap/usermap_poi_input_bbcode.html') %}</p>
+				</dt>
+				<dd>
+					<textarea id="usermap_poi_popup" name="usermap_poi_popup" rows="10" cols="50" maxlength="500" accept-charset="utf-8" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" onblur="changePoiPopup('usermap_poi_popup');">{{ USERMAP_POI_POPUP }}</textarea>
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					<label for="usermap_poi_icon">{{ lang('ACP_USERMAP_POI_ICON') }}{{ lang('COLON') }}</label>
+					<p>{{ lang('ACP_USERMAP_POI_ICON_EXP') }}</p>
+				</dt>
+				<dd>
+					<select id="usermap_poi_icon" name="usermap_poi_icon" onchange="changePoiIcon('usermap_poi_icon', 'usermap_poi_icon_size', 'usermap_poi_icon_anchor');">
+						{% for poi_icon in poi_icon %}
+							<option value="{{ poi_icon.VALUE }}" {% if USERMAP_POI_ICON == poi_icon.VALUE %} selected {% endif %}>{{ poi_icon.VALUE }}</option>
+						{% endfor %}
+					</select>
+				</dd>
+			</dl>
+			{% if SHOW_ICON_SIZE %}
+			<dl>
+				<dt>
+					<label for='usermap_poi_icon_size'>{{ lang('ACP_USERMAP_POI_SIZE') }}{{ lang('COLON') }}</label>
+					<p>{{ lang('ACP_USERMAP_POI_SIZE_EXP') }}</p>
+				</dt>
+				<dd>
+					<input id="usermap_poi_icon_size" type="text" size="11" maxlength="10" name="usermap_poi_icon_size" onblur="cleanInput('usermap_poi_icon_size', '{{ DEFAULT_POI_ICON_SIZE }}')" onchange="changePoiIcon('usermap_poi_icon', 'usermap_poi_icon_size', 'usermap_poi_icon_anchor');" value="{{ USERMAP_POI_ICON_SIZE }}" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					<label for='usermap_poi_icon_anchor'>{{ lang('ACP_USERMAP_POI_ANCHOR') }}{{ lang('COLON') }}</label>
+					<p>{{ lang('ACP_USERMAP_POI_ANCHOR_EXP') }}</p>
+				</dt>
+				<dd>
+					<input id="usermap_poi_icon_anchor" type="text" size="11" maxlength="10" name="usermap_poi_icon_anchor" onblur="cleanInput('usermap_poi_icon_anchor', 'DEFAULT_POI_ICON_ANCHOR')" onchange="changePoiIcon('usermap_poi_icon', 'usermap_poi_icon_size', 'usermap_poi_icon_anchor');" value="{{ USERMAP_POI_ICON_ANCHOR }}" />
+				</dd>
+			</dl>
+			{% endif %}
+			<dl>
+				<dt><label for="usermap_poi_lat">{{ lang('ACP_USERMAP_DATABASE_LAT') }}{{ lang('COLON') }}</label></dt>
+				<dd><input id="usermap_poi_lat" type="text" size="20" maxlength="20" name="usermap_poi_lat" value="{{ USERMAP_POI_LAT }}" readonly /></dd>
+			</dl>
+			<dl>
+				<dt><label for="usermap_poi_lng">{{ lang('ACP_USERMAP_DATABASE_LNG') }}{{ lang('COLON') }}</label></dt>
+				<dd><input id="usermap_poi_lng" type="text" size="20" maxlength="20" name="usermap_poi_lng" value="{{ USERMAP_POI_LNG }}" readonly /></dd>
+			</dl>
+
+			<p>&nbsp;</p>
+		</fieldset>
+		<fieldset>
+			{% if WORK_MODE == 'approve' or WORK_MODE == 'notify' %}
+				<p id="box-buttons" class="box-buttons">
+				{% if (WORK_MODE == 'approve' && POI_ALREADY_APPROVED) || WORK_MODE == 'notify' %}
+					<input class="button" type="submit" id="submit" name="submit" value="{{ lang('DONE') }}" />
+				{% endif %}
+				{% if WORK_MODE == 'approve' && not POI_ALREADY_APPROVED %}
+					<input class="button" type="submit" id="submit" name="submit" value="{{ lang('APPROVE') }}" />
+				{% endif %}
+				&nbsp;
+				<span class="button">
+						<span><a href="{{ U_DELETE }}">{{ lang('DELETE') }}</a></span>
+				</span>
+				</p>
+				<p>&nbsp;</p>
+			{% else %}
+				<p id="box-buttons" class="box-buttons">
+					<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+					<span class="button">
+							<span><a href="{{ U_CANCEL }}">{{ lang('CANCEL') }}</a></span>
+					</span>
+				</p>
+			{% endif %}
+			{{ S_FORM_TOKEN }}
+		</fieldset>
+	</form>
+</div>

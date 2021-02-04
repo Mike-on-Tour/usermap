@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v0.9.x
+* @package Usermap v0.10.0
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -13,14 +13,13 @@ namespace mot\usermap\acp;
 class poi_module
 {
 	public $u_action;
-	public $tpl_name;
-	public $page_title;
 
 	public function main()
 	{
-		global $template, $request, $db, $phpbb_container, $phpbb_root_path, $phpEx;
+		global $template, $request, $db, $config, $phpbb_container, $user, $phpbb_root_path, $phpEx;
 
 		$language = $phpbb_container->get('language');
+		$log = $phpbb_container->get('log');
 		$this->tpl_name = 'acp_usermap_poi';
 		$this->page_title = $language->lang('ACP_USERMAP') . ' ' . $language->lang('ACP_USERMAP_POI');
 		$this->icon_path = $phpbb_root_path . 'ext/mot/usermap/styles/all/theme/images/poi/';
@@ -35,8 +34,6 @@ class poi_module
 		$act = '';
 		$new_poi = true;
 		$poi_popup_preview = false;
-		$icon_size_default = '11,10';
-		$icon_anchor_default = '5,9';
 		$this->u_action_preview = $this->u_action . '&amp;action=preview';
 
 		$language->add_lang(array('posting'));
@@ -63,7 +60,6 @@ class poi_module
 				$popup = $result['text'];
 				$template->assign_vars(array(
 					'ACP_USERMAP_POI_NAME'			=> $row['name'],
-					'ACP_USERMAP_POI_POPUP'			=> $row['popup'],
 					'ACP_USERMAP_POI_POPUP'			=> $popup,
 					'MOT_USERMAP_POI_ICON'			=> $row['icon'],
 					'ACP_USERMAP_POI_ICON_SIZE'		=> $row['icon_size'],
@@ -83,32 +79,38 @@ class poi_module
 				}
 
 				$poi_id = $request->variable('poi_id', 0);
+				$name = $request->variable('mot_usermap_poi_name', '', true);
 				$popup_value = $request->variable('mot_usermap_poi_popup', '', true);
 				generate_text_for_storage($popup_value, $uid, $bitfield, $flags, true, true);
 
 				$sql_arr = array(
-					'name'			=> $request->variable('mot_usermap_poi_name', '', true),
+					'name'			=> $name,
 					'popup'			=> $popup_value,
 					'icon'			=> $request->variable('mot_usermap_poi_icon', ''),
 					'lat'			=> $request->variable('mot_usermap_poi_lat', ''),
 					'lng'			=> $request->variable('mot_usermap_poi_lon', ''),
 					'icon_size'		=> $request->variable('mot_usermap_poi_icon_size', ''),
 					'icon_anchor'	=> $request->variable('mot_usermap_poi_icon_anchor', ''),
+//					'creator_id'	=> $user->data['user_id'],
+					'disabled'		=> 0,
 				);
 				$sql = 'UPDATE ' . USERMAP_POI_TABLE . '
 						SET ' . $db->sql_build_array('UPDATE', $sql_arr) . '
 						WHERE poi_id = ' . (int) $poi_id;
 				$db->sql_query($sql);
+				$log->add('admin', $user->data['user_id'], $user->ip, 'LOG_USERMAP_POI_EDITED', false, array($name));
 				trigger_error($language->lang('ACP_USERMAP_DATABASE_SUCCESS') . adm_back_link($this->u_action), E_USER_NOTICE);
 				break;
 
 			case 'delete':
+				$name = $request->variable('poi_name', '', true);
 				$poi_id = substr($request->variable('poi_id', ''), 0);
 				if (confirm_box(true))
 				{
 					$sql = 'DELETE FROM ' . USERMAP_POI_TABLE . '
 							WHERE poi_id=' . (int) $poi_id;
 					$db->sql_query($sql);
+					$log->add('admin', $user->data['user_id'], $user->ip, 'LOG_USERMAP_POI_DELETED', false, array($name));
 					trigger_error($language->lang('ACP_USERMAP_DATABASE_SUCCESS') . adm_back_link($this->u_action), E_USER_NOTICE);
 				}
 				else
@@ -125,20 +127,24 @@ class poi_module
 					trigger_error($language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
+				$name = $request->variable('mot_usermap_poi_name', '', true);
 				$popup_value = $request->variable('mot_usermap_poi_popup', '', true);
 				generate_text_for_storage($popup_value, $uid, $bitfield, $flags, true, true);
 
 				$sql_arr = array(
-					'name'			=> $request->variable('mot_usermap_poi_name', '', true),
+					'name'			=> $name,
 					'popup'			=> $popup_value,
 					'icon'			=> $request->variable('mot_usermap_poi_icon', ''),
 					'lat'			=> $request->variable('mot_usermap_poi_lat', ''),
 					'lng'			=> $request->variable('mot_usermap_poi_lon', ''),
 					'icon_size'		=> $request->variable('mot_usermap_poi_icon_size', ''),
 					'icon_anchor'	=> $request->variable('mot_usermap_poi_icon_anchor', ''),
+					'creator_id'	=> $user->data['user_id'],
+					'disabled'		=> 0,
 				);
 				$sql = 'INSERT INTO ' . USERMAP_POI_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_arr);
 				$db->sql_query($sql);
+				$log->add('admin', $user->data['user_id'], $user->ip, 'LOG_USERMAP_POI_NEW', false, array($name));
 				trigger_error($language->lang('ACP_USERMAP_DATABASE_SUCCESS') . adm_back_link($this->u_action), E_USER_NOTICE);
 				break;
 
@@ -213,13 +219,19 @@ class poi_module
 				'ICON'			=> $row['icon'],
 				'SIZE'			=> $row['icon_size'],
 				'ANCHOR'		=> $row['icon_anchor'],
-				'U_DELETE'		=> $this->u_action . '&amp;action=delete&amp;poi_id=' . ($row['poi_id']),
+				'CREATOR_ID'	=> $row['creator_id'],
+				'DISABLED'		=> $row['disabled'] == 1 ? true : false,
+				'U_DELETE'		=> $this->u_action . '&amp;action=delete&amp;poi_id=' . ($row['poi_id'] . '&amp;poi_name=' . $row['name']),
 				'U_EDIT'		=> $this->u_action . '&amp;action=edit&amp;poi_id=' . ($row['poi_id']),
 			));
 		}
 
+		if (!function_exists('get_icons'))
+		{
+			include($this->include_path . 'functions_usermap.' . $phpEx);
+		}
 		$icon_files = array();
-		$icon_files = $this->get_icons($this->icon_path);
+		$icon_files = get_icons($this->icon_path);
 		foreach ($icon_files as $value)
 		{
 			$template->assign_block_vars('poi_icon', array(
@@ -233,29 +245,18 @@ class poi_module
 			'U_ACTION'						=> $this->u_action . $act,
 			'U_ACTION_PREVIEW'				=> $this->u_action_preview,
 			'PREVIEW_TEXT'					=> $preview_text,
+			'USERMAP_VERSION'				=> $config['mot_usermap_version'],
+			'ACP_USERMAP_YEAR'				=> date('Y'),
+			'DEFAULT_POI_ICON_SIZE'			=> $config['mot_usermap_iconsize_default'],
+			'DEFAULT_POI_ICON_ANCHOR'		=> $config['mot_usermap_iconanchor_default'],
 		));
 		if ($new_poi)
 		{
 			$template->assign_vars(array(
-				'ACP_USERMAP_POI_ICON_SIZE'		=> $icon_size_default,
-				'ACP_USERMAP_POI_ICON_ANCHOR'	=> $icon_anchor_default,
+				'ACP_USERMAP_POI_ICON_SIZE'		=> $config['mot_usermap_iconsize_default'],
+				'ACP_USERMAP_POI_ICON_ANCHOR'	=> $config['mot_usermap_iconanchor_default'],
 			));
 		}
 	}
 
-	function get_icons($dir)
-	{
-		$return = array();
-		$path = scandir($dir);
-
-		foreach ($path as $element)
-		{
-			if (is_file ($dir.'/'.$element))
-			{
-				$return[] = $element;
-			}
-		}
-
-		return $return;
-	}
 }

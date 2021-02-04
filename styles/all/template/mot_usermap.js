@@ -1,11 +1,30 @@
 'use strict';
 
+// Check whether a user created POI has a name and if not, go back to the input
+function checkPoiName(errorMsg) {
+	var poiName = document.getElementById('usermap_poi_name');
+	if (poiName.value == '') {
+		alert(errorMsg);
+		poiName.focus();
+		return (false);
+	}
+}
+
+
+// Event handler for search field
 document.getElementById('plz_search').onsubmit = function (evt) {
 	getSurroundingUsers();
 	evt.preventDefault();
 }
 
-function addUserLayer(myLayerGroup, lat, lng, colour, myName, circleRadius) {
+/*
+*	Adds a new user marker to the map
+*
+*	@params
+*
+*	@return	nothing
+*/
+function addUserLayer(myLayerGroup, lat, lng, colour, myName, myId, circleRadius) {
 	var circleMarkerOptions = {
 		radius:			circleRadius,
 		color:			'black',
@@ -16,9 +35,13 @@ function addUserLayer(myLayerGroup, lat, lng, colour, myName, circleRadius) {
 	}
 	var circleMarker = new L.circleMarker([lat, lng], circleMarkerOptions);
 	circleMarker.bindTooltip(myName);
+	circleMarker.bindPopup('<a href="' + jsServerConfig + '/memberlist.php?mode=viewprofile&u=' + myId + '" target="_blank">'+ myName + '</a>');
 	myLayerGroup.addLayer(circleMarker);
 }
 
+/*
+*	Adds a POI marker to the map layer
+*/
 function addPoiLayer(myLayerGroup, iconName, lat, lng, myName, myPopup, myIconSize, myIconAnchor) {
 	var iconOptions = {
 		iconUrl:	iconName,
@@ -42,7 +65,6 @@ function addPoiLayer(myLayerGroup, iconName, lat, lng, myName, myPopup, myIconSi
 function jumpTo(map, lat, lng, zoom) {
 	var latlng = new L.latLng(lat, lng);
 	map.setView(latlng, zoom);
-//	    return false;
 }
 
 function distanceInKm(lat1, lon1, lat2, lon2) {
@@ -104,6 +126,8 @@ function getSurroundingUsers() {
 	jumpTo(map, userLat, userLng, zoomFactor[umRadius]);
 }
 
+/* -------------------	main functions	--------------  */
+
 var zoomFactor = new Array();
 zoomFactor[1] = 13;
 zoomFactor[2] = 13;
@@ -148,8 +172,9 @@ map.on('click', function() {
 });
 
 var layer = new L.TileLayer('https://\{s\}.tile.openstreetmap.org/\{z\}/\{x\}/\{y\}.png');	// International map colors
-//		var layer = new L.TileLayer('https://\{s\}.tile.openstreetmap.de/\{z\}/\{x\}/\{y\}.png');	// German map colors
+//	var layer = new L.TileLayer('https://\{s\}.tile.openstreetmap.de/\{z\}/\{x\}/\{y\}.png');	// German map colors
 var topoLayer = new L.TileLayer('https://\{s\}.tile.opentopomap.org/\{z\}/\{x\}/\{y\}.png');	// Topo map
+var satLayer = new L.TileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/\{z\}/\{y\}/\{x\}');
 
 map.addLayer(layer);
 
@@ -158,14 +183,14 @@ var attribution = new L.control.attribution().addAttribution('Map Data &copy; <a
 var scale = new L.control.scale({imperial: false}).addTo(map);
 
 // prepare the layer with user locations, skip this for performance reasons if we have a user not in the map and poi display is set to show to all (no user locations are displayed in this case, so no need to waste time)
-if (jsAuthUser) {
+if (jsAuthUser || jsMapViewAlways) {
 	var userLayer = new L.layerGroup();
 	var i = 0;
 	var userLocation;
 	var mapDataLength = jsMapData.length;								// get the number of user markers in the list
 	while (i < mapDataLength) {											// show all user markers on the map
 		userLocation = jsMapData[i];
-		addUserLayer(userLayer, parseFloat(userLocation['user_lat']), parseFloat(userLocation['user_lng']), '#'+userLocation['user_colour'], userLocation['username'], markerRadius);
+		addUserLayer(userLayer, parseFloat(userLocation['user_lat']), parseFloat(userLocation['user_lng']), '#'+userLocation['user_colour'], userLocation['username'], userLocation['user_id'], markerRadius);
 		i++;
 	}
 }
@@ -173,7 +198,7 @@ if (jsAuthUser) {
 var poiSeperator = (jsServerConfig[jsServerConfig.length - 1] == '/') ? '' : '/';
 
 // prepare the layer with POI locations
-if (jsPoiEnabled) {
+if (jsPoiEnabled && jsPoiView) {
 	var poiLayer = new L.layerGroup();
 	var i = 0;
 	var jsIconPath = jsServerConfig + poiSeperator + 'ext/mot/usermap/styles/all/theme/images/poi/';
@@ -182,8 +207,10 @@ if (jsPoiEnabled) {
 	var poiDataLength = jsPoiData.length;
 	while (i < poiDataLength) {
 		poiLocation = jsPoiData[i];
-		poiIconPath = jsIconPath + poiLocation['icon'];
-		addPoiLayer(poiLayer, poiIconPath, parseFloat(poiLocation['lat']), parseFloat(poiLocation['lng']), poiLocation['name'], poiLocation['popup'], poiLocation['icon_size'], poiLocation['icon_anchor']);
+		if (poiLocation['disabled'] != 1 && poiLocation['lat'] != '' && poiLocation['lng'] != '' && poiLocation['icon'] != '') { // the latter three to prevent the script from crashing through empty values
+			poiIconPath = jsIconPath + poiLocation['icon'];
+			addPoiLayer(poiLayer, poiIconPath, parseFloat(poiLocation['lat']), parseFloat(poiLocation['lng']), poiLocation['name'], poiLocation['popup'], poiLocation['icon_size'], poiLocation['icon_anchor']);
+		}
 		i++;
 	}
 }
@@ -191,12 +218,13 @@ if (jsPoiEnabled) {
 var baseMap = {
 	[jsStreetDesc]	: layer,
 	[jsTopoDesc]	: topoLayer,
+	[jsSatDesc]		: satLayer,
 }
 
-if (jsAuthUser) {
+if (jsAuthUser || jsMapViewAlways) {
 	userLayer.addTo(map);
 
-	if (jsPoiEnabled) {
+	if (jsPoiEnabled && jsPoiView) {
 		var userOverlays = {
 			[jsUserDesc]	: userLayer,
 			[jsPoiDesc]		: poiLayer,
@@ -207,7 +235,91 @@ if (jsAuthUser) {
 	}
 }
 
-if (!jsAuthUser && jsPoiEnabled && jsPoiShowToAll) {
+if (!(jsAuthUser || jsMapViewAlways) && jsPoiEnabled && jsPoiView) {
 	poiLayer.addTo(map);
 	var layerControl = new L.control.layers(baseMap, null).addTo(map);
+}
+
+/*
+*	Get a new marker position by right clicking on the map and open modal box to edit the properties
+*/
+function modalBox(poiPos) {
+	let modal = document.querySelector(".modal");
+
+	window.onclick = function(e){
+		if(e.target == modal){
+			modal.style.display = "none"
+		}
+	};
+
+	$(document).keydown(function(event) {
+		if (event.keyCode == 27) {
+			modal.style.display = "none"
+		}
+	});
+
+	modal.style.display = "block";
+
+	var poiLat = document.getElementById('usermap_poi_lat');
+	poiLat.value = poiPos.lat;
+	var poiLng = document.getElementById('usermap_poi_lng');
+	poiLng.value = poiPos.lng;
+
+	var mapOptions = {
+		center: poiPos,
+		zoom: 16,
+		attributionControl: false,
+		scrollWheelZoom: false,
+	};
+
+	var boxMap = new L.map('map_box', mapOptions);
+
+	boxMap.on('click', function() {
+		if (boxMap.scrollWheelZoom.enabled()) {
+			boxMap.scrollWheelZoom.disable();
+		}
+		else {
+			boxMap.scrollWheelZoom.enable();
+		}
+	});
+
+	var boxLayer = new L.TileLayer('https://\{s\}.tile.openstreetmap.org/\{z\}/\{x\}/\{y\}.png');	// International map colors
+	boxMap.addLayer(boxLayer);
+
+	var boxScale = new L.control.scale({imperial: false}).addTo(boxMap);
+
+	// Add marker
+	var boxMarkerOptions = {
+		draggable:	true,
+		autoPan:	true,
+	};
+	var boxMarker = new L.Marker(poiPos, boxMarkerOptions);//.addTo(boxMap);
+
+	boxMarker.on('move', function (evt) {
+		var curPos = evt.latlng;
+		poiLat.value = curPos.lat;
+		$("#poiLat").load(location.href + " #poiLat" );
+		poiLng.value = curPos.lng;
+		$("#poiLng").load(location.href + " #poiLng" );
+	});
+
+	boxMarker.addTo(boxMap);
+
+}
+
+/*
+*	If POIs are generally enabled and the user can view them and the user can create a new one this function will be available
+*/
+if (jsPoiEnabled && jsPoiView && jsPoiCreate) {
+	var poiLatLng = new L.latLng;
+
+	map.addEventListener('contextmenu', function (evt) {
+		poiLatLng.lat = evt.latlng.lat;
+		poiLatLng.lng = evt.latlng.lng;
+		modalBox(poiLatLng);
+	});
+}
+
+function mod_poi() {alert('Hier');
+
 }

@@ -1,12 +1,12 @@
 # **Usermap for phpBB**
 
-![Version: 0.9.2](https://img.shields.io/badge/Version-0.9.2-green)  
+![Version: 0.10.0](https://img.shields.io/badge/Version-0.10.0-green)  
   
 ![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)  
 
 ### **Description**
-Usermap is an extension for phpbb board versions 3.2.x and 3.3.x which adds a map with your users locations - and if you choose so, an additional layer with
+Usermap is an extension for phpBB board versions 3.2.x and 3.3.x which adds a map with your users locations - and if you choose so, an additional layer with
 points of interest (POI) for your users - to the board. It is accessible through a link in the board's header.  
 To determine your users' locations Usermap uses the country and the postal code of the municipality a user lives in and looks up its coordinates primarily in
 the database of *[geonames.org][]* which means that it is **mandatory** for you to register an account there. Without this account Usermap will not function!  
@@ -16,14 +16,16 @@ code by filling a table of phpbb's database. For more information please refer t
 links to important pages of the above mentioned providers.  
 The POIs (which could be anything from landmarks to bikers' hangouts to sports arenas or whatever is important to your board) are stored in a table of
 phpbb's database which the administrator can fill within the ACP.  
-For privacy protection Usermap is visible only to users who have provided their (valid) data and thus are displayed on the map. Basically this is true for
-the POIs, too but you can select to display those for all users. This selection has no impact on the display of users' locations, these are still invisible
-for unauthorized users.
+
+### **Important**
+Since there are countries with one postal code (zip code) for more than one location and Geonames.org reflects this by providing all location names under this
+postal code Usermap takes into account the content of phpBB's `phpbb_location` profile field to get a more detailed coordinate in those cases. **Therefore ist
+is important that you must not delete this profile field for the simple reason that you don't think it necessary!**
 
 ### **Installation**
 It is strongly recomended that you use the zipped file package for installation since it always provides the latest version: *[download link][]*  
 After downloading unzip the file and upload it with a good ftp program (like FileZilla or WinSCP) to your board's `ext` folder where you should find this
-directory structure:  
+directory structure afterwards:  
 `/ext/mot/usermap`.  
 In this subdirectory all subdirectories and files of the extension must be located.  
 Logging into your board's ACP go to the `Customise` tab, find the `Usermap for phpbb` line and enable the extension. Afterwards you should see the
@@ -40,8 +42,7 @@ coordinate from the enabled database(s) during the activation process and adds t
 If a user chooses to not provide this information during registration he or she can do this anytime through the `Profile` tab in the UCP. As soon
 as the user hits the enter key Usermap will try to get a coordinate as described above.  
 PLEASE NOTE: Users must provide a valid pair of postal code and country, otherwise the lookup in the database will fail and the user is not listed in the
-Usermap users table. Since only users listed in this table are displayed on the map with the coordinates provided by the database all others are assumed to
-be unauthorized and will see an error message instead of the map!  
+Usermap users table.  
   
 Clicking the Usermap link in the header bar will open the map itself, its content is divided in three parts:
 1.  Search Form  
@@ -64,7 +65,17 @@ offset to spread them around the original position.
 3.  Legend  
 In this part the user groups are listed with their respective colour and the total number of Usermap users is displayed as well as the POI legend if these
 are enabled.
-
+  
+If permitted users may create a new POI by right clicking into the map at the selected position (it is strongly recommended to zoom into the map prior to 
+right clicking since it is far easier to select the desired spot on the big map). After this click a modal window is openend which shows a small map with
+a very high zoom factor on the left side and on the right side a form to input a name and a description as well as a dropdown field to select the icon
+representing the POI. The marker is not changed by the selection from the dropdown field but it can be dragged with the mouse to its final position. If
+this is allowed in the board functionalities as well as in the post settings it is possible to use BBCodes in the description textarea. Depending on those
+settings none of the BBCode buttons or the approbriate selection will be displayed for usage.  
+After submitting this form the POI data is stored in the data base and depending on the user's permission the new POI is either visible on the map or put
+into the moderator queue. The user is informed which of these two actions has been taken. Moderators and administrators will - depending on their permissions
+and notification settings - be notified that a new POI was created.
+  
 #### *Administrator*
 Administrators will find the `User Map` section within the ACP's `Extensions` tab providing itself four tabs:
 1.  Settings  
@@ -80,16 +91,22 @@ Administrators will find the `User Map` section within the ACP's `Extensions` ta
 		to provide the API key necessary for using this service. Please keep in mind that you need to activate this key for the `Geocoding API` to operate 
 		properly.  
 		If you enabled the Google Maps service without providing input in this text field the ACP will keep coming back to this field until you input a key.  
-		As well as the input for the geonames user name this input is not checked for its validity!
+		As well as the input for the geonames user name this input is not checked for its validity!  
+		Since Google Maps is for a number of countries more accurate than geonames.org you can additionally select countries by their two-letter country
+		code to enforce the lookup in the Google Maps instead of the geonames.org data base.
 	+  Using the internal database  
 		The internal database (which has to be filled by the administrator, see serial 4. for further information) is kind of a last resort to gain coordinates
 		for a given pair of country/postal code. You may want to use this possibility if only a few of your board's users live in countries not listed in the
 		geonames database and you don't want to use the Google Maps API service.
 	+  Display points of interest (POI)  
-		Enabling the display of the POI overlay is done with this setting. In addition you can enable all of your users (even those who haven't provided
-		their location for the map) to see the POI overlay.
+		Enabling the display of the POI overlay is done with this setting. **Enabling this setting is a prerequisite for all user permissions regarding POIs
+		to be in force!**
+	+  Default values for POI-Icons  
+		This setting allows you to define your own default values for the POI icon size and anchor. Thus you can change the default setting of the icons
+		delivered with Usermap (e.g. make them bigger or smaller) or set the values needed for your own icons in case you omitted the before mentioned icons
+		and uploaded your own ones.
 	+  POI Legend  
-		This setting is only displayed in case the POI overlay is enabled (see previous setting). You can enter a description of your POI's colour scheme or
+		This setting is only displayed if the POI overlay is enabled (see previous setting). You can enter a description of your POI's colour scheme or
 		whatever you wish to say to your users about the POIs.
 	
 2.  Language packs  
@@ -132,6 +149,54 @@ Please note that a basic check is done when you input something in the form fiel
 countries using a comma as separator it is easy to forget this, Usermap checks for a comma and automatically changes it into a dot. Usermap checks most inputs
 respectively and either corrects the input or rejects it by deleting your input in this form field.
 
+### **Permissions**
+#### *User permissions*
+With ver 0.10.0 a permission system was introduced into Usermap. Most of these permissions deal with user permissions which you will find all together in a
+new tab called `Usermap` in ACP's permissions setting. These settings are (in order of their appearance):
++	*Can create a new POI w/o approval*  
+	If you want users to be able to create new POIs without any further control by a moderator, grant them this permission. The newly created POI is immediately
+	visible on the map.  
+	This permission overrides the following permission if both are granted.  
+	By default the user role **`All Features`** do have this permission.
++	*Can create a new POI only with moderator approval*  
+	If you want to have user created POIs being checked by a moderator before they become a permanent part of the data base (and thus being displayed on the
+	map) you grant them this permission. Moderators will get a notification when a new POI has been created.
++	*Can always view the Usermap*  
+	Users with this permission can always see the map and its user markers, even if they haven't provided their own location for display. Since they do not
+	have one, they are not permitted to search for other users around their own location.  
+	Be aware that this includes the display of links to user profiles! If you do not want these users to see user profiles through a Usermap link you are
+	strongly advised to check and limit the permissions to view user profiles!  
+	By default the user role **`All Features`** do have this permission.
++	*Can view the Usermap only if listed on the map*  
+	Users granted this permission can see the map and use the user search around their own location if they provided the necessary data (country and postal
+	code of their own location). If they have not provided their own (valid) data those users will still see a `You are not authorized to see the user map.`
+	message.
++	*Can view POIs*  
+	Users can view the POIs on the map after you granted them this permission. This permission is a prerequisit for users to be able to create POIs.  
+	By default the user role **`All Features`** do have this permission.
+  
+Concerning permissions please keep in mind that
+1.	users will see the link to the Usermap ONLY if they have one of the three *view* permissions mentioned above, e.g. if you grant the guest group the
+	permission to view the POIs every guest can see and follow the link to the Usermap.
+2.	all user permissions regarding POIs only apply when the display of POIs is enabled in the ACP and
+3.	the two permissions regarding the creation of POIs by a user only apply if the user is permitted to see the POIs (if a user is not permitted to view the
+	POIs it really doesn't make any sense to let him create a new one, does it)
+  
+#### *Administrator and Moderator permissions*
+There is one permission each for administrators and moderators which you will find in the respective permission settings page under the `Misc` tab:
++	*Can manage the Usermap* for administrators.  
+	This should be pretty self-explanatory, by default full administrators do have this permission.  
+	To enable this permission Usermap's ACP tabs will be removed and re-added by two migration files during the enable process.
++	*Can approve user created POIs* for moderators.  
+	You should give this permission to all moderator roles you wish to be able to see and approve POIs created by your users (if you enabled your users to
+	create POIs which need approval before being displayed on the map). Since moderators had no role in Usermap until now this will work initially.  
+	By default full moderators do have this permission.
+	
+  
+### **Icons**
+The usage of Usermap makes it necessary to be familiar with icons, especially if used as markers on a map and as SVG (Scalabale Vector Graphics) icons.
+To keep this file as simple as possible please refer to [Excursus on icons](./docs/ICONS.md) for more information about SVG marker icons and their usage.
+  
 ### **Requirements**
 
 As mentioned above a (free) account with *[geonames.org][]* is mandatory and if you choose to additionally use Google Maps you need to set up an account

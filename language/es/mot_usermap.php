@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v0.9.x
-* @copyright (c) 2020 Mike-on-Tour
+* @package Usermap v0.10.0
+* @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -50,10 +50,37 @@ $lang = array_merge($lang, array(
 	'POI_LEGEND_TITLE'				=> 'Leyenda para los Puntos de Interés',
 	'STREET_DESC'					=> 'Mapa de la calle',
 	'TOPO_DESC'						=> 'Mapa topográfico',
+	'SAT_DESC'						=> 'Imagen de satélite',
 	'USER_DESC'						=> 'Usuarios',
 	'POI_DESC'						=> 'Puntos de Interés',
+	// User POI popup
+	'POI_INPUT_EXPL'				=> 'En este formulario puedes crear un nuevo PDI. Tus coordenadas se adoptarán a partir del marcador que aparece en el mapa a la izquierda de este formulario.
+										Este marcador es arrastrable, puede moverlo con el ratón hasta su destino final. Su nombre, descripción y
+										el icono con el que se representará el marcador posteriormente puede introducirse o seleccionarse en los siguientes campos del formulario.',
+	'POI_NEW_SAVED'					=> 'El PDI creado se ha guardado correctamente en la base de datos y se mostrará en el mapa.',
+	'POI_MOD_NOTIFIED'				=> 'El PDI creado se ha guardado con éxito en la base de datos, los moderadores han sido notificados a la espera de su aprobación.',
+	// Notifications
+	'NOTIFICATION_USERMAP_MOD'		=> 'Notificaciones de moderación para el Mapa de Usuario',
+	'USERMAP_SETTING_APPROVE'		=> 'Un PDI de reciente creación está a la espera de ser aprobado',
+	'USERMAP_SETTING_NOTIFY'		=> 'Alguien ha añadido un nuevo PDI al Mapa de usuario',
+	'USERMAP_NOTIFY_POI_APPROVE'	=> '<strong>Un nuevo PDI espera ser aprobado</strong><br>Un nuevo PDI llamado „<strong>%1$s</strong>“ fue creado por el usuario „%2$s“ y está a la espera de su aprobación.',
+	'USERMAP_NOTIFY_POI'			=> '<strong>PDI añadido</strong><br>El usuario „%2$s“ ha añadido un nuevo PDI llamado „<strong>%1$s</strong>“ al mapa de usuario.',
+	// Moderation
+	'POI_MOD_EXPL'					=> 'Aquí puedes comprobar los datos de un nuevo PDI creado por el usuario y editarlo si lo consideras necesario o deseas hacerlo por
+										otra razón. Puedes posicionar el marcador arrastrándolo con el ratón. Después de terminar este proceso puedes
+										guardar el PDI (y aprobarlo) o eliminarlo si no se ajusta a la política del foro.',
+	'USERMAP_MOD_NOT_AUTHORIZED'	=> '<strong>¡No estás autorizado a iniciar esta actividad!</strong>',
+	'POI_NONEXISTENT'				=> 'El PDI no existe',
+	'POI_ALREADY_APPROVED'			=> '¡Este PDI ya ha sido aprobado!',
+	'APPROVE'						=> 'Aprobar',
+	'DONE'							=> 'Listo',
+	'POI_APPROVED'					=> 'PDI aprobado con éxito.',
+	'ACTION_CONCLUDED'				=> 'Actividad concluida.',
+	'CHANGES_SUCCESSFUL'			=> 'Posibles cambios guardados con éxito.',
+	'BACK_TO_USERMAP'				=> 'Al mapa de usuario',
 	// ACP
 	'ACP_USERMAP'					=> 'Mapa del Usuario',
+	'SUPPORT_USERMAP'				=> 'Si quieres donar al desarrollo de Usermap, utiliza este enlace:<br>',
 	// Settings tab
 	'ACP_USERMAP_SETTINGS'			=> 'Opciones',
 	'ACP_USERMAP_SETTINGS_EXPLAIN'	=> 'Aquí es donde personalizas tu Mapa del Usuario.',
@@ -126,10 +153,12 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_POI_ENABLE'		=> '¿Habilitar visualización de PDI?',
 	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Elegir "Sí" permite mostrar la superposición de puntos de interés con el mapa de usuario. También activa su elección para lo siguiente
 										ajuste y la visualización de la leyenda que puede escribir y editar en la sección de abajo.',
-	'ACP_USERMAP_POI_SHOWTOALL'		=> '¿Permitir la visualización de PDI a todos los miembros?',
-	'ACP_USERMAP_POI_SHOWTOALL_EXP'	=> 'El mapa del usuario y la superposición de PDI se muestran de forma predeterminada solo para aquellos miembros que han puesto su ubicación en el
-										Mapa del usuario. Si deseas que todos los demás miembros vean también la superposición de PDI, puedes habilitar esto aquí; esos miembros podrán entonces
-										ver solo la superposición de PDI pero no las ubicaciones de los miembros.',
+	'ACP_USERMAP_ICON_TITLE'		=> 'Valores por defecto de los iconos de PDI',
+	'ACP_USERMAP_ICON_TEXT'			=> 'Aquí puedes cambiar los valores por defecto de los iconos de PDI en cuanto a tamaño y anclaje. Los valores de los iconos están preseleccionados
+										a los que trae el Mapa de Usuario. Si deseas utilizar tus propios iconos, puedes en su lugar introducir aquí tus valores por defecto.<br>
+										Consulta el archivo ´ICONS.md´ que se encuentra en el directorio ´docs´ para mayor información.',
+	'ACP_USERMAP_ICONSIZE_EXP'		=> 'El tamaño del icono en píxeles según la notación ´ancho´, ´alto´.',
+	'ACP_USERMAP_ICONANCHOR_EXP'	=> 'El icono de anclaje en píxeles comenzando en la esquina superior izquierda en la notación ´valor horizontal´, ´valor vertical´.',
 	'ACP_USERMAP_POI_LEGEND'		=> 'Leyenda de PDI',
 	'ACP_USERMAP_POI_LGND'			=> 'Escribir y editar la leyenda de PDI',
 	'ACP_USERMAP_POI_LGND_EXP'		=> 'El texto que ingreses aquí no debe exceder los 1,000 caracteres, incluidos todos los códigos BBCode y se mostrará debajo del
@@ -191,16 +220,27 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_POI_POPUP_EXP'		=> 'La descripción de este PDI puede usar hasta 500 caracteres y puede contener BBCode.<br>
 										Este texto se muestra en una burbuja emergente cuando se hace clic en el marcador de PDI con el puntero del mouse.',
 	'ACP_USERMAP_POI_ICON_EXP'		=> 'Para facilitar una categorización básica de tus PDI, puedes seleccionar entre los iconos de marcadores con diferentes colores.',
-	'ACP_USERMAP_POI_SIZE_EXP'		=> 'El tamaño del icono en píxeles según la notación ´ancho´, ´alto´. El valor inicial es el tamaño por defecto
-										de los iconos enviados con Mapa de Usuario.',
-	'ACP_USERMAP_POI_ANCHOR_EXP'	=> 'El icono de anclaje en píxeles comenzando en la esquina superior izquierda en la notación ´valor horizontal´, ´valor vertical´.
-										Valor inicial del ancho por defecto de los iconos enviados con Mapa de Usuario.',
-	// ERROR LOG
-	'LOG_USERMAP_GOOGLE_ERROR'		=> 'La API de Google Maps falló durante la ejecución con el siguiente mensaje de error<br>» %s',
+	'ACP_USERMAP_POI_SIZE_EXP'		=> 'El tamaño del icono en píxeles según la notación ´ancho´, ´alto´.<br>
+										El valor inicial es el tamaño por defecto dado en la pestaña "Configuración".',
+	'ACP_USERMAP_POI_ANCHOR_EXP'	=> 'El icono de anclaje en píxeles comenzando en la esquina superior izquierda en la notación ´valor horizontal´, ´valor vertical´.<br>
+										El valor inicial es el valor por defecto que se da en la pestaña "Configuración".',
 	// UCP
 	'MOT_ZIP'						=> 'Código Postal',
 	'MOT_ZIP_EXP'					=> 'Por favor ingresa el código postal de tu ubicación para ser listado en el Mapa del Usuario.<br>(Solo mayúsculas, números y guiones)',
 	'MOT_LAND'						=> 'País',
 	'MOT_LAND_EXP'					=> 'Por favor selecciona el país dondes vives para ser listado en el Mapa del Usuario.',
 	'MOT_UCP_GEONAMES_ERROR'		=> '¡El administrador no proporcionó un usuario de Geonames.org, por lo tanto, no se pudieron recuperar los datos del mapa de usuario!',
+	// Log entries
+	'LOG_USERMAP_GOOGLE_ERROR'		=> '<strong>La API de Google Maps falló durante la ejecución con el siguiente mensaje de error:</strong><br>» %s',
+	'LOG_USERMAP_GEONAMES_ERROR'	=> '<strong>La API de Geonames falló durante la ejecución con el siguiente mensaje de error:</strong><br>» %s',
+	'LOG_USERMAP_SETTING_UPDATED'	=> '<strong>Opciones de Mapa de Usuario cambiadas</strong>',
+	'LOG_POI_LEGEND_UPDATED'		=> '<strong>Se ha cambiado la leyenda del PDI</strong>',
+	'LOG_USERMAP_ZIPCODE_NEW'		=> '<strong>Se ha añadido una nueva entrada en la base de datos del mapa de usuarios:</strong><br>» %s',
+	'LOG_USERMAP_ZIPCODE_DELETED'	=> '<strong>Se ha eliminado una entrada en la base de datos del mapa de usuarios:</strong><br>» %s',
+	'LOG_USERMAP_INSTALL_LANG'		=> '<strong>Se ha añadido un paquete de idiomas al mapa de usuario:</strong><br>» %s',
+	'LOG_USERMAP_POI_NEW'			=> '<strong>Se ha añadido un nuevo PDI al mapa de usuario:</strong><br>» %s',
+	'LOG_USERMAP_POI_EDITED'		=> '<strong>Datos de PDI modificados:</strong><br>» %s',
+	'LOG_USERMAP_POI_DELETED'		=> '<strong>Se ha eliminado un PDI del mapa de usuario:</strong><br>» %s',
+	'LOG_USERMAP_POI_APPROVED'		=> '<strong>PDI creado por el usuario aprobado:</strong><br>» %s',
+	'LOG_USERMAP_POI_MOD_DELETED'	=> '<strong>PDI creado por el usuario eliminado:</strong><br>» %s',
 ));

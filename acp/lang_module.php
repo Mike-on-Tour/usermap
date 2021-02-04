@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v0.9.x
+* @package Usermap v0.10.0
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -18,9 +18,10 @@ class lang_module
 
 	public function main()
 	{
-		global $template, $request, $db, $phpbb_container, $phpbb_root_path, $phpEx;
+		global $template, $request, $db, $phpbb_container, $config, $user, $phpbb_root_path, $phpEx;
 
 		$language = $phpbb_container->get('language');
+		$log = $phpbb_container->get('log');
 		$this->tpl_name = 'acp_usermap_lang';
 		$this->page_title = $language->lang('ACP_USERMAP') . ' ' . $language->lang('ACP_USERMAP_LANGS');
 		$this->lang_path = $phpbb_root_path . 'ext/mot/usermap/language/';
@@ -57,8 +58,8 @@ class lang_module
 		switch ($action)
 		{
 			case 'install':
-				// at this point we do know: field_id of mot_land ($mot_land_id), iso code  and language id of the language to install and therefore it's subdirectory name
-				// first we have to delete the current lines for this field_id and lang_id in the profile_fields_lang table first since they are either from the default or the en language (which shouldn't need to be installed)
+				// at this point we do know: field_id of mot_land ($mot_land_id), iso code  and language id of the language to install and therefore it's subdirectory (ISO) name
+				// first we have to delete the current lines for this field_id and lang_id in the profile_fields_lang table first since it may contain the en language variables if the language to be installed wasn't available at activation
 				$sql_arr = array(
 					'field_id'	=> $mot_land_id,
 					'lang_id'	=> $lang_id,
@@ -68,16 +69,10 @@ class lang_module
 				$result = $db->sql_query($query);
 
 				// now we read the content of the approbriate countrycode file
-				$countrycodes = array();
-				$handle = fopen($this->lang_path . $iso . '/countrycode.' . $phpEx, "rb");
-				while (!feof($handle))
-				{
-					$countrycodes[] = fgets($handle);
-				}
-				fclose($handle);
+				$countrycodes = file($this->lang_path . $iso . '/countrycode.' . $phpEx, FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES);
 
 				// and insert it into the profile_fields_lang table
-				$max_i = count($countrycodes) - 1;
+				$max_i = count($countrycodes);
 				$insert_buffer = new \phpbb\db\sql_insert_buffer($db, PROFILE_FIELDS_LANG_TABLE);
 				for ($i = 0; $i < $max_i; $i++)
 				{
@@ -90,6 +85,7 @@ class lang_module
 					));
 				}
 				$insert_buffer->flush();
+				$log->add('admin', $user->data['user_id'], $user->ip, 'LOG_USERMAP_INSTALL_LANG', false, array($iso));
 			break;
 		}
 
@@ -100,7 +96,7 @@ class lang_module
 			if ($nr !== false)
 			{			// at least there is a directory with this language iso code, now we check whether this language pack is successfully installed with usermap
 				$handle = fopen($this->lang_path . $row['lang_dir'] . '/countrycode.' . $phpEx, "rb");
-				$line_file = fgets($handle);	// get the first line from the file (reads 'xx-Select your country' in the English version)
+				$line_file = trim(fgets($handle));	// get the first line from the file (reads 'xx-Select your country' in the English version)
 				fclose($handle);
 
 				$sql_arr = array(
@@ -112,7 +108,7 @@ class lang_module
 							WHERE ' . $db->sql_build_array('SELECT', $sql_arr);
 				$result = $db->sql_query($query);
 				$entry = $db->sql_fetchrow($result);
-				$line_db = $entry['lang_value'];	// get the first line from the database
+				$line_db = trim($entry['lang_value']);	// get the first line from the database
 				$db->sql_freeresult($result);
 
 				// compare the 2 lines, if they differ, this language wasn't installed, e.g. it was installed with the en version during activation of the usermap or with the boards default language during installation of this language
@@ -158,7 +154,9 @@ class lang_module
 		}
 
 		$template->assign_vars(array(
-			'U_ACTION'						=> $this->u_action,
+			'U_ACTION'				=> $this->u_action,
+			'USERMAP_VERSION'		=> $config['mot_usermap_version'],
+			'ACP_USERMAP_YEAR'		=> date('Y'),
 		));
 	}
 

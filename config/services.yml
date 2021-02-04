@@ -11,12 +11,35 @@ services:
             - '@user'
             - '@language'
             - '@ext.manager'
+            - '@request'
+            - '@notification_manager'
+            - '@log'
             - '%core.root_path%'
             - '%core.php_ext%'
+
+    mot.usermap.mod_poi:
+        class: mot\usermap\controller\mod_poi
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@dbal.conn'
+            - '@user'
+            - '@language'
+            - '@ext.manager'
+            - '@request'
+            - '@notification_manager'
+            - '@log'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+        tags:
+            - { name: controller.handle }
 
     mot.usermap.listener:
         class: mot\usermap\event\main_listener
         arguments:
+            - '@auth'
             - '@config'
             - '@config_text'
             - '@controller.helper'
@@ -29,3 +52,23 @@ services:
             - '%core.php_ext%'
         tags:
             - { name: event.listener }
+
+    mot.usermap.notification.type.approve_poi:
+        class: mot\usermap\notification\approve_poi
+        shared: false
+        parent: notification.type.base
+        calls:
+            - [set_user_loader, ['@user_loader']]
+            - [set_helper, ['@controller.helper']]
+        tags:
+            - { name: notification.type }
+
+    mot.usermap.notification.type.notify_poi:
+        class: mot\usermap\notification\notify_poi
+        shared: false
+        parent: notification.type.base
+        calls:
+            - [set_user_loader, ['@user_loader']]
+            - [set_helper, ['@controller.helper']]
+        tags:
+            - { name: notification.type }

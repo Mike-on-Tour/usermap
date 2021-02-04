@@ -1,6 +1,6 @@
 {% if U_USERMAP %}
-	{# Check for logged in users to suppress this link for guests and robots #}
-	{% if S_USER_LOGGED_IN and not S_IS_BOT %}
+	{# Check for user permissions to show this link to authorized users only #}
+	{% if U_VIEW_MAP_ALWAYS or U_VIEW_MAP_INSCRIBED or U_VIEW_POI %}
 		<li data-last-responsive="true">
 			<a href="{{ U_USERMAP }}" role="menuitem">
 				<i class="icon fa-globe fa-fw" aria-hidden="true"></i><span>{{ lang('USERMAP') }}</span>

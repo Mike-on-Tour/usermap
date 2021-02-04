@@ -5,21 +5,9 @@
 }
 
 .usermap_search {
-/*	display: -webkit-flex;
-	display: flex;
-	-webkit-align-items: center;
-	align-items: center;*/
 	font-size:	12px;
 }
-/*
-.search-text{
-	display: flex;
-}
 
-.plz-search{
-	padding: 5px;
-}
-*/
 .search-form {
 	display: flex;
 	flex-flow: row wrap;
@@ -30,10 +18,6 @@ select .plz_search{
 	width: 45px;
 }
 
-.button1 {
-
-}
-
 .usermap-thanks {
 	font-size:	12px;
 	text-align:	center;
@@ -41,18 +25,227 @@ select .plz_search{
 
 .usermap-thanks a{
 	font-weight:	bold;
-
-}
-
-.map_legend {
-
 }
 
 .usermap_group_legend {
 	font-style:	italic;
 }
 
-/* To protect dropdown menus from being hidden by leaflet elements we set their z-index to a higher value than any of those (the highest of those is 1000 with leaflet 1.6) */
+/* To protect dropdown menus from being hidden by leaflet elements we set their z-index to a higher value than any of those (the highest of those is 1000 with leaflet 1.7) */
 .dropdown {
 	z-index: 1024;
+}
+
+/* Styles for the modal window for user poi editing */
+/* Background */
+.modal {
+	display: none;
+	position: fixed;
+	padding-top: 20px;
+	z-index: 10025;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* modal content  window */
+.modal_content {
+	position: relative;
+	background-color: white;
+	padding: 10px;
+	margin: auto;
+	width: 95%;
+	height: 90%;
+	-webkit-animation-name: animatetop;
+	-webkit-animation-duration: 0.4s;
+	animation-name: animatetop;
+	animation-duration: 0.4s
+}
+
+/* approve content window */
+.approve_content {
+	position: relative;
+	width: 100%;
+	min-height: 400px
+}
+
+/* content window's map div */
+#map_box {
+	position: absolute;
+	top: 10px;
+	bottom: 10px;
+	float: left;
+	width: 50%;
+}
+
+.approve_content #map_box {
+	position: relative;
+	min-height: 60vh;
+	max-height: 100%;
+}
+
+/* Content windows input div */
+#input_box {
+	float: right;
+	width: 47%;
+	height: 100%;
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-right: 10px;
+	overflow: auto;
+}
+
+/* Input div's explanation as block style */
+.block-para {
+	text-align: justify;
+	font-size: 1.00em;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+/* style of message about already approved POI */
+.heads-up {
+	text-align: center;
+	font-size: 1.10em;
+	font-weight: bold;
+	color: black;
+	background-color: orange;
+	padding: 5px;
+}
+
+/* Input div's labels */
+label {
+	cursor: pointer;
+	font-size: 0.85em;
+	padding: 0 5px 0 0;
+}
+
+.rtl label {
+	padding: 0 0 0 5px;
+}
+
+dt label {
+	font-size: 1.00em;
+	text-align: left;
+	font-weight: bold;
+	color: #4A5A73;
+}
+
+.rtl dt label {
+	text-align: right;
+}
+
+/* Input div's paragraphs */
+p  {
+	font-size: x-small;
+	voice-family: "\"}\"";
+	voice-family: inherit;
+	margin-bottom: 0.7em;
+	line-height: 1.40em;
+}
+
+fieldset p {
+	font-size: 0.85em;
+}
+
+/* Input div's submit and cancel buttons */
+.box-buttons {
+	display: flex;
+	justify-content: center;
+	font-size: 1.00em;
+}
+
+/* Input div's inputs  */
+input, textarea {
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 0.90em;
+	font-weight: normal;
+	vertical-align: middle;
+	padding: 2px;
+	color: #111111;
+	border-left: 1px solid #AFAEAA;
+	border-top: 1px solid #AFAEAA;
+	border-right: 1px solid #D5D5C8;
+	border-bottom: 1px solid #D5D5C8;
+	background-color: #E3DFD8;
+}
+
+.rtl input, .rtl textarea {
+	border-left: 1px solid #D5D5C8;
+	border-top: 1px solid #AFAEAA;
+	border-right: 1px solid #AFAEAA;
+	border-bottom: 1px solid #D5D5C8;
+}
+
+input:hover, textarea:hover {
+	border-left: 1px solid #AFAEAA;
+	border-top: 1px solid #AFAEAA;
+	border-right: 1px solid #AFAEAA;
+	border-bottom: 1px solid #AFAEAA;
+	background-color: #E9E9E2;
+}
+
+dd input {
+	font-size: 1.00em;
+	max-width: 85%;
+	margin: 2px 0;
+}
+
+dd select {
+	font-size: 100%;
+	font-size: 1em;
+	width: auto;
+	max-width: 100%;
+	margin: 2px 0;
+}
+
+dd textarea {
+	font-size: 0.90em;
+	width: 90%;
+}
+
+/* Select dropdown field */
+select {
+	background-color: #FAFAFA;
+	border: 1px solid #666666;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 0.85em;
+	font-weight: normal;
+	font-style: normal;
+	cursor: pointer;
+	padding: 1px;
+	vertical-align: middle;
+	width: auto;
+	color: #000;
+}
+
+select:focus {
+	outline-style: none;
+}
+
+#format-buttons .button2 {
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 1.00em;
+	font-weight: normal;
+	font-style: normal;
+	padding: 0px 4px;
+}
+
+#format-buttons select {
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 1.00em;
+	font-weight: normal;
+	font-style: normal;
+	vertical-align: middle;
+}
+
+/* style for the non-standard buttons in mod_poi */
+.button a {
+	text-decoration: none;
+	padding: 0 3px;
+	vertical-align: text-bottom;
+	color: #D31141;
 }

@@ -1,0 +1,12 @@
+Subject: Utworzono nowy punkt POI
+
+Cześć {USERNAME},
+
+Otrzymujesz tę wiadomość e-mail, ponieważ niedawno utworzono POI dla Mapy Użytkowników na "{SITENAME}" i chciałeś zostać powiadomiony w tym przypadku:
+Użytkownik "{CREATOR}" stworzył nowy POI nazwany "{POI_NAME}"; jeśli chcesz się temu przyjrzeć, kliknij poniższe łącze:
+
+{U_APPROVE}
+
+Jeśli nie chcesz otrzymywać powiadomień o nowo utworzonych POI oczekujących na zatwierdzenie, możesz to zmienić w opcjach powiadamiania w Panelu użytkownika.
+
+{EMAIL_SIG}

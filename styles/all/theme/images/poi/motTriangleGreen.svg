@@ -3,7 +3,7 @@
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
 <svg xmlns="http://www.w3.org/2000/svg"
-     width="11px" height="10px" viewBox="0 0 10 9">
+     width="11px" height="10px">
   <polygon points="0 0 5 9 10 0" stroke="black"
     stroke-width="1" fill="#00ff00" />
 </svg>

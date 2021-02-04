@@ -1,0 +1,12 @@
+Subject: Neuer POI erstellt
+
+Hallo {USERNAME},
+
+du bekommst diese eMail, weil es auf "{SITENAME}" einen neuen POI gibt und du in diesem Fall benachrichtigt werden möchtest.
+Das Mitglied "{CREATOR}" hat einen neuen POI mit dem Namen "{POI_NAME}" erstellt; wenn du ihn ansehen möchtest, klicke auf diesen Link:
+
+{U_APPROVE}
+
+Wenn du zukünftig diese Benachrichtigungs-Mail nicht mehr erhalten möchtest, kannst du dies in den Benachrichtigungseinstellungen in deinem Benutzerprofil einstellen.
+
+{EMAIL_SIG}

@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v0.9.x
+* @package Usermap v0.10.0
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -18,9 +18,10 @@ class database_module
 
 	public function main()
 	{
-		global $template, $request, $db, $phpbb_container, $phpbb_root_path, $phpEx;
+		global $template, $request, $db, $phpbb_container, $config, $user, $phpbb_root_path, $phpEx;
 
 		$language = $phpbb_container->get('language');
+		$log = $phpbb_container->get('log');
 		$this->tpl_name = 'acp_usermap_database';
 		$this->page_title = $language->lang('ACP_USERMAP') . ' ' . $language->lang('ACP_USERMAP_DATABASE');
 		$this->include_path = $phpbb_root_path . 'ext/mot/usermap/includes/';
@@ -48,6 +49,7 @@ class database_module
 					$sql = 'DELETE FROM ' . USERMAP_ZIPCODE_TABLE . '
 							WHERE ' . $db->sql_build_array('DELETE', $sql_arr);
 					$db->sql_query($sql);
+					$log->add('admin', $user->data['user_id'], $user->ip, 'LOG_USERMAP_ZIPCODE_DELETED', false, array(implode(', ', array($cc, $zc))));
 					trigger_error($language->lang('ACP_USERMAP_DATABASE_SUCCESS') . adm_back_link($this->u_action), E_USER_NOTICE);
 				}
 				else
@@ -64,9 +66,11 @@ class database_module
 					trigger_error($language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
+				$cc = substr($request->variable('mot_usermap_database_cc', ''), 0, 2);
+				$zc = substr($request->variable('mot_usermap_database_zc', ''), 0, 10);
 				$sql_arr = array(
-					'country_code'	=> substr($request->variable('mot_usermap_database_cc', ''), 0, 2),
-					'zip_code'		=> substr($request->variable('mot_usermap_database_zc', ''), 0, 10),
+					'country_code'	=> $cc,
+					'zip_code'		=> $zc,
 					'lat'			=> substr($request->variable('mot_usermap_database_lat', ''), 0, 10),
 					'lng'			=> substr($request->variable('mot_usermap_database_lon', ''), 0, 11),
 				);
@@ -83,6 +87,7 @@ class database_module
 				}
 				else
 				{
+					$log->add('admin', $user->data['user_id'], $user->ip, 'LOG_USERMAP_ZIPCODE_NEW', false, array(implode(', ', array($cc, $zc))));
 					trigger_error($language->lang('ACP_USERMAP_DATABASE_SUCCESS') . adm_back_link($this->u_action));
 				}
 				$db->sql_return_on_error();
@@ -126,6 +131,8 @@ class database_module
 			'U_ACTION'			=> $this->u_action . '&amp;action=submit',
 			'ERROR_CC'			=> $language->lang('ACP_USERMAP_DATABASE_ERROR', $language->lang('ACP_USERMAP_DATABASE_CC')),
 			'ERROR_ZC'			=> $language->lang('ACP_USERMAP_DATABASE_ERROR', $language->lang('ACP_USERMAP_DATABASE_ZIPCODE')),
+			'USERMAP_VERSION'	=> $config['mot_usermap_version'],
+			'ACP_USERMAP_YEAR'	=> date('Y'),
 		));
 	}
 }

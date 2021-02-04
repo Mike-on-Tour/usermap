@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v0.9.x
-* @copyright (c) 2020 Mike-on-Tour
+* @package Usermap v0.10.0
+* @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -50,10 +50,37 @@ $lang = array_merge($lang, array(
 	'POI_LEGEND_TITLE'				=> 'Legend for the POIs',
 	'STREET_DESC'					=> 'Street map',
 	'TOPO_DESC'						=> 'Topografical map',
+	'SAT_DESC'						=> 'Satellite image',
 	'USER_DESC'						=> 'Users',
 	'POI_DESC'						=> 'POIs',
+	// User POI popup
+	'POI_INPUT_EXPL'				=> 'In this form you can create a new POI. Its coordinates will be adopted from the marker on the map left of this form.
+										This marker is draggable, you can move it with the mouse to its final destination. Its name, description as well as
+										the icon by which the marker will be represented later can be input or selected in the following form fields.',
+	'POI_NEW_SAVED'					=> 'The created POI was successfully saved in the data base and is displayed on the map.',
+	'POI_MOD_NOTIFIED'				=> 'The created POI was successfully saved in the data base, the moderators have been notified of it awaiting approval.',
+	// Notifications
+	'NOTIFICATION_USERMAP_MOD'		=> 'Moderation Notifications for the Usermap',
+	'USERMAP_SETTING_APPROVE'		=> 'A recently created POI awaits approval',
+	'USERMAP_SETTING_NOTIFY'		=> 'Somebody added a new POI to the Usermap',
+	'USERMAP_NOTIFY_POI_APPROVE'	=> '<strong>A new POI awaits approval</strong><br>A new POI named „<strong>%1$s</strong>“ was created by the user „%2$s“ and awaits approval.',
+	'USERMAP_NOTIFY_POI'			=> '<strong>POI added</strong><br>The user „%2$s“ has added a new POI named „<strong>%1$s</strong>“ to the Usermap.',
+	// Moderation
+	'POI_MOD_EXPL'					=> 'Here you can check the data of a user created new POI and edit it if you find this necessary or wish to do this for
+										another reason. You can position the marker by dragging it with the mouse. After finishing this process you can either
+										save the POI (and approve it) or delete it if it does not fit your boards policy.',
+	'USERMAP_MOD_NOT_AUTHORIZED'	=> '<strong>You are not permitted to comence this activity!</strong>',
+	'POI_NONEXISTENT'				=> 'POI does not exist',
+	'POI_ALREADY_APPROVED'			=> 'This POI has already been approved!',
+	'APPROVE'						=> 'Approve',
+	'DONE'							=> 'Done',
+	'POI_APPROVED'					=> 'POI successfully approved.',
+	'ACTION_CONCLUDED'				=> 'Activity concluded.',
+	'CHANGES_SUCCESSFUL'			=> 'Possible changes successfully saved.',
+	'BACK_TO_USERMAP'				=> 'To the Usermap',
 	// ACP
 	'ACP_USERMAP'					=> 'User Map',
+	'SUPPORT_USERMAP'				=> 'If you want to donate to Usermap´s development please use this link:<br>',
 	// Settings tab
 	'ACP_USERMAP_SETTINGS'			=> 'Settings',
 	'ACP_USERMAP_SETTINGS_EXPLAIN'	=> 'This is where you customize your user map.',
@@ -128,10 +155,12 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_POI_ENABLE'		=> 'Enable display of POIs?',
 	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Choosing ´Yes´ enables displaying the POI overlay with the Usermap. It also activates your choice for the following
 										setting and displaying the legend which you can write and edit in the section below.',
-	'ACP_USERMAP_POI_SHOWTOALL'		=> 'Enable display of POIs to all members?',
-	'ACP_USERMAP_POI_SHOWTOALL_EXP'	=> 'The Usermap and the POI overlay are shown by default only to those members who have put their location into the
-										Usermap. If you want all other members to see the POI overlay, too, you can enable this here; those members then can
-										see the POI overlay only but not the member locations.',
+	'ACP_USERMAP_ICON_TITLE'		=> 'Default values for POI-Icons',
+	'ACP_USERMAP_ICON_TEXT'			=> 'Here you can change the POI icons` default values for size and anchor. Preselected are the values for the icons
+										shipped with Usermap. If you want to use your own icons you can instead enter here their default values.<br>
+										Please refer to the ´ICONS.md´ file contained in the ´docs´ directory for further information.',
+	'ACP_USERMAP_ICONSIZE_EXP'		=> 'Size of the icon in pixels in the notation ´width´,´height´.',
+	'ACP_USERMAP_ICONANCHOR_EXP'	=> 'Anchor of the icon in pixels starting in the upper left corner in the notation ´horizontal value´,´vertical value´.',
 	'ACP_USERMAP_POI_LEGEND'		=> 'POI legend',
 	'ACP_USERMAP_POI_LGND'			=> 'Write and edit the POI legend',
 	'ACP_USERMAP_POI_LGND_EXP'		=> 'Text you are entering here must not exceed 1,000 characters including all BBCode and will be displayed below the
@@ -193,16 +222,27 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_POI_POPUP_EXP'		=> 'Description of this POI, can use up to 500 characters and may contain BBCode.<br>
 										This text is displayed in a popup bubble when the POI marker gets clicked with the mouse pointer.',
 	'ACP_USERMAP_POI_ICON_EXP'		=> 'To facilitate a rudimentary categorisation of your POIs you can select from marker icons with different colours.',
-	'ACP_USERMAP_POI_SIZE_EXP'		=> 'Size of the icon in pixels in the notation ´width´,´height´. Initial value is the default size
-										of the icons shipped with Usermap.',
-	'ACP_USERMAP_POI_ANCHOR_EXP'	=> 'Anchor of the icon in pixels starting in the upper left corner in the notation ´horizontal value´,´vertical value´.
-										Initial value is the default anchor of the icons shipped with Usermap.',
-	// ERROR LOG
-	'LOG_USERMAP_GOOGLE_ERROR'		=> 'The Google Maps API failed the execution with the following error message<br>» %s',
+	'ACP_USERMAP_POI_SIZE_EXP'		=> 'Size of the icon in pixels in the notation ´width´,´height´.<br>
+										Initial value is the default size given in the ´Settings´ tab.',
+	'ACP_USERMAP_POI_ANCHOR_EXP'	=> 'Anchor of the icon in pixels starting in the upper left corner in the notation ´horizontal value´,´vertical value´.<br>
+										Initial value is the default value given in the ´Settings´ tab.',
 	// UCP
 	'MOT_ZIP'						=> 'Postal code / Zip code',
 	'MOT_ZIP_EXP'					=> 'Please enter the postal code / zip code of your location in order to be listed on the usermap.<br>(Uppercase letters, numbers and dashes/hyphens only)',
 	'MOT_LAND'						=> 'Country',
 	'MOT_LAND_EXP'					=> 'Please select the country where you live in order to be listed on the usermap.',
 	'MOT_UCP_GEONAMES_ERROR'		=> 'The administrator didn\'t provide a Geonames.org user, therefore the data for the usermap could not be retrieved!',
+	// Log entries
+	'LOG_USERMAP_GOOGLE_ERROR'		=> '<strong>The Google Maps API failed the execution with the following error message:</strong><br>» %s',
+	'LOG_USERMAP_GEONAMES_ERROR'	=> '<strong>The Geonames API failed the execution with the following error message:</strong><br>» %s',
+	'LOG_USERMAP_SETTING_UPDATED'	=> '<strong>Usermap settings changed</strong>',
+	'LOG_POI_LEGEND_UPDATED'		=> '<strong>POI legend changed</strong>',
+	'LOG_USERMAP_ZIPCODE_NEW'		=> '<strong>Added a new data base entry to the Usermap:</strong><br>» %s',
+	'LOG_USERMAP_ZIPCODE_DELETED'	=> '<strong>Deleted a data base entry to the Usermap:</strong><br>» %s',
+	'LOG_USERMAP_INSTALL_LANG'		=> '<strong>Added a language pack to the Usermap:</strong><br>» %s',
+	'LOG_USERMAP_POI_NEW'			=> '<strong>Added a new POI to the Usermap:</strong><br>» %s',
+	'LOG_USERMAP_POI_EDITED'		=> '<strong>Changed POI data:</strong><br>» %s',
+	'LOG_USERMAP_POI_DELETED'		=> '<strong>Deleted a POI from the Usermap:</strong><br>» %s',
+	'LOG_USERMAP_POI_APPROVED'		=> '<strong>User created POI approved:</strong><br>» %s',
+	'LOG_USERMAP_POI_MOD_DELETED'	=> '<strong>User created POI deleted:</strong><br>» %s',
 ));

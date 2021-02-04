@@ -3,12 +3,12 @@
 	"type": "phpbb-extension",
 	"description": "Adds a usermap to your forum.",
 	"homepage": "https://www.mike-on-tour.com",
-	"version": "0.9.2",
-	"time": "2020-12-01 12:11:57",
+	"version": "0.10.0",
+	"time": "2020-02-04 12:11:57",
 	"license": "GPL-2.0-only",
 	"authors": [
 		{
-			"name": "Michael Vormwald",
+			"name": "Michael Vormwald (Mike-on-Tour)",
 			"email": "webmaster@mike-on-tour.de",
 			"homepage": "https://www.mike-on-tour.com",
 			"role": "Lead Developer"
@@ -20,10 +20,16 @@
         {
             "name": "Nico (NicoM)",
             "role": "French translation"
-        }
+        },
+		{
+			"name": "Leszek Rymsza (Lech-u)",
+			"role": "Polish translation"
+		}
 	],
 	"require": {
-		"php": ">=5.4"
+		"php": ">=5.4",
+        "phpbb/phpbb": ">=3.2",
+        "composer/installers": "~1.0.0"
 	},
 	"require-dev": {
 		"phpbb/epv": "dev-master"

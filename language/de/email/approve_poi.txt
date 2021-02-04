@@ -1,0 +1,14 @@
+Subject: Neuer POI wartet auf Freigabe
+
+Hallo {USERNAME},
+
+du bekommst diese eMail, weil es auf "{SITENAME}" einen neuen POI für die Mitgliederkarte gibt, der freigegeben werden muss:
+Das Mitglied "{CREATOR}" hat einen neuen POI mit dem Namen "{POI_NAME}" erstellt, der auf Freigabe wartet.
+
+Wenn du diesen POI freigeben möchtest, dann klicke auf diesen Link:
+
+{U_APPROVE}
+
+Wenn du zukünftig diese Benachrichtigungs-Mail nicht mehr erhalten möchtest, kannst du dies in den Benachrichtigungseinstellungen in deinem Benutzerprofil einstellen.
+
+{EMAIL_SIG}

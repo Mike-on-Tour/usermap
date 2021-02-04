@@ -1,3 +1,7 @@
 mot_usermap_route:
     path: /usermap
     defaults: { _controller: mot.usermap.controller:handle }
+
+mot_usermap_mod_poi_route:
+    path: /mod_poi
+    defaults: { _controller: mot.usermap.mod_poi:handle }

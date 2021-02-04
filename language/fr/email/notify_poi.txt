@@ -1,0 +1,11 @@
+Subject: Création d'un nouveau POI
+
+Bonjour {USERNAME},
+
+Vous recevez cet e-mail car un nouveau POI vient d'être créé sur "{SITENAME}", ce dont vous souhaitez être averti.
+Le membre "{CREATOR}" a créé un nouveau POI avec le nom "{POI_NAME}"; pour le voir, cliquez sur ce lien:
+
+{U_APPROVE}
+
+Si vous ne souhaitez plus recevoir cet e-mail de notification à l'avenir, vous pouvez le désactiver dans les paramètres de notification de votre profil utilisateur.
+{EMAIL_SIG}

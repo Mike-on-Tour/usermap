@@ -112,7 +112,7 @@ function cleanUsermapUser(inputName)
 	var domElement = document.getElementById(inputName);
 	var elementValue = domElement.value;
 	if (elementValue != '') {
-		elementValue = elementValue.replace(/[;:\.-]/g, ",");		// replace some characters with a comma (in case someone fooled while typing) (dashes are not allowed in Geonames user names)
+		elementValue = elementValue.replace(/[;:-]/g, ",");			// replace some characters with a comma (in case someone fooled while typing) (dashes are not allowed in Geonames user names)
 		elementValue = elementValue.replace(/,{2,}/g, ",");			// delete multiple commas,
 		elementValue = elementValue.replace(/^,*/, "");				// erase all leading commas
 		elementValue = elementValue.replace(/,*$/, "");				// erase all trailing commas

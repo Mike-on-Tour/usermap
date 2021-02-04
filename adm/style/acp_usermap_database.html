@@ -1,4 +1,5 @@
 {% include 'overall_header.html' %}
+{% INCLUDECSS '@mot_usermap/mot_usermap_acp.css' %}
 {% if not INCLUDED_USERMAP_ACP %}
 	{% INCLUDEJS '@mot_usermap/admin_mot_usermap.js' %}
     {% set INCLUDED_USERMAP_ACP = true %}
@@ -73,5 +74,9 @@
 	{{ S_FORM_TOKEN }}
 	</fieldset> 
 </form>
+
+<p class="centered_text">
+Usermap ver {{ USERMAP_VERSION }} &copy; 2020 - {{ ACP_USERMAP_YEAR }} by Mike-on-Tour
+</p>
 
 {% include 'overall_footer.html' %}

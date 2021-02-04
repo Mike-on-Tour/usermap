@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v0.9.x
-* @copyright (c) 2020 Mike-on-Tour
+* @package Usermap v0.10.0
+* @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -50,10 +50,37 @@ $lang = array_merge($lang, array(
 	'POI_LEGEND_TITLE'				=> 'Legende für die Darstellung der POIs',
 	'STREET_DESC'					=> 'Straßenkarte',
 	'TOPO_DESC'						=> 'Topografische Karte',
+	'SAT_DESC'						=> 'Satellitenbild',
 	'USER_DESC'						=> 'Mitglieder',
 	'POI_DESC'						=> 'POIs',
+	// User POI popup
+	'POI_INPUT_EXPL'				=> 'Hier kannst du einen POI erstellen. Seine Koordinaten werden von dem Marker auf der Karte links übernommen. Dieser
+										Marker kann mit der Maus bewegt werden, um ihn an seine endgültige Position zu setzen. Namen, Beschreibung sowie das
+										später zu verwendende Icon kannst du nachfolgend eingeben bzw. auswählen.',
+	'POI_NEW_SAVED'					=> 'Der angelegte POI wurde erfolgreich in der Datenbank gespeichert und wird auf der Karte angezeigt.',
+	'POI_MOD_NOTIFIED'				=> 'Der angelegte POI wurde erfolgreich in der Datenbank gespeichert, die Moderatoren wurden benachrichtigt, dass der neue POI auf Freigabe wartet.',
+	// Notifications
+	'NOTIFICATION_USERMAP_MOD'		=> 'Benachrichtigungen zur Moderation der Mitgliederkarte',
+	'USERMAP_SETTING_APPROVE'		=> 'Ein neu erstellter POI muss freigegeben werden',
+	'USERMAP_SETTING_NOTIFY'		=> 'Jemand hat einen neuen POI zur Mitgliederkarte hinzugefügt',
+	'USERMAP_NOTIFY_POI_APPROVE'	=> '<strong>Neuer POI wartet auf Freigabe</strong><br>Ein neuer POI mit dem Namen „<strong>%1$s</strong>“ wurde vom Mitglied „%2$s“ erstellt und wartet auf Freigabe.',
+	'USERMAP_NOTIFY_POI'			=> '<strong>POI hinzugefügt</strong><br>Das Mitglied „%2$s“ hat einen neuen POI mit dem Namen „<strong>%1$s</strong>“ zur Mitgliederkarte hinzugefügt.',
+	// Moderation
+	'POI_MOD_EXPL'					=> 'Hier kannst du die Daten eines von einem Mitglied neu erstellten POI ansehen, prüfen und - falls notwendig oder
+										gewünscht - ändern. Die Position des Markers kannst du durch Bewegen mit der Maus verändern. Abschließend kannst du den
+										POI speichern (und so freigeben) oder auch löschen, wenn er Kriterien deines Boards nicht genügen sollte.',
+	'USERMAP_MOD_NOT_AUTHORIZED'	=> '<strong>Du bist nicht befugt, diese Aktion durchzuführen!</strong>',
+	'POI_NONEXISTENT'				=> 'POI existiert nicht',
+	'POI_ALREADY_APPROVED'			=> 'Dieser POI wurde bereits freigegeben!',
+	'APPROVE'						=> 'Freigeben',
+	'DONE'							=> 'Fertig',
+	'POI_APPROVED'					=> 'Der POI wurde freigegeben.',
+	'ACTION_CONCLUDED'				=> 'Vorgang abgeschlossen.',
+	'CHANGES_SUCCESSFUL'			=> 'Eventuelle Änderungen wurden erfolgreich gespeichert.',
+	'BACK_TO_USERMAP'				=> 'zur Mitgliederkarte',
 	// ACP
 	'ACP_USERMAP'					=> 'Mitgliederkarte',
+	'SUPPORT_USERMAP'				=> 'Wenn du die Entwicklung der Mitgliederkarte unterstützen möchtest, kannst du das hier tun:<br>',
 	// Settings tab
 	'ACP_USERMAP_SETTINGS'			=> 'Einstellungen',
 	'ACP_USERMAP_SETTINGS_EXPLAIN'	=> 'Hier kannst du die Einstellungen für die Mitgliederkarte ändern.',
@@ -130,10 +157,13 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_POI_ENABLE'		=> 'Anzeige der POIs aktivieren?',
 	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Wird hier ´Ja´ ausgewählt, wird das POI-Overlay bei der Anzeige der Mitgliederkarte aktiviert. Gleichzeitig werden
 										die folgende Einstellung und die Anzeige der Legende aktiviert.',
-	'ACP_USERMAP_POI_SHOWTOALL'		=> 'Soll das POI-Overlay allen Mitgliedern angezeigt werden?',
-	'ACP_USERMAP_POI_SHOWTOALL_EXP'	=> 'Die Mitgliederkarte und das POI-Overlay wird nur den Mitgliedern angezeigt, die sich in die Mitgliederkarte eingetragen
-										haben. Wenn auch Mitglieder, die sich nicht eingetragen haben, das POI-Overlay sehen sollen, kann dies hier aktiviert
-										werden. Diese Mitglieder sehen dann das POI-Overlay, aber nicht die Standorte der anderen Mitglieder.',
+	'ACP_USERMAP_ICON_TITLE'		=> 'Standardwerte für POI-Icons',
+	'ACP_USERMAP_ICON_TEXT'			=> 'Hier kannst du die Standardwerte für die Größe und den Ankerpunkt der POI-Icons verändern. Voreingestellt sind die Werte
+										für die mit der Mitgliederkarte ausgelieferten Icons. Verwendest du eigene Icons, kannst du hier stattdessen deren
+										Standardwerte eintragen.<br>Weitere Informationen zu Icons, deren Größe und Ankerpunkt enthält die Datei ´ICONS.md´ im
+										Verzeichnis ´docs´.',
+	'ACP_USERMAP_ICONSIZE_EXP'		=> 'Größe des Icons in Pixeln in der Notation ´Breite´,´Höhe´.',
+	'ACP_USERMAP_ICONANCHOR_EXP'	=> 'Ankerpunkt des Icons in Pixeln ausgehend von der linken oberen Ecke in der Notation ´Horizontaler Wert´,´Vertikaler Wert´.',
 	'ACP_USERMAP_POI_LEGEND'		=> 'Legende für die POIs',
 	'ACP_USERMAP_POI_LGND'			=> 'Erstellen und Bearbeiten der Legende für das POI-Overlay',
 	'ACP_USERMAP_POI_LGND_EXP'		=> 'Der hier eingegebene Text (maximale Länge einschließlich der verwendeten BB-Codes beträgt 1.000 Zeichen) wird bei
@@ -195,16 +225,27 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_POI_POPUP_EXP'		=> 'Beschreibung des Eintrages, kann bis zu 500 Zeichen lang sein und darf BB-Code enthalten.<br>
 										Wird in der Karte beim Anklicken des POI als Popup-Blase dargestellt.',
 	'ACP_USERMAP_POI_ICON_EXP'		=> 'Zur Darstellung von verschiedenen POI-Kategorien kann hier aus verschiedenfarbigen Markern ausgewählt werden.',
-	'ACP_USERMAP_POI_SIZE_EXP'		=> 'Größe des Icons in Pixeln in der Notation ´Breite´,´Höhe´. Voreingestellt ist die Standardgröße
-										der mit der Mitgliederkarte ausgelieferten Icons.',
-	'ACP_USERMAP_POI_ANCHOR_EXP'	=> 'Ankerpunkt des Icons in Pixeln ausgehend von der linken oberen Ecke in der Notation ´Horizontaler Wert´,´Vertikaler Wert´.
-										Voreingestellt ist der Standardwert für die mit der Mitgliederkarte ausgelieferten Icons.',
-	// ERROR LOG
-	'LOG_USERMAP_GOOGLE_ERROR'		=> 'Die Google Maps API gab bei der Ausführung folgende Fehlermeldung zurück<br>» %s',
+	'ACP_USERMAP_POI_SIZE_EXP'		=> 'Größe des Icons in Pixeln in der Notation ´Breite´,´Höhe´.<br>
+										Voreingestellt sind die in den ´Einstellungen´ angegebenen Standardwerte.',
+	'ACP_USERMAP_POI_ANCHOR_EXP'	=> 'Ankerpunkt des Icons in Pixeln ausgehend von der linken oberen Ecke in der Notation ´Horizontaler Wert´,´Vertikaler Wert´.<br>
+										Voreingestellt sind die in den ´Einstellungen´ angegebenen Standardwerte.',
 	// UCP
 	'MOT_ZIP'						=> 'Postleitzahl',
 	'MOT_ZIP_EXP'					=> 'Gib hier die Postleitzahl deines Wohnortes ein, damit du auf der Mitgliederkarte erscheinst.<br>(Nur Großbuchstaben, Ziffern und Bindestrich erlaubt)',
 	'MOT_LAND'						=> 'Land',
 	'MOT_LAND_EXP'					=> 'Wähle hier das Land aus, in dem du wohnst, damit du auf der Mitgliederkarte erscheinst.',
 	'MOT_UCP_GEONAMES_ERROR'		=> 'Es wurde durch den Administrator kein Geonames.org Nutzer angegeben, die Daten für die Mitgliederkarte konnten nicht ermittelt werden!',
+	// Log entries
+	'LOG_USERMAP_GOOGLE_ERROR'		=> '<strong>Die Google Maps API gab bei der Ausführung folgende Fehlermeldung zurück:</strong><br>» %s',
+	'LOG_USERMAP_GEONAMES_ERROR'	=> '<strong>Die Geonames API gab bei der Ausführung folgende Fehlermeldung zurück:</strong><br>» %s',
+	'LOG_USERMAP_SETTING_UPDATED'	=> '<strong>Einstellungen der Mitgliederkarte geändert</strong>',
+	'LOG_POI_LEGEND_UPDATED'		=> '<strong>Text der POI-Legende geändert</strong>',
+	'LOG_USERMAP_ZIPCODE_NEW'		=> '<strong>Neuen Datenbank-Eintrag zur Mitgliederkarte hinzugefügt:</strong><br>» %s',
+	'LOG_USERMAP_ZIPCODE_DELETED'	=> '<strong>Datenbank-Eintrag zur Mitgliederkarte gelöscht:</strong><br>» %s',
+	'LOG_USERMAP_INSTALL_LANG'		=> '<strong>Sprachpaket zur Mitgliederkarte hnzugefügt:</strong><br>» %s',
+	'LOG_USERMAP_POI_NEW'			=> '<strong>Neuen POI zur Mitgliederkarte hinzugefügt:</strong><br>» %s',
+	'LOG_USERMAP_POI_EDITED'		=> '<strong>Werte eines POI geändert:</strong><br>» %s',
+	'LOG_USERMAP_POI_DELETED'		=> '<strong>POI aus der Mitgliederkarte gelöscht:</strong><br>» %s',
+	'LOG_USERMAP_POI_APPROVED'		=> '<strong>Durch Mitglied erstellten POI freigegeben:</strong><br>» %s',
+	'LOG_USERMAP_POI_MOD_DELETED'	=> '<strong>Durch Mitglied erstellten POI gelöscht:</strong><br>» %s',
 ));

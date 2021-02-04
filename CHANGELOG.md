@@ -4,6 +4,64 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.0] - 2021-02-04
+
+### Added
+-	A satellite image map layer, affected files are `styles/all/template/mot_usermap.js`, `styles/prosilver/template/usermap_main.html` and all front end
+	language files
+-	A php file `includes/functions_usermap.php` to hold all functions needed in more than one script
+-	Three new config variables (`mot_usermap_version`, `mot_usermap_iconsize_default` and `mot_usermap_iconanchor_default`)
+-	A permission system adding a new language file `permissions_mot_usermap.php` into every ISO language directory and affecting the files `acp/*_info.php`,
+	`config/services.yml`, `controller/main.php`, `event/main_listener.php`, `language/'ISO'/mot_usermap.php`, `style/all/template/mot_usermap.js`,
+	`styles/prosilver/template/usermap_main.html` and `styles/prosilver/template/event/overall_header_navigation_append.html`
+-	A new migration file `migrations/v_0_10_0_0.php` to introduce the permissions.
+-	Settings for POI icons using the two new config variables `mot_usermap_iconsize_default` and `mot_usermap_iconanchor_default`, affected files are
+	`acp/main_module.php`, `acp/poi_module.php`, `adm/style/acp_usermap_main.html`, `adm/style/acp_usermap_poi.html`, `controller/main.php` and
+	`mot_usermap.php` within all language packs.
+-	A popup to user markers containing a link to the user's profile which will open in a new browser tab or window. Affected file is
+	`styles/all/template/mot_usermap.js`
+-	The possibility for users to create new POIs by right-clicking into the map at the desired location. Depending on the permissions the new POI is
+	instantly saved in the data base or is held back until approved by a moderator. Therefore two new columns (`creator_id` and `disabled`) were added to
+	the `USERMAP_POI_TABLE`.
+	New files are `controller/mod_poi.php`, `styles/prosilver/template/usermap_poi_input.html` and `styles/prosilver/template/usermap_poi_input_bbcode.html`.
+	Affected files are `controller/main.php`, `language/'ISO'/mot_usermap.php`, `style/all/template/mot_usermap.js`,
+	`styles/prosilver/template/usermap_main.html`, `styles/prosilver/theme/usermap.css`
+-	A new migration file `migrations/v_0_10_0_1.php` to insert the new columns to the `USERMAP_POI_TABLE`
+-	A footer line with version and copyright information on each of the ACP tabs, affected files are all ACP module and html files. For formatting the new
+	file `adm/style/mot_usermap_acp.css` was added.
+-	A notification system in order to notify moderators that a new POI has been created by a user.
+	New files are `notification/approve_poi.php`, `notification/notify_poi.php` and the e-mail text files in the language packs
+	Affected files are `ext.php`, `config/routing.yml`, `config/services.yml`, `controller/main.php`, `controller/mod_poi.php` and all major language files
+-	A class to check and approve/disapprove user created POIs with the new files `controller/mod_poi.php`, `styles/prosilver/template/usermap_mod_poi.html`
+	as well as `styles/all/template/mot_usermap_mod_poi.js` and `styles/all/template/bbcode.js` to handle the Javascript side of moderating user created POIs
+-	Two new migration files `migrations/v_0_10_0_2.php` and `migrations/v_0_10_0_3.php` to remove Usermap's ACP tabs and to re-add them again with the new
+	administrator permission
+-	A Polish language pack
+-	A migration file (`migrations/v_0_10_0_4.php`) to handle the correction of the language entries in the PROFILE_FIELDS_LANG_TABLE
+-	Log commands to all ACP module files and to the "moderation" file `controller/mod_poi.php`, affected are all major language files
+
+### Changed
+-	Moved the default definitions for POI icon size and anchor from `acp/poi_module.php` to new config variables. Affected files for usage are
+	`acp/main_module.php`, `acp/poi_module.php`, `adm/style/acp_usermap_main.html`, `adm/style/acp_usermap_poi.html` and `controller/main.php`.
+-	The display of POIs in the ACP's `POI Handling` tab regarding disabled (not yet approved) POIs, these are displayed on a light orange background.
+	Affected files are `acp/poi_module.php` and `adm/style/acp_usermap_poi.html`
+-	Use PHP's `file` command instead of `fopen()`, `fgets()` and `fclose()` functions to read the countrycode files in `acp/lang_module.php` and
+	`migrations/v_0_4_0_1.php` files (first implemented with `migrations/v_0_10_0_4.php`)
+-	The check for valid geonames.org usernames by allowing dots in usernames (until now a dot was assumed to be a "misplaced" comma and was exchanged
+	accordingly), affected file is `adm/style/admin_mot_usermap.js`
+
+### Fixed
+-	Added a missing paragraph end tag in `adm/style/acp_usermap_poi.html`, line 143 (new line 144)
+-	Wrong entries in the fr `countrycode.php` file (CU was 'Serbie et Montenegro' instead of 'Cuba' which was shifted one line down as well as all
+	entries until CX which was 'Curaçao' instead of the missing 'Île Christmas'.
+-	All strings in the PROFILE_FIELDS_LANG_TABLE since these were entered by `migrations/v_0_4_0_1.php` with an ending line feed character
+  
+### Removed
+-	The config variable `mot_usermap_poi_showtoall` which became superfluous by introducing the permission system. Affected files are `acp/main_module.php`
+	and `adm/style/acp_usermap_main.html`. The variable was removed from the `phpbb_config` table with the migration file `migrations/v_0_10_0_1.php`. All
+	language variables concerning this variable have been removed from the language files.
+  
+  
 ## [0.9.2] - 2020-12-01
 
 ### Added

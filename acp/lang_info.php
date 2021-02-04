@@ -2,8 +2,8 @@
 
 /**
 *
-* @package Usermap v0.5.x
-* @copyright (c) 2020 Mike-on-Tour
+* @package Usermap v0.10.0
+* @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -20,7 +20,7 @@ class lang_info
 			'modes'		=> array(
 				'lang'		=> array(
 					'title'	=> 'ACP_USERMAP_LANGS',
-					'auth'	=> 'ext_mot/usermap && acl_a_board',
+					'auth'	=> 'ext_mot/usermap && acl_a_manage_usermap',
 					'cat'	=> array('ACP_USERMAP'),
 				),
 			),

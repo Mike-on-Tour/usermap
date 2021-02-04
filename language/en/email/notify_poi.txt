@@ -1,0 +1,12 @@
+Subject: Neuer POI erstellt
+
+Hello {USERNAME},
+
+you are receiving this e-mail because there is recently created POI for the Usermap on "{SITENAME}" and you wanted to be notified in this case:
+The user "{CREATOR}" created a new POI named "{POI_NAME}"; if you want to have a look at it please klick the following link:
+
+{U_APPROVE}
+
+If you do not want to get notifications about newly created POIs awaiting approval you can change this in the notification options of the User Control Panel.
+
+{EMAIL_SIG}

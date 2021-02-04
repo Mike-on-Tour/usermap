@@ -2,8 +2,8 @@
 
 /**
 *
-* @package Usermap v0.6.x
-* @copyright (c) 2020 Mike-on-Tour
+* @package Usermap v0.10.1
+* @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -20,7 +20,7 @@ class database_info
 			'modes'		=> array(
 				'database'		=> array(
 					'title'	=> 'ACP_USERMAP_DATABASE',
-					'auth'	=> 'ext_mot/usermap && acl_a_board',
+					'auth'	=> 'ext_mot/usermap && acl_a_manage_usermap',
 					'cat'	=> array('ACP_USERMAP'),
 				),
 			),

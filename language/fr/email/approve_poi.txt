@@ -1,0 +1,13 @@
+Subject: Nouveau POI en attente d'activation
+
+Bonjour {USERNAME},
+
+vous recevez cet e-mail, car un nouveau POI vient d'être créé sur "{SITENAME}" pour la carte des membres, qui doit être activé:
+Le membre "{CREATOR}" a créé un nouveau POI portant le nom "{POI_NAME}", qui attend d'être activé.
+
+Si vous souhaitez activer ce POI, cliquez sur ce lien:
+
+{U_APPROVE}
+
+Si vous ne souhaitez plus recevoir cet e-mail de notification à l'avenir, vous pouvez le désavtiver dans les paramètres de notification de votre profil utilisateur.
+{EMAIL_SIG}
