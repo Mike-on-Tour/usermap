@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v0.10.0
+* @package Usermap v1.0.0
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -13,8 +13,6 @@ namespace mot\usermap\acp;
 class main_module
 {
 	public $u_action;
-	public $tpl_name;
-	public $page_title;
 
 	public function main()
 	{
@@ -29,7 +27,7 @@ class main_module
 		$uid = $bitfield = '';
 		$flags = OPTION_FLAG_BBCODE;	// === 0b0001   ( this really is of no interest since this variable gets set in the called function according to every flag set to true
 		$preview_text = '';
-		$jump_to_poi_legend = false;
+		$jump_to_poi_legend = false;	// to prevent scrolling to the legend edit section if not in edit mode
 
 		$language->add_lang(array('posting'));
 
@@ -92,6 +90,7 @@ class main_module
 			$log->add('admin', $user->data['user_id'], $user->ip, 'LOG_USERMAP_SETTING_UPDATED', false);
 			trigger_error($language->lang('ACP_USERMAP_SETTING_SAVED') . adm_back_link($this->u_action));
 		}
+
 		if ($action_legend != 'preview')
 		{
 			$config_value = $this->config_text->get('mot_usermap_poi_legend');

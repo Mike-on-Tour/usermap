@@ -4,6 +4,29 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.0] - 2021-02-12
+
+### Added
+-	The `rel="noopenr noreferrer"` tag to PayPal link in `adm/style/acp_usermap_main.html`
+-	A migration file to update version number in `CONFIG_TABLE`
+
+### Changed
+-	Version number and release date in `composer.json`
+-	Version number in `README.md`
+-	Using a `COUNT` SQL command to get number of entries in database instead of calling twice the `SELECT` SQL command in `acp/database_module.php`
+-	Scrolling to POI legend preview in `adm/style/acp_usermap_main.html` and to POI edit in `adm/style/acp_usermap_poi.html`
+-	Now using `strict` in `adm/style/admin_mot_usermap.js`
+-	Replaced a constant defined as variable with a class constant in `event/main_listener.php`
+-	The logic to determine a valid user in `controller/main.php`, line 233
+-	The logic who can see the map in `styles/prosilver/template/usermap_main.html`, line 15
+
+### Fixed
+
+### Removed
+-	Superfluous public variables from `acp/database_module.php`, `acp/lang_module.php` and `acp/main_module.php`
+-	Superfluous javascript variables from `adm/style/acp_usermap_main.html` and `adm/style/acp_usermap_poi.html`
+  
+
 ## [0.10.0] - 2021-02-04
 
 ### Added

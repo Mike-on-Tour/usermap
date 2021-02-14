@@ -1,17 +1,17 @@
 {
 	"name": "mot/usermap",
 	"type": "phpbb-extension",
-	"description": "Adds a usermap to your forum.",
+	"description": "Adds a usermap to your forum",
 	"homepage": "https://www.mike-on-tour.com",
-	"version": "0.10.0",
-	"time": "2020-02-04 12:11:57",
+	"version": "1.0.0",
+	"time": "2020-02-12 12:11:57",
 	"license": "GPL-2.0-only",
 	"authors": [
 		{
 			"name": "Michael Vormwald (Mike-on-Tour)",
 			"email": "webmaster@mike-on-tour.de",
 			"homepage": "https://www.mike-on-tour.com",
-			"role": "Lead Developer"
+			"role": "Developer"
 		},
         {
             "name": "Jorge (Jorup16)",

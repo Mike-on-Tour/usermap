@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v0.10.0
+* @package Usermap v1.0.0
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -13,8 +13,6 @@ namespace mot\usermap\acp;
 class lang_module
 {
 	public $u_action;
-	public $tpl_name;
-	public $page_title;
 
 	public function main()
 	{

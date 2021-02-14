@@ -12,7 +12,7 @@
 
 <div id="page-body" class="page-body">
 
-{% if VIEW_MAP_ALWAYS || VALID_USER || (POI_ENABLED && POI_VIEW) %}
+{% if VIEW_MAP_ALWAYS || (VIEW_MAP_SUBSRIBED && VALID_USER) || (POI_ENABLED && POI_VIEW) %}
 	{% if VALID_USER %}	{# Shows the segment with postal code search form only to authorised users (users with correct land and postal code combination) #}
 		<div class="forabg">
 			<div class="inner">

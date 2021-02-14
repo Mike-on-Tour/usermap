@@ -1,3 +1,5 @@
+'use strict';
+
 /*
 * Define the search patterns for lat(itude) as a 2-digit floating point value with a possible leading minus (-)dd.d and for lon(gitude) as a 3-digit value (-)ddd.d
 */

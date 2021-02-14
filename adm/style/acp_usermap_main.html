@@ -10,13 +10,10 @@
 
 	var form_name = 'acp_usermap_poi_legend';
 	var text_name = 'mot_usermap_poi_legend_text';
-	var load_draft = false;
-	var upload = false;
-	var imageTag = false;
 
 	function scrollToElement(inputName) {
 		var domElement = document.getElementById(inputName);
-		window.scrollTo(domElement.offsetLeft,domElement.offsetTop);
+		window.scrollTo(0, domElement.offsetTop);
 	}
 // ]]>
 </script>
@@ -173,17 +170,17 @@
 	{% endif %}
 {% endif %}
 
-{% if JUMP_TO_POI_LEGEND %}
-	<script>scrollToElement('acp_usermap_poi_legend');</script>
-{% endif %}
-
 <p class="centered_text">
 Usermap ver {{ USERMAP_VERSION }} &copy; 2020 - {{ ACP_USERMAP_YEAR }} by Mike-on-Tour
 </p>
 
 <p class="centered_text">
 {{ lang('SUPPORT_USERMAP') }}
-<a href="https://paypal.me/MichaelVormwald?locale.x=de_DE">{{ ICON_PAYPAL }}</a>
+<a href="https://paypal.me/MichaelVormwald?locale.x=de_DE" target="_blank" rel="noopener noreferrer">{{ ICON_PAYPAL }}</a>
 </p>
 
 {% include 'overall_footer.html' %}
+
+{% if JUMP_TO_POI_LEGEND %}
+	<script>scrollToElement('acp_usermap_poi_legend');</script>
+{% endif %}

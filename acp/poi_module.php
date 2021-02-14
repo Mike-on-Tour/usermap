@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v0.10.0
+* @package Usermap v1.0.0
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -188,14 +188,15 @@ class poi_module
 				break;
 		}
 
-		// load the 'usermap_poi' table
-		$query = 'SELECT * FROM ' . USERMAP_POI_TABLE . ' ORDER BY poi_id ASC';
+		// get the total number of POIs
 		$count_query = "SELECT COUNT(poi_id) AS 'poi_count' FROM " . USERMAP_POI_TABLE;
 		$result = $db->sql_query($count_query);
 		$row = $db->sql_fetchrow($result);
 		$poi_count = $row['poi_count'];
 		$db->sql_freeresult($result);
 
+		// load the 'usermap_poi' table
+		$query = 'SELECT * FROM ' . USERMAP_POI_TABLE . ' ORDER BY poi_id ASC';
 		$result = $db->sql_query_limit($query, $limit, $start);
 		$pois = $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);

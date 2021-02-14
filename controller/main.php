@@ -230,7 +230,7 @@ class main
 		{
 			$current_user = $row['user_id']."|".$row['username']."|".$row['user_plz']."|".$row['user_lat']."|".$row['user_lng'];
 			$zip_code = '"'.$row['user_land'].'-'.$row['user_plz'].'"';
-			$valid_user = $view_map_subscribed ? 1 : 0;	// the current user is listed in the usermap_users table and therefore authorized to use the map search - MUST NOT be true since js needs 1 or 0 instead of boolean values
+			$valid_user = 1;			// the current user is listed in the usermap_users table and therefore authorized to use the map search - MUST NOT be true since js needs 1 or 0 instead of boolean values
 		}
 		else
 		{

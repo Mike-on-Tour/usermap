@@ -10,15 +10,12 @@
 
 	var form_name = 'acp_usermap_poi';
 	var text_name = 'mot_usermap_poi_popup';
-	var load_draft = false;
-	var upload = false;
-	var imageTag = false;
 
 	function scrollToElement(inputName) {
 		var domElement = document.getElementById(inputName);
-		window.scrollTo(domElement.offsetLeft,domElement.offsetTop);
+		window.scrollTo(0, domElement.offsetTop);
 	}
-// ]]>
+ // ]]>
 </script>
 
 <h1>{{ lang('ACP_USERMAP_POI') }}</h1>
@@ -156,12 +153,12 @@
 	{% set S_LINKS_ALLOWED = false %}
 {% endif %}
 
-{% if !NEW_POI || ACP_USERMAP_POPUP_PREVIEW %}
-	<script>scrollToElement('acp_usermap_poi');</script>
-{% endif %}
-
 <p class="centered_text">
 Usermap ver {{ USERMAP_VERSION }} &copy; 2020 - {{ ACP_USERMAP_YEAR }} by Mike-on-Tour
 </p>
+
+{% if !NEW_POI || ACP_USERMAP_POPUP_PREVIEW %}
+	<script>scrollToElement('acp_usermap_poi');</script>
+{% endif %}
 
 {% include 'overall_footer.html' %}

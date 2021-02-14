@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v0.10.0
+* @package Usermap v1.0.0
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -31,6 +31,8 @@ class main_listener implements EventSubscriberInterface
 			'core.permissions'						=> 'load_permissions',
 		);
 	}
+
+	const RADIUS = 0.002;
 
 	/** @var \phpbb\auth\auth */
 	protected $auth;
@@ -100,7 +102,6 @@ class main_listener implements EventSubscriberInterface
 		$this->db_enable = $this->config['mot_usermap_database_enable'];
 
 		$this->doubles_ary = array();
-		$this->radius = 0.002;
 		$this->u_action = '';
 	}
 
@@ -194,7 +195,7 @@ class main_listener implements EventSubscriberInterface
 		if ($event['activated'] == 1)
 		{
 			$j = 0;		// start with first geonames user
-			// set the error messagefor missing geonmaes user according to activation mode
+			// set the error message for missing geonmaes user according to activation mode
 			if ($event['mode'] == 'activate')	// activation by email
 			{
 				$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br /><br />' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
@@ -338,6 +339,9 @@ class main_listener implements EventSubscriberInterface
 		}
 	}
 
+	/**
+	* Load permissions
+	*/
 	public function load_permissions($event)
 	{
 		$permissions_cat = $event['categories'];
@@ -378,7 +382,7 @@ class main_listener implements EventSubscriberInterface
 
 		$this->doubles_ary = json_decode($this->config_text->get('mot_usermap_doublesarray'), true);
 		/* First we check whether this user is already in the doubles array (and thus in the usermap_users table as well) , if yes we use brute force and delete this user from both
-		** and afterwards generate a new entry if we get a valid response from geonames.org (then we certainly don't have any corpse in both in case we don't get a valid coordinate from GeoNames
+		*   and afterwards generate a new entry if we get a valid response from geonames.org (then we certainly don't have any corpse in both in case we don't get a valid coordinate from GeoNames
 		*/
 		if ($this->check_user_id ($this->doubles_ary, $user_id, $cc, $zc))
 		{
@@ -475,8 +479,8 @@ class main_listener implements EventSubscriberInterface
 				// calculate the offset angle, the number of the circle we are filling and - if appropriate - the additions to latitude and longitude to discriminate the new marker from any others with this zip code
 				$angle = $factor * 30;
 				$circle = (int) (($angle / 361) + 1);
-				$lat = $lat + ($this->radius * $circle * cos(deg2rad($angle)));
-				$lng = $lng + ($this->radius * $circle * sin(deg2rad($angle)));
+				$lat = $lat + (self::RADIUS * $circle * cos(deg2rad($angle)));
+				$lng = $lng + (self::RADIUS * $circle * sin(deg2rad($angle)));
 			}
 
 			// and now we can finally add this user to the usermap_users table
@@ -597,19 +601,13 @@ class main_listener implements EventSubscriberInterface
 						$json=file_get_contents($json_request);
 						$xml = json_decode($json, true);
 					}
-					else								// another username is not available, save variables for cron job or notify user
+					else								// another username is not available(, save variables for cron job or notify user (in a later version))
 					{
-						return false;
+						return false;	// for now we return with a false value to signal that something went wrong
 					}
 					break;
 
 				default:
-					// log it for later investigation
-					/*$handle = fopen ($this->ext_path . 'json_error.log', 'a');
-					$msg = date(DATE_RSS) . "\n";
-					fwrite ($handle, $msg);
-					fwrite ($handle, $json);
-					fclose ($handle);*/
 					$this->log->add('critical', $this->user->data['user_id'], $this->user->ip, 'LOG_USERMAP_GEONAMES_ERROR', false, array($json));
 					return false;
 					break;

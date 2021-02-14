@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v0.10.0
+* @package Usermap v1.0.0
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -13,8 +13,6 @@ namespace mot\usermap\acp;
 class database_module
 {
 	public $u_action;
-	public $tpl_name;
-	public $page_title;
 
 	public function main()
 	{
@@ -97,13 +95,15 @@ class database_module
 				break;
 		}
 
-		// load the 'usermap_zipcodes' table
-		$query = 'SELECT * FROM ' . USERMAP_ZIPCODE_TABLE;
-		$result = $db->sql_query($query);
-		$codes = $db->sql_fetchrowset($result);
-		$db_size = count($codes);
+		// get the total number of zip codes
+		$count_query = "SELECT COUNT(zip_code) AS 'zip_count' FROM " . USERMAP_ZIPCODE_TABLE;
+		$result = $db->sql_query($count_query);
+		$row = $db->sql_fetchrow($result);
+		$db_size = $row['zip_count'];
 		$db->sql_freeresult($result);
 
+		// load the 'usermap_zipcodes' table
+		$query = 'SELECT * FROM ' . USERMAP_ZIPCODE_TABLE;
 		$result = $db->sql_query_limit( $query, $limit, $start );
 		$codes = $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);

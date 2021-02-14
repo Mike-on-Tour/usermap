@@ -1,4 +1,7 @@
-// JS function to convert BBCode and HTML code - courtesy of: https://coursesweb.net/javascript/convert-bbcode-html-javascript_cs
+/*
+*	JS function to convert BBCode and HTML code - courtesy of: https://coursesweb.net/javascript/convert-bbcode-html-javascript_cs
+*/
+
 var BBCodeHTML = function() {
 	var me = this;            // stores the object instance
 	var token_match = /{[A-Z_]+[0-9]*}/ig;
