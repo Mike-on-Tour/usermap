@@ -33,7 +33,7 @@ class v_0_4_0_1 extends \phpbb\db\migration\profilefield_base_migration
 	*/
 	public function create_custom_field()
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 		$lang_dir = $phpbb_root_path . 'ext/mot/usermap/language/';
 
 		$sql = 'SELECT MAX(field_order) as max_field_order
@@ -84,7 +84,7 @@ class v_0_4_0_1 extends \phpbb\db\migration\profilefield_base_migration
 			$option_id = 0;
 			// First we check whether a language directory exists for this language. If it doesn't exist, we use the English language file as a fallback solution
 			$cc = (file_exists($lang_dir . $row['lang_dir'])) ? $row['lang_dir'] : 'en';
-			$handle = fopen($lang_dir . $cc . '/countrycode.' . $phpEx, "rb");
+			$handle = fopen($lang_dir . $cc . '/countrycode.txt', "rb");
 			while (!feof($handle))
 			{
 				$line = fgets($handle);

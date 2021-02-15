@@ -4,6 +4,21 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.1] - 2021-02-14
+
+### Added
+-	A migration file `migrations/v_1_0_1.php` to update version number in `CONFIG_TABLE`
+
+### Changed
+-	All `countrycode.php` files into `countrycode.txt` files
+-	All references to `countrycode.php` into `countrycode.txt` in `acp/lang_module.php`, `migrations/v_0_4_0_1.php`, `migrations/v_0_4_0_2.php`,
+	`migrations/v_0_6_0_0.php` and `migrations/v_0_10_0_4.php`
+
+### Fixed
+
+### Removed
+  
+  
 ## [1.0.0] - 2021-02-12
 
 ### Added

@@ -36,7 +36,7 @@ class v_0_10_0_4 extends \phpbb\db\migration\migration
 	*/
 	public function correct_langs()
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 		$lang_dir = $phpbb_root_path . 'ext/mot/usermap/language/';
 
 		// create a data base insert buffer
@@ -75,7 +75,7 @@ class v_0_10_0_4 extends \phpbb\db\migration\migration
 			// first we check whether a language directory exists in Usermap for this language. If it doesn't exist, we use the English language file as a fallback solution
 			$cc = file_exists($lang_dir . $row['lang_dir']) ? $row['lang_dir'] : 'en';
 			// and load this files content into an array
-			$countrycodes = file($lang_dir . $cc . '/countrycode.' . $phpEx, FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES);
+			$countrycodes = file($lang_dir . $cc . '/countrycode.txt', FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES);
 
 			// fill the insert buffer
 			$max_i = count($countrycodes);

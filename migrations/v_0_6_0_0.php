@@ -41,7 +41,7 @@ class v_0_6_0_0 extends \phpbb\db\migration\migration
 
 	public function create_countrynames()
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 		$lang_dir = $phpbb_root_path . 'ext/mot/usermap/language/';
 
 		/*
@@ -50,7 +50,7 @@ class v_0_6_0_0 extends \phpbb\db\migration\migration
 		*/
 		$country_names = $matches = array();
 		$country_names[] = '';
-		$handle = fopen($lang_dir . 'en/countrycode.' . $phpEx, "rb");
+		$handle = fopen($lang_dir . 'en/countrycode.txt', "rb");
 		while (!feof($handle))
 		{
 			$line = fgets($handle);

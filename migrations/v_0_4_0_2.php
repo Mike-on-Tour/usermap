@@ -23,7 +23,7 @@ class v_0_4_0_2 extends \phpbb\db\migration\migration
 	public function update_data()
 	{
 		return array(
-			//  Create an array with the two letter countrycodes, JSON encode and inset it into the config_text table
+			//  Create an array with the two letter countrycodes, JSON encode and insert it into the config_text table
 			array('custom', array(array($this, 'create_countrycodes'))),
 			//  Insert an emptyJSON-encoded array into the config_text table
 			array('custom', array(array($this, 'create_doubles'))),
@@ -32,7 +32,7 @@ class v_0_4_0_2 extends \phpbb\db\migration\migration
 
 	public function create_countrycodes()
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 		$lang_dir = $phpbb_root_path . 'ext/mot/usermap/language/';
 
 		/*
@@ -41,7 +41,7 @@ class v_0_4_0_2 extends \phpbb\db\migration\migration
 		*/
 		$country_codes = $matches = array();
 		$country_codes[] = '';
-		$handle = fopen($lang_dir . 'en/countrycode.' . $phpEx, "rb");
+		$handle = fopen($lang_dir . 'en/countrycode.txt', "rb");
 		while (!feof($handle))
 		{
 			$line = fgets($handle);

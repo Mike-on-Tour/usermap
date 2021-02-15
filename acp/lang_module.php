@@ -16,7 +16,7 @@ class lang_module
 
 	public function main()
 	{
-		global $template, $request, $db, $phpbb_container, $config, $user, $phpbb_root_path, $phpEx;
+		global $template, $request, $db, $phpbb_container, $config, $user, $phpbb_root_path;
 
 		$language = $phpbb_container->get('language');
 		$log = $phpbb_container->get('log');
@@ -67,7 +67,7 @@ class lang_module
 				$result = $db->sql_query($query);
 
 				// now we read the content of the approbriate countrycode file
-				$countrycodes = file($this->lang_path . $iso . '/countrycode.' . $phpEx, FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES);
+				$countrycodes = file($this->lang_path . $iso . '/countrycode.txt', FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES);
 
 				// and insert it into the profile_fields_lang table
 				$max_i = count($countrycodes);
@@ -93,7 +93,7 @@ class lang_module
 			$nr = array_search($row['lang_dir'], $lang_dirs);
 			if ($nr !== false)
 			{			// at least there is a directory with this language iso code, now we check whether this language pack is successfully installed with usermap
-				$handle = fopen($this->lang_path . $row['lang_dir'] . '/countrycode.' . $phpEx, "rb");
+				$handle = fopen($this->lang_path . $row['lang_dir'] . '/countrycode.txt', "rb");
 				$line_file = trim(fgets($handle));	// get the first line from the file (reads 'xx-Select your country' in the English version)
 				fclose($handle);
 
