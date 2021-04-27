@@ -5,6 +5,8 @@
 ![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)  
 
+[![Build Status](https://github.com/Mike-on-Tour/usermap/workflows/Tests/badge.svg)](https://github.com/Mike-on-Tour/usermap/actions)
+
 ### **Description**
 Usermap is an extension for phpBB board versions 3.2.x and 3.3.x which adds a map with your users locations - and if you choose so, an additional layer with
 points of interest (POI) for your users - to the board. It is accessible through a link in the board's header.  
