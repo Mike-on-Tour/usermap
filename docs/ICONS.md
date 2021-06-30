@@ -4,7 +4,7 @@
 Icons are part of a kind of illustrations which are called graphics in the computer world; just think of "pictures". But there is one big difference between a graphic called picture and a graphic called
 icon: Pictures transport information, icons represent something, mostly they stand as a simple representation to show you where you can find information.  
 In the case of Usermap icons represent a location either for a member or a Point of Interest (POI), they just show you where you can find information. But - you say - they have different shapes and colours
-and thus transport information. Yes, Basically this is true, but they represent still just that small bit of information about what they really represent, e.g. a black round marker on the map represents a
+and thus transport information. Yes, basically this is true, but they represent still just that small bit of information about what they really represent, e.g. a black round marker on the map represents a
 registered member and a blue triangle represents some kind of landmark. Shape and colour of an icon represent therefore just different kinds of information.  
   
 ## Display on a computer screen
@@ -30,7 +30,7 @@ Let us imagine thet we have some computer code which includes the triangle we ju
 this icon) and starts to draw it at the address defined. Let us assume we told the computer to start displaying our icon at the screen address (639, 511) which is right in the screen's center then the computer
 will display the icon's pixel at (0, 0) at this screen address. The icon's pixel at (1, 0) will be displayed at the screen address (640, 511) and so on. The first pixel of the second line of our icon will
 be displayed at screen address (639, 512) and so on. The triangle's tip would be displayed at the screen coordinates (644, 520). Now let us assume that at our triangle is the representation of a POI which is
-displayed at the screen coordinates (639, 511). One what expect that the icon's tip would point to that location but it doesn't!  
+displayed at the screen coordinates (639, 511). One would expect that the icon's tip would point to that location but it doesn't!  
 How do we solve that proplem? We saw that the computer started to draw the upper left corner of our icon at the screen position we told it to draw our icon because it assumed that it should start there
 with the first pixel. So we have to tell the computer that we want it to draw the icon in a manner that the tip is displayed at screen coordinates (639, 511) und we do this by defining an **anchor**!  
 In this case this anchor is at the icon's coordinates (5, 10) and by telling this anchor point to the computer it "knows" that it has to start drawing our icon at screen coordinates (634, 502) and we get

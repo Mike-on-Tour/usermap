@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.0.0
+* @package Usermap v1.1.0
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -26,8 +26,8 @@ class main_listener implements EventSubscriberInterface
 			'core.delete_user_after'				=> 'delete_user_after',					// Event after a user is deleted
 			'core.ucp_profile_info_modify_sql_ary'	=> 'ucp_profile_info_modify_sql_ary',	// Modify profile data in UCP before submitting to the database
 			'core.acp_users_profile_modify_sql_ary'	=> 'acp_modify_users_profile',			// Modify profile data in ACP before submitting to the database
-			'core.user_set_default_group'			=> 'change_user_colour',				// Event when the default group is set for an array of users
 			'core.ucp_register_register_after'		=> 'ucp_register_register_after',		// Event after registration, used to process user data for the Usermap if no activation after registration is needed
+			'core.memberlist_view_profile'			=> 'memberlist_view_profile',			// Event to insert a link to the usermap into a member's profile
 			'core.permissions'						=> 'load_permissions',
 		);
 	}
@@ -67,6 +67,15 @@ class main_listener implements EventSubscriberInterface
 	/** @var string PHP extension */
 	protected $php_ext;
 
+	/** @var string phpBB phpbb root path */
+	protected $root_path;
+
+	/** @var string mot.usermap.tables.usermap_users */
+	protected $mot_usermap_users_table;
+
+	/** @var string mot.usermap.tables.usermap_poi */
+	protected $mot_usermap_zipcode_table;
+
 	/**
 	 * Constructor
 	 *
@@ -75,7 +84,8 @@ class main_listener implements EventSubscriberInterface
 	 */
 	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\config\db_text $config_text, \phpbb\controller\helper $helper,
 								\phpbb\template\template $template, \phpbb\db\driver\driver_interface $db, \phpbb\user $user,
-								\phpbb\log\log $log, \phpbb\extension\manager $phpbb_extension_manager, \phpbb\language\language $language, $php_ext)
+								\phpbb\log\log $log, \phpbb\extension\manager $phpbb_extension_manager, \phpbb\language\language $language, $php_ext,
+								$root_path, $mot_usermap_users_table, $mot_usermap_zipcode_table)
 	{
 		$this->auth = $auth;
 		$this->config = $config;
@@ -88,18 +98,9 @@ class main_listener implements EventSubscriberInterface
 		$this->phpbb_extension_manager 	= $phpbb_extension_manager;
 		$this->language = $language;
 		$this->php_ext = $php_ext;
-
-		$this->ext_path = $this->phpbb_extension_manager->get_extension_path('mot/usermap', true);
-		include_once($this->ext_path . 'includes/um_constants.' . $this->php_ext);
-		$this->gn_username = explode(",", $this->config['mot_usermap_geonamesuser']);	// get Geonames user(s) from config and make it an array
-		$this->country_codes = (array) json_decode($this->config_text->get('mot_usermap_countrycodes'), false);
-		$this->cc_size = count($this->country_codes);
-		$this->country_names = (array) json_decode($this->config_text->get('mot_usermap_countrynames'), false);
-		$this->cn_size = count($this->country_names);
-		$this->google_enable = $this->config['mot_usermap_google_enable'];
-		$this->google_key = $this->config['mot_usermap_google_apikey'];
-		$this->google_cc = explode(",", $this->config['mot_usermap_google_countries']);
-		$this->db_enable = $this->config['mot_usermap_database_enable'];
+		$this->root_path = $root_path;
+		$this->usermap_users_table = $mot_usermap_users_table;
+		$this->usermap_zipcode_table = $mot_usermap_zipcode_table;
 
 		$this->doubles_ary = array();
 		$this->u_action = '';
@@ -128,7 +129,7 @@ class main_listener implements EventSubscriberInterface
 	public function add_page_header_link()
 	{
 		$this->template->assign_vars(array(
-			'U_USERMAP' 			=> $this->helper->route('mot_usermap_route', array()),
+			'U_USERMAP' 			=> $this->helper->route('mot_usermap_route', []),
 			'U_VIEW_MAP_ALWAYS'		=> $this->auth->acl_get('u_view_map_always'),
 			'U_VIEW_MAP_INSCRIBED'	=> $this->auth->acl_get('u_view_map_inscribed'),
 			'U_VIEW_POI'			=> $this->auth->acl_get('u_view_poi'),
@@ -145,37 +146,28 @@ class main_listener implements EventSubscriberInterface
 	*/
 	function ucp_register_register_after($event)
 	{
-		$user_id = $event['user_id'];
+		$gn_username = explode(",", $this->config['mot_usermap_geonamesuser']);	// get Geonames user(s) from config and make it an array
+		$this->country_codes = (array) json_decode($this->config_text->get('mot_usermap_countrycodes'), false);
+		$this->cc_size = count($this->country_codes);
 		$cp_data = $event['cp_data'];
+		$cp_data['user_id'] = $event['user_id'];
 		$user_row = $event['user_row'];
 		if ($user_row['user_actkey'] == '' && $user_row['user_inactive_reason'] == 0 && $user_row['user_inactive_time'] == 0)	// conditions if user registration w/o activation
 		{
 			$j = 0;		// start with first geonames user
 			// set the error message for missing geonames users
 			$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br /><br />' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
-			if ($this->gn_username[0] == '')
+			if ($gn_username[0] == '')
 			{
 				trigger_error($message, E_USER_ERROR);
-				return;
 			}
-			// get some data not supplied by this functions event variable
-			$sql_arr = array(
-				'user_id'	=> $user_id,
-			);
-			$query = 'SELECT user_id, username, user_colour
-					FROM ' . USERS_TABLE . '
-					WHERE ' . $this->db->sql_build_array('SELECT', $sql_arr);
-			$result = $this->db->sql_query($query);
-			$row = $this->db->sql_fetchrow($result);
-			$this->db->sql_freeresult($result);
-			$cp_data['user_id'] = $row['user_id'];
-			$cp_data['username'] = $row['username'];
-			$cp_data['user_colour'] = $row['user_colour'];
+
 			// check if location was provided during registration
 			if (!array_key_exists('pf_phpbb_location', $cp_data))
 			{
 				$cp_data['pf_phpbb_location'] = '';	// if not set it to empty string
 			}
+
 			if ($cp_data['pf_mot_zip'] != '' and $cp_data['pf_mot_land'] > 1 and $cp_data['pf_mot_land'] < $this->cc_size)	// check whether the profile fields data is correctly set
 			{
 				$this->add_user($cp_data, $j);
@@ -190,9 +182,12 @@ class main_listener implements EventSubscriberInterface
 	*/
 	public function user_active_flip_after($event)
 	{
+		$this->country_codes = (array) json_decode($this->config_text->get('mot_usermap_countrycodes'), false);
+		$this->cc_size = count($this->country_codes);
+		$gn_username = explode(",", $this->config['mot_usermap_geonamesuser']);	// get Geonames user(s) from config and make it an array
 		$user_id_ary = $event['user_id_ary'];
 		// check if user(s) got activated
-		if ($event['activated'] == 1)
+		if ($event['activated'] > 0)
 		{
 			$j = 0;		// start with first geonames user
 			// set the error message for missing geonmaes user according to activation mode
@@ -204,24 +199,16 @@ class main_listener implements EventSubscriberInterface
 			{
 				$message = $this->language->lang('ACP_USERMAP_PROFILE_ERROR') . adm_back_link($this->u_action);
 			}
-			if ($this->gn_username[0] == '')
+			if ($gn_username[0] == '')
 			{
 				trigger_error($message, E_USER_WARNING);
-				return;
 			}
 			// check if user(s) filled in the profile fields land, plz and location
 			foreach ($user_id_ary as $value)
 			{
-				$sql_arr = array(
-					'SELECT'	=> 'u.user_id, u.username, u.user_colour, pf.pf_phpbb_location, pf.pf_mot_zip, pf.pf_mot_land',
-					'FROM'		=> array(
-						PROFILE_FIELDS_DATA_TABLE	=> 'pf',
-						USERS_TABLE					=> 'u',
-						),
-					'WHERE'		=> 'pf.user_id = ' . (int) $value . ' AND u.user_id = ' . (int) $value,
-				);
-				$query = $this->db->sql_build_query('SELECT', $sql_arr);
-				$result = $this->db->sql_query($query);
+				$sql = 'SELECT user_id, pf_phpbb_location, pf_mot_zip, pf_mot_land FROM ' . PROFILE_FIELDS_DATA_TABLE . '
+						WHERE user_id = ' . (int) $value;
+				$result = $this->db->sql_query($sql);
 				$row = $this->db->sql_fetchrow($result);
 				$this->db->sql_freeresult($result);
 				if ($row['pf_mot_zip'] != '' and $row['pf_mot_land'] > 1 and $row['pf_mot_land'] < $this->cc_size)	// check whether the profile fields data is correctly set
@@ -232,7 +219,7 @@ class main_listener implements EventSubscriberInterface
 		}
 
 		// check if user(s) got deactivated
-		if ($event['deactivated'] == 1)
+		if ($event['deactivated'] > 0)
 		{
 			$cc = $zc = '';
 			// if user(s) got deactivated we need to delete them from usermap_users table and from the doubles array
@@ -312,32 +299,30 @@ class main_listener implements EventSubscriberInterface
 
 
 	/**
-	* Change the user colour in the usermap_users table when an admin or the system changes the default (main) group of a user
-	*
-	* @params:	group_attributes, group_id, sql_ary, update_listing, user_id_ary
-	*		'group_attributes' holds the attributes of the selected group
-	*			Array ( group_colour ,group_rank ,group_avatar ,group_avatar_type ,group_avatar_width ,group_avatar_height )
-	*		'group_id' holds the id of the selected group
-	*		'sql_ary' holds the following data
-	*			Array ( group_id ,user_colour )
-	*		'update_listing' is empty
-	*		'user_id_ary'
-	*
+	* Create a link to the usermap if member is listed on the usermap
 	*/
-	public function change_user_colour($event)
+	public function memberlist_view_profile($event)
 	{
-		$user_ary = $event['user_id_ary'];
-		$user_colour = $event['sql_ary']['user_colour'];
-		foreach ($user_ary as $value)
+		$member = $event['member'];
+		$show_link = false;
+		$sql = 'SELECT * FROM ' . $this->usermap_users_table . '
+				WHERE user_id = ' . (int) $member['user_id'];
+		$result = $this->db->sql_query($sql);
+		$row = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		if (!empty($row))
 		{
-			$user_colour = ($user_colour != '') ? $user_colour : '000000';
-			$sql_in = array($value);
-			$query = "UPDATE " . USERMAP_USERS_TABLE . "
-					 SET user_colour = '" . $user_colour . "'
-					 WHERE " . $this->db->sql_in_set('user_id', $sql_in);
-			$this->db->sql_query($query);
+			$this->template->assign_vars([
+				'U_USERMAP_SHOW_MEMBER'	=> $this->helper->route('mot_usermap_route', ['action' => 'member', 'lat' => $row['user_lat'], 'lng' => $row['user_lng'],]),
+			]);
+			$show_link = true;
 		}
+		$this->template->assign_vars([
+			'USERMAP_SHOW_LINK'	=> $show_link,
+		]);
 	}
+
 
 	/**
 	* Load permissions
@@ -372,17 +357,19 @@ class main_listener implements EventSubscriberInterface
 	*/
 	function process_user_profile_data($user_id, $cp_data, $error_msg, $error_type)
 	{
-		if ($this->gn_username[0] == '')
+		$this->country_codes = (array) json_decode($this->config_text->get('mot_usermap_countrycodes'), false);
+		$this->cc_size = count($this->country_codes);
+		$gn_username = explode(",", $this->config['mot_usermap_geonamesuser']);	// get Geonames user(s) from config and make it an array
+		if ($gn_username[0] == '')
 		{
 			trigger_error($error_msg, $error_type);
-			return;
 		}
 		$cc = $zc = '';
 		$j = 0;	// start with first entry in the geonames user array
 
 		$this->doubles_ary = json_decode($this->config_text->get('mot_usermap_doublesarray'), true);
 		/* First we check whether this user is already in the doubles array (and thus in the usermap_users table as well) , if yes we use brute force and delete this user from both
-		*   and afterwards generate a new entry if we get a valid response from geonames.org (then we certainly don't have any corpse in both in case we don't get a valid coordinate from GeoNames
+		*   and afterwards generate a new entry if we get a valid response from geonames.org (then we certainly don't have any corpse in both in case we don't get a valid coordinate)
 		*/
 		if ($this->check_user_id ($this->doubles_ary, $user_id, $cc, $zc))
 		{
@@ -392,54 +379,19 @@ class main_listener implements EventSubscriberInterface
 		// user has been deleted from usermap_users table and doubles array, now we can check the new values (country, zip code, location) with geonames database
 		// (and even if user wasn't listed in the usermap_users table and doubles array we have to assume the correct data was entered and must be processed here)
 
-		// get the user's data from the users and profile_fields_data tables
-		$row = array();
-		// first check whether this user is already in the profile_fields_data table
-		$query = 'SELECT COUNT(*) FROM ' . PROFILE_FIELDS_DATA_TABLE . '
-				WHERE ' . $this->db->sql_in_set('user_id', $user_id);
-		$result = $this->db->sql_query($query);
-		$amount = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
-
-		// this user is not in the profile_fields_data table, so we use a simple query to prevent NULL in user_id and username due to this user not being in the profile_fields_data table and therefore getting no result
-		if ($amount['COUNT(*)'] == 0)
-		{
-			$query = 'SELECT user_id, username, user_colour FROM ' . USERS_TABLE . '
-					WHERE ' . $this->db->sql_in_set('user_id', $user_id);
-		}
-		// this user is in the profile_fields_data table, so we use a more sophisticated query in case we want to check for changed profile fields in a later version
-		else
-		{
-			$sql_arr = array(
-				'SELECT'	=> 'u.user_id, u.username, u.user_colour, pf.pf_phpbb_location, pf.pf_mot_zip, pf.pf_mot_land',
-				'FROM'		=> array(
-					PROFILE_FIELDS_DATA_TABLE	=> 'pf',
-					USERS_TABLE					=> 'u',
-					),
-				'WHERE'		=> 'pf.user_id = ' . (int) $user_id . ' AND u.user_id = ' . (int) $user_id,
-			);
-			$query = $this->db->sql_build_query('SELECT', $sql_arr);
-		}
-		$result = $this->db->sql_query($query);
-		$row = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
-
-		// since at this time the changed values are not written in the users and profile_fields_data tables we have to set some values with those of the data from the event array
-		$row['pf_mot_zip'] = $cp_data['pf_mot_zip'];
-		$row['pf_mot_land'] = $cp_data['pf_mot_land'];
-		$row['pf_phpbb_location'] = $cp_data['pf_phpbb_location'];
+		$cp_data['user_id'] = $user_id;
 
 		// and now we can do the necessary checks
-		if ($row['pf_mot_zip'] != '' and $row['pf_mot_land'] > 1 and $row['pf_mot_land'] < $this->cc_size)	// check whether the profile fields data is correctly set
+		if ($cp_data['pf_mot_zip'] != '' and $cp_data['pf_mot_land'] > 1 and $cp_data['pf_mot_land'] < $this->cc_size)	// check whether the profile fields data is correctly set
 		{
-			$this->add_user($row, $j);
+			$this->add_user($cp_data, $j);
 		}
 	}
 
 	/**
 	* Add a user to the doubles array and to the usermap_users table
 	*
-	* @param:	userrow: array with data from the users and profile_fields_data tables
+	* @param:	userrow: array with data from the profile_fields_data tables
 	*		j: integer value which points to a user in the geonames users array, given as reference so in a later version we can use it for error handling (if necessary)
 	*
 	* @return: none
@@ -447,28 +399,36 @@ class main_listener implements EventSubscriberInterface
 	function add_user($userrow, &$j)
 	{
 		$lat = $lng = 0.0;
+		$radius = self::RADIUS;
+		$google_key = $this->config['mot_usermap_google_apikey'];
+		$this->country_codes = (array) json_decode($this->config_text->get('mot_usermap_countrycodes'), false);
+		$this->country_names = (array) json_decode($this->config_text->get('mot_usermap_countrynames'), false);
 		$country_code = $this->country_codes[$userrow['pf_mot_land']];
 		$country_name = $this->country_names[$userrow['pf_mot_land']];
+		$google_enable = $this->config['mot_usermap_google_enable'];
+		$google_cc = explode(",", $this->config['mot_usermap_google_countries']);
+		$db_enable = $this->config['mot_usermap_database_enable'];
 		$gn_gotit = $google_gotit = $db_gotit = false;
 		// okay, for this user id we have a valid set of pf_phpbb_location, pf_mot_zip and pf_mot_land -> proceed with request
 		// first we check whether the country code is in the forced google search array and whether we have google enabled and an API key; if all is positive we skip the geonames request, otherwise we start with geonames
-		if (!(in_array($country_code, $this->google_cc) && $this->google_enable && $this->google_key != ''))
+		if (!(in_array($country_code, $google_cc) && $google_enable && $google_key != ''))
 		{
 			$gn_gotit = $this->gn_search($j, $userrow['pf_mot_zip'], $country_code, $userrow['pf_phpbb_location'], $lat, $lng);
 		}
 		// if geonames haven't got us a solution and google search is enabled and we have an API key we start the google search (this is also the case if geonames search was skipped due to enforced google search)
-		if (!$gn_gotit && $this->google_enable && $this->google_key != '')
+		if (!$gn_gotit && $google_enable && $google_key != '')
 		{
-			$google_gotit = $this->google_search($userrow['pf_mot_zip'], $country_name, $lat, $lng);
+			$google_gotit = $this->google_search($userrow['pf_mot_zip'], $country_name, $userrow['pf_phpbb_location'], $lat, $lng, $radius);
 		}
 		// if searching the internal data base is enabled and neither geonames nor google provided a solution we look up the data base
-		if ($this->db_enable && !$gn_gotit && !$google_gotit)
+		if ($db_enable && !$gn_gotit && !$google_gotit)
 		{
 			$db_gotit = $this->db_search($userrow['pf_mot_zip'], $country_code, $lat, $lng);
 		}
 		// if one of the up to three search requests above found a solution we proceed with those coordinates, insert this user into the doubles array, compute the exact coords and insert the data into the usermap users table
 		if ($gn_gotit || $google_gotit || $db_gotit)
 		{
+			setlocale(LC_ALL, 'C');
 			// get doubles array from config_text table, update it and save it back
 			$doubles = json_decode($this->config_text->get('mot_usermap_doublesarray'), true);
 			$factor = $this->build_doubles($doubles, $userrow['user_id'], $country_code, $userrow['pf_mot_zip']);
@@ -479,17 +439,14 @@ class main_listener implements EventSubscriberInterface
 				// calculate the offset angle, the number of the circle we are filling and - if appropriate - the additions to latitude and longitude to discriminate the new marker from any others with this zip code
 				$angle = $factor * 30;
 				$circle = (int) (($angle / 361) + 1);
-				$lat = $lat + (self::RADIUS * $circle * cos(deg2rad($angle)));
-				$lng = $lng + (self::RADIUS * $circle * sin(deg2rad($angle)));
+				$lat = $lat + ($radius * $circle * cos(deg2rad($angle)));
+				$lng = $lng + ($radius * $circle * sin(deg2rad($angle)));
 			}
 
 			// and now we can finally add this user to the usermap_users table
 			$location = $this->db->sql_escape($userrow['pf_phpbb_location']);
-			$userrow['user_colour'] = ($userrow['user_colour'] == '') ? '000000' : $userrow['user_colour'];
 			$sql_arr = array(
 				'user_id'			=> $userrow['user_id'],
-				'username'			=> $userrow['username'],
-				'user_colour'		=> $userrow['user_colour'],
 				'user_lat'			=> $lat,
 				'user_lng'			=> $lng,
 				'user_land'			=> $country_code,
@@ -497,8 +454,9 @@ class main_listener implements EventSubscriberInterface
 				'user_location'		=> $location,
 				'user_change_plz'	=> 0,
 				'user_change_coord'	=> 0,
+				'layer_id'			=> 1,
 			);
-			$sql = 'INSERT INTO ' . USERMAP_USERS_TABLE . ' ' . $this->db->sql_build_array('INSERT', $sql_arr);
+			$sql = 'INSERT INTO ' . $this->usermap_users_table . ' ' . $this->db->sql_build_array('INSERT', $sql_arr);
 			$this->db->sql_query($sql);
 		}
 	}
@@ -516,7 +474,7 @@ class main_listener implements EventSubscriberInterface
 		$sql_arr = array(
 			'user_id'	=> $user2delete,
 		);
-		$query = 'SELECT * FROM ' . USERMAP_USERS_TABLE . '
+		$query = 'SELECT * FROM ' . $this->usermap_users_table . '
 				WHERE ' . $this->db->sql_build_array('SELECT', $sql_arr);
 		$result = $this->db->sql_query($query);
 		$row = $this->db->sql_fetchrow($result);	// $row['user_land'] and $row['user_plz'] hold the country code and respectively the zip code
@@ -527,7 +485,7 @@ class main_listener implements EventSubscriberInterface
 		$this->config_text->set('mot_usermap_doublesarray', json_encode($doubles));
 		// and remove this user from usermap_users table
 		$sql_in = array($user2delete);
-		$query = 'DELETE FROM ' . USERMAP_USERS_TABLE . '
+		$query = 'DELETE FROM ' . $this->usermap_users_table . '
 				WHERE ' . $this->db->sql_in_set('user_id', $sql_in);
 		$this->db->sql_query($query);
 	}
@@ -547,7 +505,8 @@ class main_listener implements EventSubscriberInterface
 	{
 		global $http_response_header;
 
-		if ($this->gn_username[$j] == '')
+		$gn_username = explode(",", $this->config['mot_usermap_geonamesuser']);	// get Geonames user(s) from config and make it an array
+		if ($gn_username[$j] == '')
 		{
 			return false;
 		}
@@ -556,7 +515,7 @@ class main_listener implements EventSubscriberInterface
 		// retrieve only letters from the city name
 		$city = preg_replace('/[^A-Za-zaäöüßÄÖÜôáàâé]+/', '', $city);
 		// call to geonames.org
-		$json_request = "http://api.geonames.org/postalCodeSearchJSON?username=" . $this->gn_username[$j] . "&style=short&postalcode=" . $postal_code . "&country=" . $country;
+		$json_request = "http://api.geonames.org/postalCodeSearchJSON?username=" . $gn_username[$j] . "&style=short&postalcode=" . $postal_code . "&country=" . $country;
 		$json = @file_get_contents($json_request);
 		if (!$json)
 		{
@@ -569,10 +528,9 @@ class main_listener implements EventSubscriberInterface
 			$error_msg = $http_response_header[0];
 			if ($error_msg == 'HTTP/1.1 401 Unauthorized')
 			{
-				$msg = ': Geonames user does not exist or is not activated for this service!';
+				$msg = $this->language->lang('USERMAP_GN_USER_ERROR');
 			}
 			trigger_error($error_msg . $msg, E_USER_WARNING);
-			return false;
 		}
 		$xml = json_decode($json, true);
 
@@ -587,7 +545,6 @@ class main_listener implements EventSubscriberInterface
 				case 10:								// account not enabled or user does not exist
 					$message = $xml_array['message'];
 					trigger_error($message, E_USER_WARNING);
-					return false;
 					break;
 
 				// These cases do function because geonames gives back a status array
@@ -595,9 +552,9 @@ class main_listener implements EventSubscriberInterface
 				case 19:								// hourly limit of credits exceeded
 				case 20:								// weekly limit of credits exceeded
 					$j++;
-					if ($j <= count($this->gn_username))	// try with another username for geonames.org if one is available?
+					if ($j <= count($gn_username))	// try with another username for geonames.org if one is available?
 					{
-						$json_request = "http://api.geonames.org/postalCodeSearchJSON?username=".$this->gn_username[$j]."&style=short&postalcode=".$postal_code."&country=".$country;
+						$json_request = "http://api.geonames.org/postalCodeSearchJSON?username=".$gn_username[$j]."&style=short&postalcode=".$postal_code."&country=".$country;
 						$json=file_get_contents($json_request);
 						$xml = json_decode($json, true);
 					}
@@ -671,8 +628,9 @@ class main_listener implements EventSubscriberInterface
 	*
 	* @return  true if geonames.org gives a valid solution -> lat and lng are set, otherwise false, lat and lng do not contain a valid value
 	*/
-	function google_search($postal_code, $country, &$google_lat, &$google_lng)
+	function google_search($postal_code, $country, $city, &$google_lat, &$google_lng, &$google_radius)
 	{
+		$google_key = $this->config['mot_usermap_google_apikey'];
 		// set an array with status messages we are not listing into the error log
 		$status_ary = array('OK','ZERO_RESULTS');
 
@@ -680,7 +638,15 @@ class main_listener implements EventSubscriberInterface
 		$return = false;
 
 		// send the request
-		$json_request = "https://maps.googleapis.com/maps/api/geocode/json?key=" . $this->google_key . "&address=" . $postal_code . "," . $country;
+		if ($city == '')
+		{
+			$json_request = "https://maps.googleapis.com/maps/api/geocode/json?key=" . $google_key . "&address=" . $postal_code . "," . $country;
+		}
+		else
+		{
+			$city = str_replace(' ', '%20', $city);
+			$json_request = "https://maps.googleapis.com/maps/api/geocode/json?key=" . $google_key . "&address=" . $postal_code . "," . $country . "," . $city;
+		}
 		$json = file_get_contents($json_request);
 		$xml = json_decode($json, true);
 
@@ -691,6 +657,16 @@ class main_listener implements EventSubscriberInterface
 			$loc = $xml['results']['0']['geometry']['location'];
 			$google_lat = $loc['lat'];
 			$google_lng = $loc['lng'];
+			switch ($xml['results']['0']['geometry']['location_type'])
+			{
+				case 'GEOMETRIC_CENTER':
+					$google_radius = $google_radius/25;	// Street level, reduce distance between two markers on the same street
+					break;
+
+				case 'ROOFTOP':
+					$google_radius = $google_radius/50;	// Address level, reduce distance even more
+					break;
+			}
 			$return = true;
 		}
 
@@ -720,7 +696,7 @@ class main_listener implements EventSubscriberInterface
 			'zip_code'		=> $postal_code,
 		);
 		$sql = 'SELECT COUNT(country_code) AS cc_count
-				FROM ' . USERMAP_ZIPCODE_TABLE . '
+				FROM ' . $this->usermap_zipcode_table . '
 				WHERE ' . $this->db->sql_build_array('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$cc_count = (int) $this->db->sql_fetchfield('cc_count');
@@ -728,7 +704,7 @@ class main_listener implements EventSubscriberInterface
 
 		if ($cc_count == 1)
 		{
-			$sql = 'SELECT * FROM ' . USERMAP_ZIPCODE_TABLE . '
+			$sql = 'SELECT * FROM ' . $this->usermap_zipcode_table . '
 					WHERE ' . $this->db->sql_build_array('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);

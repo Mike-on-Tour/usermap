@@ -7,7 +7,6 @@
 
 <script type="text/javascript">
 // <![CDATA[
-
 	var form_name = 'acp_usermap_poi_legend';
 	var text_name = 'mot_usermap_poi_legend_text';
 
@@ -15,23 +14,36 @@
 		var domElement = document.getElementById(inputName);
 		window.scrollTo(0, domElement.offsetTop);
 	}
+	var motUsermap = {};
+	/*
+	* Define error messages
+	*/
+	motUsermap.mainErrorMsg1 = '{{ lang('ACP_USERMAP_GEONAMESUSER_ERR')|e('js') }}';
+	motUsermap.mainErrorMsg2 = '{{ lang('ACP_USERMAP_APIKEY_ERROR')|e('js') }}';
 // ]]>
 </script>
 
 <h1>{{ lang('SETTINGS') }}</h1>
 <p>{{ lang('ACP_USERMAP_SETTINGS_EXPLAIN') }}</p>
 
-<form id="acp_usermap_settings" name="acp_usermap_settings" method="post" action="{{ U_ACTION }}"  onsubmit="return chkUsermapEmptyFields('{{ lang('ACP_USERMAP_GEONAMESUSER_ERR') }}', '{{ lang('ACP_USERMAP_APIKEY_ERROR') }}')">
-    <fieldset>
+<form id="acp_usermap_settings" name="acp_usermap_settings" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend>{{ lang('ACP_USERMAP_GENERAL_SETTINGS') }}</legend>
+		<dl>
+			<dt><label for="mot_usermap_rows_per_page">{{ lang('ACP_USERMAP_ROWS_PER_PAGE') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_ROWS_PER_PAGE_EXP') }}</p></dt>
+			<dd><input id="mot_usermap_rows_per_page" type="number" min="2" max="50" name="mot_usermap_rows_per_page" value="{{ ACP_USERMAP_ROWS_PER_PAGE }}" /></dd>
+		</dl>
+	</fieldset>
+	<fieldset>
 		<legend>{{ lang('ACP_USERMAP_MAPSETTING_TITLE') }}</legend>
 		<p>{{ lang('ACP_USERMAP_MAPSETTING_TEXT') }}</p>
         <dl>
             <dt><label for="mot_usermap_lat">{{ lang('ACP_USERMAP_LAT') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAT_EXP') }}</p></dt>
-            <dd><input id="mot_usermap_lat" type="text" size="10" maxlength="10" name="mot_usermap_lat" onblur="chkUsermapCoords('mot_usermap_lat', latMatch, 50.5, -90.0, 90.0)" value="{{ ACP_USERMAP_LAT }}" /></dd>
+            <dd><input id="mot_usermap_lat" type="text" size="10" maxlength="10" name="mot_usermap_lat" value="{{ ACP_USERMAP_LAT }}" /></dd>
         </dl>
         <dl>
             <dt><label for="mot_usermap_lon">{{ lang('ACP_USERMAP_LON') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LON_EXP') }}</dt>
-            <dd><input id="mot_usermap_lon" type="text" size="10" maxlength="10" name="mot_usermap_lon" onblur="chkUsermapCoords('mot_usermap_lon', lonMatch, 10, -180.0, 180.0)" value="{{ ACP_USERMAP_LON }}" /></dd>
+            <dd><input id="mot_usermap_lon" type="text" size="10" maxlength="11" name="mot_usermap_lon" value="{{ ACP_USERMAP_LON }}" /></dd>
         </dl>
         <dl>
             <dt><label for="mot_usermap_zoom">{{ lang('ACP_USERMAP_ZOOM') }}{{ lang('COLON') }}</label></dt>
@@ -49,20 +61,20 @@
             <dt><label for="mot_usermap_markers_mob">{{ lang('ACP_USERMAP_MARKERS_MOB') }}{{ lang('COLON') }}</label></dt>
             <dd><input id="mot_usermap_markers_mob" type="number" min="1" max="10" name="mot_usermap_markers_mob" value="{{ ACP_USERMAP_MARKERS_MOB }}" /></dd>
         </dl>
-    </fieldset>
+	</fieldset>
 	
 	<fieldset>
 		<legend>{{ lang('ACP_USERMAP_GEONAMES_TITLE') }}</legend>
-		<p>{{ lang('ACP_USERMAP_GEONAMES_TEXT') }}</p>
+		<p>{{ GEONAMES_TEXT }}</p>
 		<dl>
             <dt><label for="mot_usermap_geonamesuser">{{ lang('ACP_USERMAP_GEONAMESUSER') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_usermap_geonamesuser" type="text" size="50" maxlength="255" name="mot_usermap_geonamesuser" onblur="cleanUsermapUser('mot_usermap_geonamesuser')" value="{{ ACP_USERMAP_GEONAMESUSER }}" /></dd>
+            <dd><input id="mot_usermap_geonamesuser" type="text" size="50" maxlength="255" name="mot_usermap_geonamesuser" value="{{ ACP_USERMAP_GEONAMESUSER }}" /></dd>
 		</dl>
 	</fieldset>
 	
 	<fieldset>
 		<legend>{{ lang('ACP_USERMAP_GOOGLE_TITLE') }}</legend>
-		<p>{{ lang('ACP_USERMAP_GOOGLE_TEXT') }}</p>
+		<p>{{ GOOGLE_TEXT }}</p>
  		<dl>
 			<dt><label for="mot_usermap_google_enable">{{ lang('ACP_USERMAP_GOOGLE_ENABLE') }}{{ lang('COLON') }}</label></dt>
 			<dd><label><input type="radio" class="radio" name="mot_usermap_google_enable" value="1"{% if ACP_USERMAP_GOOGLE_ENABLE %} id="mot_usermap_google_enable" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
@@ -74,8 +86,8 @@
 		</dl>
 		<hr>
 		<dl>
-            <dt><label for="mot_usermap_google_force">{{ lang('ACP_USERMAP_GOOGLE_FORCE') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_GOOGLE_FORCE_TXT') }}</p></dt>
-            <dd><input id="mot_usermap_google_force" type="text" size="50" maxlength="255" name="mot_usermap_google_force" onblur="cleanGoogleCountries('mot_usermap_google_force')" value="{{ ACP_USERMAP_GOOGLE_FORCE }}" /></dd>
+            <dt><label for="mot_usermap_google_force">{{ lang('ACP_USERMAP_GOOGLE_FORCE') }}{{ lang('COLON') }}</label><p>{{ GOOGLE_FORCE }}</p></dt>
+            <dd><input id="mot_usermap_google_force" type="text" size="50" maxlength="255" name="mot_usermap_google_force" value="{{ ACP_USERMAP_GOOGLE_FORCE }}" /></dd>
 		</dl>	
 	</fieldset>
 	
@@ -98,7 +110,7 @@
 				<label><input type="radio" class="radio" name="mot_usermap_poi_enable" value="0"{% if not ACP_USERMAP_POI_ENABLE %} id="mot_usermap_poi_enable" checked="checked"{%  endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
 	</fieldset>
-	
+
 	<fieldset>
 		<legend>{{ lang('ACP_USERMAP_ICON_TITLE') }}</legend>
 		<p>{{ lang('ACP_USERMAP_ICON_TEXT') }}</p>
@@ -108,7 +120,7 @@
 				<p>{{ lang('ACP_USERMAP_ICONSIZE_EXP') }}</p>
 			</dt>
 			<dd>
-				<input id="mot_usermap_iconsize_default" type="text" size="11" maxlength="10" name="mot_usermap_iconsize_default" onblur="cleanInput('mot_usermap_iconsize_default', '{{ MOT_USERMAP_ICONSIZE_DEFAULT }}')" value="{{ MOT_USERMAP_ICONSIZE_DEFAULT }}" />
+				<input id="mot_usermap_iconsize_default" type="text" size="11" maxlength="10" name="mot_usermap_iconsize_default" onblur="motUsermap.cleanInput('mot_usermap_iconsize_default', '{{ MOT_USERMAP_ICONSIZE_DEFAULT|e('js') }}')" value="{{ MOT_USERMAP_ICONSIZE_DEFAULT }}" />
 			</dd>
 		</dl>
 		<dl>
@@ -117,11 +129,11 @@
 				<p>{{ lang('ACP_USERMAP_ICONANCHOR_EXP') }}</p>
 			</dt>
 			<dd>
-				<input id="mot_usermap_iconanchor_default" type="text" size="11" maxlength="10" name="mot_usermap_iconanchor_default" onblur="cleanInput('mot_usermap_iconanchor_default', '{{ ACP_USERMAP_ICONANCHOR_DEFAULT }}')" value="{{ ACP_USERMAP_ICONANCHOR_DEFAULT }}" />
+				<input id="mot_usermap_iconanchor_default" type="text" size="11" maxlength="10" name="mot_usermap_iconanchor_default" onblur="motUsermap.cleanInput('mot_usermap_iconanchor_default', '{{ ACP_USERMAP_ICONANCHOR_DEFAULT|e('js') }}')" value="{{ ACP_USERMAP_ICONANCHOR_DEFAULT }}" />
 			</dd>
 		</dl>
 	</fieldset>
-	
+
 	<fieldset>
         <p class="submit-buttons">
             <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
@@ -150,7 +162,7 @@
 					<p id="color_palette_placeholder" data-orientation="h" data-height="12" data-width="15" data-bbcode="true"></p>
 				</dt>
 				<dd>
-					<textarea id="mot_usermap_poi_legend_text" name="mot_usermap_poi_legend_text" rows="12" cols="50" maxlength="1000" accept-charset="utf-8" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true">{{ ACP_USERMAP_POI_LGND }}</textarea>
+					<textarea id="mot_usermap_poi_legend_text" name="mot_usermap_poi_legend_text" rows="12" cols="50" maxlength="1000" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true">{{ ACP_USERMAP_POI_LGND }}</textarea>
 					<br><input class="button2" type="submit" name="preview" formaction="{{ U_ACTION_LGND_PREVIEW }}" value="{{ lang('PREVIEW') }}" />
 				</dd>
 			</dl>
@@ -171,7 +183,7 @@
 {% endif %}
 
 <p class="centered_text">
-Usermap ver {{ USERMAP_VERSION }} &copy; 2020 - {{ ACP_USERMAP_YEAR }} by Mike-on-Tour
+{{ USERMAP_VERSION }}
 </p>
 
 <p class="centered_text">
@@ -179,8 +191,8 @@ Usermap ver {{ USERMAP_VERSION }} &copy; 2020 - {{ ACP_USERMAP_YEAR }} by Mike-o
 <a href="https://paypal.me/MichaelVormwald?locale.x=de_DE" target="_blank" rel="noopener noreferrer">{{ ICON_PAYPAL }}</a>
 </p>
 
-{% include 'overall_footer.html' %}
-
 {% if JUMP_TO_POI_LEGEND %}
 	<script>scrollToElement('acp_usermap_poi_legend');</script>
 {% endif %}
+
+{% include 'overall_footer.html' %}

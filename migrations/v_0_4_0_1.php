@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v0.4.x
+* @package Usermap v1.1.0
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -15,7 +15,7 @@ class v_0_4_0_1 extends \phpbb\db\migration\profilefield_base_migration
 	/**
 	* Check for migration v_0_3_2 to be installed
 	*/
-	static public function depends_on()
+	public static function depends_on()
 	{
 		return array('\mot\usermap\migrations\v_0_4_0_0');
 	}
@@ -84,7 +84,7 @@ class v_0_4_0_1 extends \phpbb\db\migration\profilefield_base_migration
 			$option_id = 0;
 			// First we check whether a language directory exists for this language. If it doesn't exist, we use the English language file as a fallback solution
 			$cc = (file_exists($lang_dir . $row['lang_dir'])) ? $row['lang_dir'] : 'en';
-			$handle = fopen($lang_dir . $cc . '/countrycode.txt', "rb");
+			$handle = fopen($lang_dir . $cc . '/countrycode/countrycode.txt', "rb");
 			while (!feof($handle))
 			{
 				$line = fgets($handle);

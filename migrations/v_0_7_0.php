@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v0.7.x
+* @package Usermap v1.1.0
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -15,7 +15,7 @@ class v_0_7_0 extends \phpbb\db\migration\migration
 	/**
 	* Check for migration v_0_6_0_1 to be installed
 	*/
-	static public function depends_on()
+	public static function depends_on()
 	{
 		return array('\mot\usermap\migrations\v_0_6_0_1');
 	}

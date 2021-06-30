@@ -1,4 +1,5 @@
 {% include 'overall_header.html' %}
+
 {# include the html code for user POI input #}
 {% include '@mot_usermap/usermap_poi_input.html' %}
 
@@ -6,14 +7,16 @@
 	{% INCLUDECSS '@mot_usermap/leaflet.css' %}
 	{% INCLUDECSS '@mot_usermap/usermap.css' %}
 	{% INCLUDEJS '@mot_usermap/leaflet.js' %}
+	{% INCLUDEJS '@mot_usermap/bbcode.js' %}
 	{% INCLUDEJS '@mot_usermap/mot_usermap.js' %}
+	{% INCLUDEJS '@mot_usermap/mot_usermap_tabs.js' %}
 	{% set INCLUDED_LEAFLETJS = true %}
 {% endif %}
 
 <div id="page-body" class="page-body">
 
 {% if VIEW_MAP_ALWAYS || (VIEW_MAP_SUBSRIBED && VALID_USER) || (POI_ENABLED && POI_VIEW) %}
-	{% if VALID_USER %}	{# Shows the segment with postal code search form only to authorised users (users with correct land and postal code combination) #}
+	{% if VIEW_MAP_ALWAYS || VALID_USER || (POI_ENABLED && POI_VIEW) %}
 		<div class="forabg">
 			<div class="inner">
 				<ul class="topiclist">
@@ -29,30 +32,9 @@
 				</ul>
 			</div>
 			<div class="panel bg1">
-				<div class="usermap_search">
-					<div class="search-form"><span class="search-text">{{ MAP_SEARCH }}&nbsp;</span>
-						<form id="plz_search">
-							<select id="plz_choice">
-							   <option value="1">1</option>
-							   <option value="2">2</option>
-							   <option value="5">5</option>
-							   <option value="10">10</option>
-							   <option value="25">25</option>
-							   <option value="50">50</option>
-							   <option value="100">100</option>
-							</select>
-							&nbsp;km&nbsp;
-							<input class="button1" type="submit" value="{{ lang('SUBMIT') }}" />
-						</form>
-					</div>
-					<div id="seperation_hr"></div>
-					<div id="solution"></div>
-				</div>
+				{% include 'usermap_search.html' %}
 			</div>
 		</div>
-	{% else %}
-		{#  The following div's are only necessary to provide valid id's for the js functions if an unauthorised user is looking at the map #}
-		<div id="plz_search"></div><div id="seperation_hr"></div><div id="solution"></div>
 	{% endif %}
 
 	<div class="forabg">
@@ -104,6 +86,7 @@
 				<div>
 					<p>{{ POI_LEGEND }}</p>
 				</div>
+				<p>{{ POI_NUMBER }}</p>
 			{% endif %}
 		</div>
 	</div>
@@ -133,30 +116,65 @@
 {% endif %}
 </div>
 
+<div class="stat-block permissions">
+	<h3>{{ lang('USERMAP_PERM_OVERVIEW') }}</h3>
+	{{ DISPLAY_PERMISSIONS  }}
+</div>
+
 {# Handover of all necessary data to the js script #}
 <script>
-	var jsConfig = {{ MAPCONFIG }};
-	var jsServerConfig = {{ SERVERCONFIG }};
-	var jsMapData = {{ MAPDATA }};
-	var jsAuthUser = {{ VALID_USER }};
-	let jsMapViewAlways = {{ VIEW_MAP_ALWAYS }}
-	var jsCurrentUser = {{ USER }};
-	var jsMapResult = "{{ lang('MAP_RESULT') }}";
-	var jsMapNoResult = "{{ lang('MAP_NORESULT') }}";
-	var jsPoiEnabled = {{ POI_ENABLED }};
-	var jsStreetDesc = "{{ lang('STREET_DESC') }}";
-	var jsTopoDesc = "{{ lang('TOPO_DESC') }}";
-	var jsSatDesc = "{{ lang('SAT_DESC') }}";
-</script>
+// <![CDATA[
+	var motUsermap = {};
+	motUsermap.tab = {{ TAB }};
+
+	motUsermap.jsProfileLink = {{ PROFILE_LINK }};
+	// Pemissions
+	motUsermap.jsPoiEnabled = {{ POI_ENABLED }};
+	motUsermap.jsPoiView = {{ POI_VIEW }};
+	motUsermap.jsPoiCreate = {{ POI_CREATE }};
 	
-{# if POIs are enabled the following data must be handed over, too #}
+	motUsermap.defaultPoiIconSize = '{{ DEFAULT_POI_ICON_SIZE|e('js') }}';
+	motUsermap.defaultPoiIconAnchor = '{{ DEFAULT_POI_ICON_ANCHOR|e('js') }}';
+	motUsermap.jsMapConfig = {{ MAPCONFIG }};
+	motUsermap.jsAuthUser = {{ VALID_USER }};
+	motUsermap.jsMapViewAlways = {{ VIEW_MAP_ALWAYS }}
+	motUsermap.jsCurrentUser = {{ USER }};
+	motUsermap.jsMapResult = "{{ lang('MAP_RESULT')|e('js') }}";
+	motUsermap.jsMapNoResult = "{{ lang('MAP_NORESULT')|e('js') }}";
+	motUsermap.jsMemberResult = "{{ lang('MEMBERNAME_RESULT')|e('js') }}";
+	motUsermap.jsMemberNoResult = "{{ lang('MEMBERNAME_NORESULT')|e('js') }}";
+	motUsermap.jsStreetDesc = "{{ lang('STREET_DESC')|e('js') }}";
+	motUsermap.jsTopoDesc = "{{ lang('TOPO_DESC')|e('js') }}";
+	motUsermap.jsSatDesc = "{{ lang('SAT_DESC')|e('js') }}";
+// ]]>
+</script>
+
+{# if user is permitted to see members the following data must be handed over #}
+{% if VIEW_MAP_ALWAYS || VIEW_MAP_SUBSRIBED %}
+	<script>
+	// <![CDATA[
+		motUsermap.jsMemberData = {{ MEMBERDATA }};
+		motUsermap.jsMemberLayers = {{ MEMBER_LAYERDATA }};
+	// ]]>
+	</script>
+{% endif %}
+
+{# if POIs are enabled the following data must be handed over #}
 {% if POI_ENABLED %}
 	<script>
-		var jsPoiView = {{ POI_VIEW }};
-		var jsPoiCreate = {{ POI_CREATE }};
-		var jsPoiData = {{ POIDATA }};
-		var jsUserDesc = "{{ lang('USER_DESC') }}";
-		var jsPoiDesc = "{{ lang('POI_DESC') }}";
+	// <![CDATA[
+		motUsermap.poiIconPath = {{ POI_ICON_PATH }};
+
+		motUsermap.errorMsg = '{{ ERROR_MSG|e('js') }}';
+		motUsermap.jsAddressResult = "{{ lang('ADDRESS_RESULT')|e('js') }}";
+		motUsermap.jsAddressNoResult = "{{ lang('ADDRESS_NORESULT')|e('js') }}";
+
+		motUsermap.jsPoiData = {{ POIDATA }};
+		motUsermap.jsPoiResult = "{{ lang('POINAME_RESULT')|e('js') }}";
+		motUsermap.jsPoiNoResult = "{{ lang('POINAME_NORESULT')|e('js') }}";
+		motUsermap.jsPoiLayers = {{ POI_LAYERDATA }};
+		motUsermap.jsAjaxCall = '{{ AJAX_CALL|e('js') }}';
+	// ]]>
 	</script>
 {% endif %}
 

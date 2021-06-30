@@ -2,8 +2,8 @@
 
 /**
 *
-* @package Usermap v1.0.0
-* @copyright (c) 2020 Mike-on-Tour
+* @package Usermap v1.1.0
+* @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -27,9 +27,6 @@ class lang_module
 		add_form_key('acp_usermap_langs');
 
 		// Set some variables first
-		$mot_land_id = 0;				// integer with the field_id of the custom profile field 'mot_land'
-		$langs = array();				// array holding the installed languages of the board
-		$lang_id = 0;					// interger with the lang_id of the language to be installed
 		$langs_2_install = array();		// array holding the languages waiting for installation
 		$missing_langs = array();		// array with the languages which are installed on the board but without a language pack within the extension
 
@@ -37,13 +34,13 @@ class lang_module
 		$query = "SELECT field_id FROM " . PROFILE_FIELDS_TABLE . " WHERE field_name = 'mot_land'";
 		$result = $db->sql_query($query);
 		$row = $db->sql_fetchrow($result);
-		$mot_land_id = $row['field_id'];
+		$mot_land_id = $row['field_id'];			// integer with the field_id of the custom profile field 'mot_land'
 		$db->sql_freeresult($result);
 
 		// then we load the 'lang' table
 		$query = 'SELECT * FROM ' . LANG_TABLE;
 		$result = $db->sql_query($query);
-		$langs = $db->sql_fetchrowset($result);
+		$langs = $db->sql_fetchrowset($result);		// array holding the installed languages of the board
 		$db->sql_freeresult($result);
 
 		// then we get the names of the subdirectories in the 'language' directory
@@ -51,7 +48,7 @@ class lang_module
 
 		$action = $request->variable('action', '');
 		$iso = $request->variable('iso', '');
-		$lang_id = $request->variable('lang_id', 0);
+		$lang_id = $request->variable('lang_id', 0);	// interger with the lang_id of the language to be installed
 
 		switch ($action)
 		{
@@ -64,10 +61,10 @@ class lang_module
 				);
 				$query = 'DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . '
 						WHERE ' . $db->sql_build_array('DELETE', $sql_arr);
-				$result = $db->sql_query($query);
+				$db->sql_query($query);
 
 				// now we read the content of the approbriate countrycode file
-				$countrycodes = file($this->lang_path . $iso . '/countrycode.txt', FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES);
+				$countrycodes = file($this->lang_path . $iso . '/countrycode/countrycode.txt', FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES);
 
 				// and insert it into the profile_fields_lang table
 				$max_i = count($countrycodes);
@@ -93,7 +90,7 @@ class lang_module
 			$nr = array_search($row['lang_dir'], $lang_dirs);
 			if ($nr !== false)
 			{			// at least there is a directory with this language iso code, now we check whether this language pack is successfully installed with usermap
-				$handle = fopen($this->lang_path . $row['lang_dir'] . '/countrycode.txt', "rb");
+				$handle = fopen($this->lang_path . $row['lang_dir'] . '/countrycode/countrycode.txt', "rb");
 				$line_file = trim(fgets($handle));	// get the first line from the file (reads 'xx-Select your country' in the English version)
 				fclose($handle);
 
@@ -153,8 +150,7 @@ class lang_module
 
 		$template->assign_vars(array(
 			'U_ACTION'				=> $this->u_action,
-			'USERMAP_VERSION'		=> $config['mot_usermap_version'],
-			'ACP_USERMAP_YEAR'		=> date('Y'),
+			'USERMAP_VERSION'		=> 'Usermap ver ' . $config['mot_usermap_version'] . ' &copy; 2020 - ' . date('Y') . ' by Mike-on-Tour',
 		));
 	}
 

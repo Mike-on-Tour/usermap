@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v0.10.0
+* @package Usermap v1.1.0
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -79,7 +79,7 @@ class approve_poi extends \phpbb\notification\type\base
 	*/
 	public static function get_item_parent_id($data)
 	{
-		return 0;		// there is no parent
+		return (int) $data['parent'];
 	}
 
 	/**
@@ -92,6 +92,10 @@ class approve_poi extends \phpbb\notification\type\base
 	*/
 	public function find_users_for_notification($data, $options = array())
 	{
+		if (is_null($data['user_ids']))
+		{
+			$data['user_ids'] = [];
+		}
 		$this->user_loader->load_users($data['user_ids']);
 		return $this->check_user_notification_options($data['user_ids'], $options);
 	}

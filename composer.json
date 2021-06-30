@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Adds a usermap to your forum",
 	"homepage": "https://www.mike-on-tour.com",
-	"version": "1.0.1",
-	"time": "2020-02-14 12:11:57",
+	"version": "1.1.0",
+	"time": "2020-06-30 12:11:57",
 	"license": "GPL-2.0-only",
 	"authors": [
 		{
@@ -14,7 +14,7 @@
 			"role": "Developer"
 		},
         {
-            "name": "Jorge (Jorup16)",
+            "name": "Jorge (Jorup16), Raul [ThE KuKa]",
             "role": "Spanish translation"
         },
         {

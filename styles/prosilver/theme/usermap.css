@@ -14,6 +14,24 @@
 	align-items: center;
 }
 
+.search-text {
+	display: inline;
+}
+
+.links {
+
+}
+
+ul.links > li {
+	display: inline;
+	font-size: 1.1em;
+	line-height: 2.2em;
+	list-style-type: none;
+	padding-top: 1px;
+	width: auto;
+	cursor: pointer;
+}
+
 select .plz_search{
 	width: 45px;
 }
@@ -83,7 +101,7 @@ select .plz_search{
 
 .approve_content #map_box {
 	position: relative;
-	min-height: 60vh;
+	min-height: 80vh;
 	max-height: 100%;
 }
 
@@ -139,12 +157,12 @@ dt label {
 }
 
 /* Input div's paragraphs */
-p  {
+.input-p  {
 	font-size: x-small;
 	voice-family: "\"}\"";
 	voice-family: inherit;
 	margin-bottom: 0.7em;
-	line-height: 1.40em;
+	line-height: 1.30em;
 }
 
 fieldset p {
@@ -248,4 +266,11 @@ select:focus {
 	padding: 0 3px;
 	vertical-align: text-bottom;
 	color: #D31141;
+}
+
+/*
+* Styles for search tabs
+*/
+.tabs {
+	margin-top: 5px;
 }

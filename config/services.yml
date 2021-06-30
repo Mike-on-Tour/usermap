@@ -1,4 +1,12 @@
+imports:
+    - { resource: tables.yml }
+
 services:
+    mot.usermap.functions_usermap:
+        class: mot\usermap\includes\functions_usermap
+        tags:
+            - { name: usermap_functions, tag: mot.usermap.functions_usermap }
+
     mot.usermap.controller:
         class: mot\usermap\controller\main
         arguments:
@@ -14,8 +22,12 @@ services:
             - '@request'
             - '@notification_manager'
             - '@log'
-            - '%core.root_path%'
+            - '@mot.usermap.functions_usermap'
             - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%mot.usermap.tables.usermap_users%'
+            - '%mot.usermap.tables.usermap_poi%'
+            - '%mot.usermap.tables.usermap_layers%'
 
     mot.usermap.mod_poi:
         class: mot\usermap\controller\mod_poi
@@ -31,8 +43,11 @@ services:
             - '@request'
             - '@notification_manager'
             - '@log'
+            - '@mot.usermap.functions_usermap'
             - '%core.root_path%'
             - '%core.php_ext%'
+            - '%mot.usermap.tables.usermap_poi%'
+            - '%mot.usermap.tables.usermap_layers%'
         tags:
             - { name: controller.handle }
 
@@ -50,8 +65,17 @@ services:
             - '@ext.manager'
             - '@language'
             - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%mot.usermap.tables.usermap_users%'
+            - '%mot.usermap.tables.usermap_zipcodes%'
         tags:
             - { name: event.listener }
+
+    mot.usermap.controller.ajax_call:
+        class: mot\usermap\controller\ajax_call
+        arguments:
+            - '@config'
+            - '@request'
 
     mot.usermap.notification.type.approve_poi:
         class: mot\usermap\notification\approve_poi

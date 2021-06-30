@@ -1,0 +1,135 @@
+{% include 'overall_header.html' %}
+{% INCLUDECSS '@mot_usermap/mot_usermap_acp.css' %}
+{% if not INCLUDED_USERMAP_ACP %}
+	{% INCLUDEJS '@mot_usermap/admin_mot_usermap.js' %}
+    {% set INCLUDED_USERMAP_ACP = true %}
+{% endif %}
+
+<script type="text/javascript">
+// <![CDATA[
+	function scrollToElement(inputName) {
+		var domElement = document.getElementById(inputName);
+		window.scrollTo(0, domElement.offsetTop);
+	}
+	
+	var motUsermap = {};
+	/*
+	* Define error messages
+	*/
+	motUsermap.layerErrorMsg1 = '{{ lang('ACP_ERR_LAYER_NO_NAME')|e('js') }}';
+	motUsermap.layerErrorMsg2 = '{{ lang('ACP_ERR_LAYER_NO_LANG')|e('js') }}';
+	motUsermap.layerErrorMsg3 = '{{ lang('ACP_ERR_LAYER_INCORRECT')|e('js') }}';
+	motUsermap.layerErrorMsg4 = '{{ lang('ACP_ERR_LAYER_NO_EN')|e('js') }}';
+ // ]]>
+</script>
+
+<h1>{{ lang('ACP_USERMAP_LAYER') }}</h1>
+<p>{{ lang('ACP_USERMAP_LAYER_EXPLAIN') }}</p>
+
+	{% if pagination %}
+	<div class="pagination top-pagination">
+		{% include 'pagination.html' %}
+	</div>
+	{% endif %}
+
+	<h2>{{ lang('ACP_USERMAP_LAYER_DATA') }}</h2>
+	<table class="table1 zebra-table">
+		<thead>
+			<tr>
+				<th>{{ lang('ACP_USERMAP_LAYER_NAME') }}</th>
+{#				<th>{{ lang('ACP_USERMAP_MEMBER_LAYER') }}</th>#}
+				<th>{{ lang('ACP_USERMAP_LAYER_ACTIVE') }}</th>
+				<th>{{ lang('ACP_USERMAP_SHOW_LAYER') }}</th>
+				<th>{{ lang('ACP_USERMAP_LAYER_LANG_VAR') }}</th>
+				<th>{{ lang('ACP_USERMAP_LAYER_DEFAULTICON') }}</th>
+				<th>{{ lang('OPTIONS') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for layer in layer %}
+			<tr>
+				<td style="text-align: left;">{{ layer.NAME }}</td>
+{#				<td style="text-align: center;">{% if layer.MEMBER_LAYER %}{{ lang('YES') }}{% else %}{{ lang('NO') }}{% endif %}</td>#}
+				<td style="text-align: center;">{% if layer.LAYER_ACTIVE %}{{ lang('YES') }}{% else %}{{ lang('NO') }}{% endif %}</td>
+				<td style="text-align: center;">{% if layer.SHOW_LAYER %}{{ lang('YES') }}{% else %}{{ lang('NO') }}{% endif %}</td>
+				<td style="text-align: left;">{{ layer.LAYER_LANG_VAR }}</td>
+				<td style="text-align: center;">{{ layer.DEFAULT_ICON }}</td>
+				<td style="text-align: center;"><a href="{{ layer.U_DELETE }}">{{ lang('DELETE') }}</a><br><a href="{{ layer.U_EDIT }}">{{ lang('EDIT') }}</a></td>
+			</tr>
+		{% else %}
+		<tr>
+			<td colspan="5" style="text-align: center;">{{ lang('ACP_USERMAP_DATABASE_NOENTRY') }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	{% if pagination %}
+	<div class="pagination">
+		{% include 'pagination.html' %}
+	</div>
+	{% endif %}
+
+{% if NEW_LAYER %}
+	<h2>{{ lang('ACP_USERMAP_LAYER_NEW') }}</h2>
+{% else %}
+	<h2>{{ lang('ACP_USERMAP_LAYER_EDIT') }}</h2>
+{% endif %}
+
+<form id="acp_usermap_layer" name="acp_usermap_layer" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+        <dl>
+			<dt><label for="mot_usermap_layer_name">{{ lang('ACP_USERMAP_LAYER_NAME') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_NAME_EXP') }}</p></dt>
+			<dd><input id="mot_usermap_layer_name" type="text" size="30" maxlength="50" name="mot_usermap_layer_name" value="{{ ACP_USERMAP_LAYER_NAME }}" /></dd>
+		</dl>
+{#		<dl>
+			<dt><label for="mot_usermap_layer_member">{{ lang('ACP_USERMAP_MEMBER_LAYER') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_MEMBER_LAYER_EXP') }}</p></dt>
+			<dd><label><input type="radio" class="radio" name="mot_usermap_layer_member" value="1"{% if ACP_USERMAP_MEMBER_LAYER %} id="mot_usermap_layer_member" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="mot_usermap_layer_member" value="0"{% if not ACP_USERMAP_MEMBER_LAYER %} id="mot_usermap_layer_member" checked="checked"{%  endif %} /> {{ lang('NO') }}</label>
+			</dd>
+		</dl>#}
+		<dl>
+			<dt><label for="mot_usermap_layer_active">{{ lang('ACP_USERMAP_LAYER_ACTIVE') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_ACTIVE_EXP') }}</p></dt>
+			<dd><label><input type="radio" class="radio" name="mot_usermap_layer_active" value="1"{% if ACP_USERMAP_LAYER_ACTIVE %} id="mot_usermap_layer_active" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="mot_usermap_layer_active" value="0"{% if not ACP_USERMAP_LAYER_ACTIVE %} id="mot_usermap_layer_active" checked="checked"{%  endif %} /> {{ lang('NO') }}</label>
+		</dl>
+		<dl>
+			<dt><label for="mot_usermap_show_layer">{{ lang('ACP_USERMAP_SHOW_LAYER') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_SHOW_LAYER_EXP') }}</p></dt>
+			<dd><label><input type="radio" class="radio" name="mot_usermap_show_layer" value="1"{% if ACP_USERMAP_SHOW_LAYER %} id="mot_usermap_show_layer" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="mot_usermap_show_layer" value="0"{% if not ACP_USERMAP_SHOW_LAYER %} id="mot_usermap_show_layer" checked="checked"{%  endif %} /> {{ lang('NO') }}</label>
+		</dl>
+		<dl>
+			<dt>
+				<label for="mot_usermap_layer_lang_var">{{ lang('ACP_USERMAP_LAYER_LANG_VAR') }}{{ lang('COLON') }}</label>
+				<p>{{ LAYER_LANG_VAR_EXP }}</p>
+			</dt>
+			<dd>
+				<textarea class="autowidth" id="mot_usermap_layer_lang_var" name="mot_usermap_layer_lang_var" rows="7" cols="30">{{ ACP_USERMAP_LAYER_LANG_VAR }}</textarea>
+			</dd>
+		</dl>
+		<dl id="icon_select" {% if ACP_USERMAP_MEMBER_LAYER %}hidden="true"{% endif %}>
+			<dt><label for="mot_usermap_layer_default_icon">{{ lang('ACP_USERMAP_LAYER_DEFAULTICON') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_ICON_EXP') }}</p></dt>
+			<dd>
+				<select id="mot_usermap_layer_default_icon" name="mot_usermap_layer_default_icon">
+					{% for poi_icon in poi_icon %}
+						<option value="{{ poi_icon.VALUE }}" {% if ACP_USERMAP_LAYER_DEFAULT_ICON == poi_icon.VALUE %} selected {% endif %}>{{ poi_icon.VALUE }}</option>
+					{% endfor %}
+				</select>
+			</dd>
+		</dl>
+        <p class="submit-buttons">
+            <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
+        </p>
+	</fieldset> 
+	{{ S_FORM_TOKEN }}
+</form>
+
+<p class="centered_text">
+{{ USERMAP_VERSION }}
+</p>
+
+{% if !NEW_LAYER %}
+	<script>scrollToElement('acp_usermap_layer');</script>
+{% endif %}
+
+{% include 'overall_footer.html' %}

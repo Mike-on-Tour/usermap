@@ -4,6 +4,61 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.0] - 2021-06-30
+
+### Added
+-	Migration file `migrations/v_1_1_0_0.php` to set the new version number in `CONFIG_TABLE`, insert a new config variable `mot_usermap_rows_per_page`,
+	remove the no longer needed columns `username` and `user_colour` from the `USERMAP_USERS_TABLE`, insert a new column into `USERMAP_ZIPCODES_TABLE`,
+	insert a new table `USERMAP_LAYERS_TABLE` and a new column `layer_id` into `USERMAP_POI_TABLE` and `USERMAP_USERS_TABLE`
+-	Migration file `migrations/v_1_1_0_1.php` to add a new ACP tab `Map layers`and to run a custom function to insert a member and a POI layer into the
+	new `USERMAP_LAYERS_TABLE` and the respective `layer_id` into the `USERMAP_USERS_TABLE` and `USERMAP_POI_TABLE`
+-	A new general setting to choose the number of rows to be displayed per table page on the ACP tabs "Internal database", "POI handling" and
+	"Map overlays"
+-	All ACP language variables are now contained in a new language file (`info_acp_mot_usermap.php`)
+-	`setlocale(LC_ALL, 'C')` to prevent loss of decimal point while saving coordinates into the database (error occurred with one user), affected files are
+	`acp/database_module.php`, `acp/main_module.php`, `acp/poi_module.php`, `controller/main.php`, `controller/mod_poi.php` and `event/main_listener.php`
+-	Link from a user's profile to the usermap (only if user is listed on the usermap) to display this user's location, affected files are
+	`controller/main.php`, `event/main_listener.php`, (new) `styles/prosilver/template/event/memberlist_view_zebra_after.html` and all `mot_usermap.php`
+	language files
+-	A 'name' field to the `USERMAP_ZIPCODES_TABLE` to improve readability of entries, affected files are `acp/database_module.php` and
+	`adm/style/acp_usermap_database.html`
+-	Function to edit database entries, affected files are `acp/database_module.php`, `adm/style/acp_usermap_database.html` and all language files
+-	List with current permissions beneath the Usermap legends box
+-	Search options for member and POI names and an option to search for addresses and other stuff using the Google Maps API
+-	Tabs for the four search options to prevent this part of the display to become cluttered and "crowded"
+-	Multible, admin defined map layers for POIs
+-	ACP tab to administer map layers
+
+### Changed
+-	Version number and release date in `composer.json`
+-	Version number in `README.md`
+-	The amount of digits after the decimal point of map center's latitude and longitude in `acp/main_module.php` to enable a more finely adjusted map center
+-	The Usermap menu icon from 'Globe' to 'Map'
+-	`username` and `user_colour` are no longer stored in the `USERMAP_USERS_TABLE` and will be retrieved from the `USERS_TABLE` at run time in
+	`controller/main.php`, also affected is `event/main_listener.php`
+-	The path to get the links to memberlist and to the POI icons is no longer defined from the server configuration values but uses the `root_path`
+	variable, affected files are `controller/main.php` and `styles/all/template/mot_usermap.js`
+-	The ACP tab to handle POIs, the modal window to create POIs and the moderator page to approve/deny user-created POIs now contain a dropdown field to select
+	a layer (if the admin created more than one) on which the POI will be dislayed. In addition the POI icon selector is preset to the default icon defined
+	for this layer.
+-	`controller/main.php` now checks with the current user's permissions whether the member data is needed and loads it only if permissions allow in order to
+	improve performance; same happens within the `styles/all/template/mot_usermap.js`
+-	Storage and search for POI names now includes special characters like quotes, affected files are `acp/poi_module.php`, `controller/main.php`,
+	`controller/mod_poi.php` and `styles/all/template/mot_usermap.js`
+-	All DOM operations are now done using jQuery or uniquely identified object functions
+-	Extension tables are now defined in the `config/table.yml` file, no longer in a `*.php` file and injected through the `config/services.yml` file
+-	Functions are defined in a new class and injected via service injection instead of using `include`
+-	All `countrycode.txt` files are no contained within an additional subdirectory to prevent possible confusions with phpBB language files
+
+### Fixed
+-	Fatal errors due to an empty array supposed to hold users permitted to moderate POIs which results in an undefined array given to the notification data
+	in `controller/main.php` on (new) line 187. Prevented with a check and defining an empty array in added lines 169 - 172
+-	Function declaration `depends_on()` from `static public` to `public static` in all migration files to adhere to PHP Standards
+
+### Removed
+-	Function to set `user_colour` in `event/main_listener.php` is no longer needed and was removed
+  
+  
 ## [1.0.1] - 2021-02-14
 
 ### Added
@@ -22,7 +77,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2021-02-12
 
 ### Added
--	The `rel="noopenr noreferrer"` tag to PayPal link in `adm/style/acp_usermap_main.html`
+-	The `rel="noopener noreferrer"` tag to PayPal link in `adm/style/acp_usermap_main.html`
 -	A migration file to update version number in `CONFIG_TABLE`
 
 ### Changed

@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v1.0.0
+* @package Usermap v1.1.0
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -71,9 +71,11 @@ class main_module
 				trigger_error($language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
+			setlocale(LC_ALL, 'C');
 			// save the settings to the phpbb_config table
-			$config->set('mot_usermap_lat', substr($request->variable('mot_usermap_lat', ''), 0, 5));
-			$config->set('mot_usermap_lon', substr($request->variable('mot_usermap_lon', ''), 0, 6));
+			$config->set('mot_usermap_rows_per_page', $request->variable('mot_usermap_rows_per_page', 0));
+			$config->set('mot_usermap_lat', substr($request->variable('mot_usermap_lat', ''), 0, 10));
+			$config->set('mot_usermap_lon', substr($request->variable('mot_usermap_lon', ''), 0, 11));
 			$config->set('mot_usermap_zoom', $request->variable('mot_usermap_zoom', 0));
 			$config->set('mot_usermap_markers_pc', $request->variable('mot_usermap_markers_pc', 0));
 			$config->set('mot_usermap_markers_mob', $request->variable('mot_usermap_markers_mob', 0));
@@ -99,9 +101,14 @@ class main_module
 			$config_value = $result['text'];
 		}
 
+		$geonames_login = '<a href="https://www.geonames.org/login" target="_blank"><span style="text-decoration: underline;">geonames.org/login</span></a>';
+		$geonames_account = '<a href="https://www.geonames.org/enablefreewebservice" target="_blank"><span style="text-decoration: underline;">';
+		$geonames_list = '<a href="https://www.geonames.org/postal-codes/" target="_blank"><span style="text-decoration: underline;">';
+		$google_key = '<a href="https://developers.google.com/maps/documentation/embed/get-api-key" target="_blank"><span style="text-decoration: underline;">';
+		$geonames_readme = '<a href="http://download.geonames.org/export/zip/readme.txt" target="_blank"><span style="text-decoration: underline;">';
 		$template->assign_vars(array(
-			'USERMAP_VERSION'					=> $config['mot_usermap_version'],
-			'ACP_USERMAP_YEAR'					=> date('Y'),
+			'USERMAP_VERSION'					=> 'Usermap ver ' . $config['mot_usermap_version'] . ' &copy; 2020 - ' . date('Y') . ' by Mike-on-Tour',
+			'ACP_USERMAP_ROWS_PER_PAGE'			=> $config['mot_usermap_rows_per_page'],
 			'ACP_USERMAP_LAT'					=> $config['mot_usermap_lat'],
 			'ACP_USERMAP_LON'					=> $config['mot_usermap_lon'],
 			'ACP_USERMAP_ZOOM'					=> $config['mot_usermap_zoom'],
@@ -121,6 +128,9 @@ class main_module
 			'ACP_USERMAP_POI_LGND'				=> $config_value,
 			'PREVIEW_TEXT'						=> $preview_text,
 			'JUMP_TO_POI_LEGEND'				=> $jump_to_poi_legend,
+			'GEONAMES_TEXT'						=> $language->lang('ACP_USERMAP_GEONAMES_TEXT', $geonames_login, $geonames_account),
+			'GOOGLE_TEXT'						=> $language->lang('ACP_USERMAP_GOOGLE_TEXT', $geonames_list, $google_key),
+			'GOOGLE_FORCE'						=> $language->lang('ACP_USERMAP_GOOGLE_FORCE_TXT', $geonames_readme),
 			'ICON_PAYPAL'						=> '<img src="' . $phpbb_root_path . 'ext/mot/usermap/adm/images/Paypal.svg" />',
 		));
 	}

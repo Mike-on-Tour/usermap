@@ -1,137 +1,88 @@
+/**
+*
+* package Usermap v1.1.0
+* copyright (c) 2020 - 2021 Mike-on-Tour
+* license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+*
+*/
+
+(function($) {  // Avoid conflicts with other libraries
+
 'use strict';
 
 /*
-* Define the search patterns for lat(itude) as a 2-digit floating point value with a possible leading minus (-)dd.d and for lon(gitude) as a 3-digit value (-)ddd.d
-*/
-var latMatch = /-?\d{1,2}\.*\d*/;
-var lonMatch = /-?\d{1,3}\.*\d*/;
-/*
-* Define the search patterns for country code (2 uppercase letters) and postal (zip) code
-*/
-var ccMatch = /[A-Z]+/;
-var zipMatch = /[A-Z0-9\-]+/;	// Uppercase letters, digits and hyphens (dash) only
-
-/*
 * Checks whether the fields for the geonames.org username and the google maps API key are empty when the form is sent. In this case we provide an error message and give the focus back to the respective field
-* @params:	errorMsg1, errorMsg2:	string with the error message, provided by the language object
+* @params:	mainErrorMsg1, mainErrorMsg2:	string with the error message, provided by the language object
 *
 * @return:	false if field is empty to prevent the form from being sent
 */
-function chkUsermapEmptyFields(errorMsg1, errorMsg2)
-{
-	var domElement = document.getElementById('mot_usermap_geonamesuser');
-	if (domElement.value ==	'') {
-		alert(errorMsg1);
-		domElement.focus();
+$("#acp_usermap_settings").submit(function() {
+	if ($("#mot_usermap_geonamesuser").val() ==	'') {
+		alert(motUsermap.mainErrorMsg1);
+		$("#mot_usermap_geonamesuser").focus();
 		return (false);
 	}
 
-	var domEnableGoogle = document.getElementById('mot_usermap_google_enable');
-	domChecked = domEnableGoogle.checked;
-	domValue = domEnableGoogle.value;
-//	alert(domEnableGoogle.checked + ' / ' + domEnableGoogle.value);
-	var domAPIKey = document.getElementById('mot_usermap_google_key');
-	if (((domChecked && domValue == 1) || (!domChecked && domValue == 0)) && (domAPIKey.value == '')) {
-		alert(errorMsg2);
-		domAPIKey.focus();
+	if (($("input[name='mot_usermap_google_enable']:checked").val() == 1) && ($("#mot_usermap_google_key").val() == '')) {
+		alert(motUsermap.mainErrorMsg2);
+		$("#mot_usermap_google_key").focus();
 		return (false);
 	}
-}
+});
 
 /*
-* Checks whether the input fields for the internal data base are empty when the form is sent. In this case we provide an error message and give the focus back to the respective field
-* @params:	errorMsg:	string with the error message, provided by the language object
+* Checks whether the value of the latitude input element with a regular expression to make certain we get the value we want
 *
-* @return:	false if field is empty to prevent the form from being sent
+* @return:	writes either the default value or - if it matches the pattern and is within the boundaries - the given value into the DOM element's value
 */
-function chkDatabaseEntry(errorMsg)
-{
-	var domElement = document.getElementById('mot_usermap_database_cc');
-	if (domElement.value == '') {
-		alert(errorMsg);
-		domElement.focus();
-		return (false);
-	}
-
-	var domElement = document.getElementById('mot_usermap_database_zc');
-	if (domElement.value == '') {
-		alert(errorMsg);
-		domElement.focus();
-		return (false);
-	}
-
-	var domElement = document.getElementById('mot_usermap_database_lat');
-	if (domElement.value == '') {
-		alert(errorMsg);
-		domElement.focus();
-		return (false);
-	}
-
-	var domElement = document.getElementById('mot_usermap_database_lon');
-	if (domElement.value == '') {
-		alert(errorMsg);
-		domElement.focus();
-		return (false);
-	}
-}
-
-/*
-* Checks the value of an input element with a regular expression to make certain we get the value we want
-*
-* @params:	inputName:	string, name of the DOM element we want to check
-*		matchString: string, contains the pre-defined search pattern
-*		defaultValue: value to use in case the provided value isn't valid
-*		minValue: lowest value allowed
-*		maxValue: highest value allowed
-*
-* @return:	writes either the default value or - if it matches the pattern and is within the boundaries - th given value into the DOM element's value
-*/
-function chkUsermapCoords(inputName, matchString, defaultValue, minValue, maxValue)
-{
-	var domElement = document.getElementById(inputName);
-	var elementValue = domElement.value;
+$("#mot_usermap_lat,#mot_usermap_poi_lat,#mot_usermap_database_lat").blur(function() {
+	var elementValue = $(this).val();
 	elementValue = elementValue.replace(/[,]/g, ".");	// replace a comma with a fullstop in case some European hit the key on the num pad
-	var result = elementValue.match(matchString);
-	if (result == null) {
-		domElement.value = defaultValue;		// input doesn't match the pattern, we use the default value
+	var result = elementValue.match(/-?\d{1,2}\.*\d*/);	// is this like (-)dd.d(ddd)?
+	if ((result == null) || (result[0] < -90.0) || (result[0] > 90.0)) {
+		elementValue = 0;
 	} else {
-		if ((result[0] < minValue) || (result[0] > maxValue)) {
-			domElement.value = defaultValue;	// input matches the search pattern but is outside the given boundaries, we use the default value
-		} else {
-			domElement.value = result[0];		// input matches th search pattern und is within the boundaries, we use it
-		}
+		elementValue = result[0];
 	}
-}
+	$(this).val(elementValue);
+});
 
 /*
-* Cleans the geonames.org username of some superfluous charachters
-* @params:	inputName:	string with the id of the input text field
+* Checks whether the value of the longitude input element with a regular expression to make certain we get the value we want
 *
-* @return:	Sets the value of the given field
+* @return:	writes either the default value or - if it matches the pattern and is within the boundaries - the given value into the DOM element's value
 */
-function cleanUsermapUser(inputName)
-{
-	var domElement = document.getElementById(inputName);
-	var elementValue = domElement.value;
+$("#mot_usermap_lon,#mot_usermap_poi_lon,#mot_usermap_database_lon").blur(function() {
+	var elementValue = $(this).val();
+	elementValue = elementValue.replace(/[,]/g, ".");	// replace a comma with a fullstop in case some European hit the key on the num pad
+	var result = elementValue.match(/-?\d{1,3}\.*\d*/);	// is this like (-)ddd.d(ddd)?
+	if ((result == null) || (result[0] < -180.0) || (result[0] > 180.0)) {
+		elementValue = 0;
+	} else {
+		elementValue = result[0];
+	}
+	$(this).val(elementValue);
+});
+
+/*
+* Cleans the geonames.org username of some superfluous characters
+*/
+$("#mot_usermap_geonamesuser").blur(function() {
+	var elementValue = $(this).val();
 	if (elementValue != '') {
 		elementValue = elementValue.replace(/[;:-]/g, ",");			// replace some characters with a comma (in case someone fooled while typing) (dashes are not allowed in Geonames user names)
 		elementValue = elementValue.replace(/,{2,}/g, ",");			// delete multiple commas,
 		elementValue = elementValue.replace(/^,*/, "");				// erase all leading commas
 		elementValue = elementValue.replace(/,*$/, "");				// erase all trailing commas
-		domElement.value = elementValue;
+		$(this).val(elementValue);
 	}
-}
+});
 
 /*
 * Cleans the country list (list of country codes) for which the Google search is enforced, should be only uppercase letters seperated by commas
-* @params:	inputName:	string with the id of the input text field
-*
-* @return:	Sets the value of the given field
 */
-function cleanGoogleCountries(inputName)
-{
-	var domElement = document.getElementById(inputName);
-	var elementValue = domElement.value;
+$("#mot_usermap_google_force").blur(function() {
+	var elementValue = $(this).val();
 	if (elementValue != '') {
 		elementValue = elementValue.toUpperCase();
 		elementValue = elementValue.replace(/[^,A-Z]/g, "");		// delete all characters which are not either a uppercase letter or a comma
@@ -139,37 +90,167 @@ function cleanGoogleCountries(inputName)
 		elementValue = elementValue.replace(/,{2,}/g, ",");			// delete multiple commas,
 		elementValue = elementValue.replace(/^,*/, "");				// erase all leading commas
 		elementValue = elementValue.replace(/,*$/, "");				// erase all trailing commas
-		domElement.value = elementValue;
+		$(this).val(elementValue);
 	}
-}
+});
 
 /*
-* Checks whether the input fields for country and postal code matches the defined pattern and are not empty
-* @params:	inputName:	string, name of the DOM element we want to check
-*		matchString: string, contains the pre-defined search pattern
-*		errorMsg: string, contains the error message in case the field is empty (which is enforced if the length is <2)
+* Checks whether the input fields for the internal data base are empty when the form is sent. In this case we provide an error message and give the focus back to the respective field
+*
+* @return:	false if field is empty to prevent the form from being sent
+*/
+$("#acp_usermap_database").submit(function() {
+	if ($("#mot_usermap_database_cc").val() == '') {
+		alert(motUsermap.databaseError);
+		$("#mot_usermap_database_cc").focus();
+		return (false);
+	}
+
+	if ($("#mot_usermap_database_zc").val() == '') {
+		alert(motUsermap.databaseError);
+		$("#mot_usermap_database_zc").focus();
+		return (false);
+	}
+
+	if ($("#mot_usermap_database_lat").val() == '') {
+		alert(motUsermap.databaseError);
+		$("#mot_usermap_database_lat").focus();
+		return (false);
+	}
+
+	if ($("#mot_usermap_database_lon").val() == '') {
+		alert(motUsermap.databaseError);
+		$("#mot_usermap_database_lon").focus();
+		return (false);
+	}
+});
+
+/*
+* Checks whether the input field for country code matches the defined pattern and is not empty
 *
 * @return:	Sets the value according to the search pattern or an error message
 */
-function checkCountryAndZipCode(inputName, matchString, errorMsg)
-{
-	var domElement = document.getElementById(inputName);
-	var elementValue = domElement.value;
-	if (elementValue != '') {
-		elementValue = elementValue.toUpperCase();
-		var result = elementValue.match(matchString);
+$("#mot_usermap_database_cc").blur(function() {
+	var elementValue = $(this).val();
+	elementValue = elementValue.toUpperCase();
+	var result = elementValue.match(/[A-Z]{2}/);
+	if (result != null) {
+		$(this).val(elementValue);
+	} else {
+		$(this).val('');
+		alert(motUsermap.databaseErrorCC);
+	}
+});
+
+/*
+* Checks whether the input field for postal code matches the defined pattern and is not empty
+*
+* @return:	Sets the value according to the search pattern or an error message
+*/
+$("#mot_usermap_database_zc").blur(function() {
+	var elementValue = $(this).val();
+	elementValue = elementValue.replace(/[ ]/g, "");	// delete all spaces
+	elementValue = elementValue.toUpperCase();
+	var result = elementValue.match(/[A-Z0-9\-]+/);		// Uppercase letters, digits and hyphens (dash) only
+	if (result != null) {
+		$(this).val(elementValue);
+	} else {
+		$(this).val('');
+		alert(motUsermap.databaseErrorZC);
+	}
+});
+
+/*
+* Checks whether any of the important input fields for a POI created or edited in the ACP is empty. If an empty field is encountered the form will not be submitted and the empty field receives the focus.
+*
+* @return:	false if field is empty to prevent the form from being sent
+*/
+$("#acp_usermap_poi").submit(function() {
+	if ($("#mot_usermap_poi_name").val() == '') {
+		alert(motUsermap.poiErrorNoName);
+		$("#mot_usermap_poi_name").focus();
+		return (false);
+	}
+
+	if ($("#mot_usermap_poi_lat").val() == '') {
+		alert(motUsermap.poiErrorNoLat);
+		$("#mot_usermap_poi_lat").focus();
+		return (false);
+	}
+
+	if ($("#mot_usermap_poi_lon").val() == '') {
+		alert(motUsermap.poiErrorNoLng);
+		$("#mot_usermap_poi_lon").focus();
+		return (false);
+	}
+});
+
+/*
+* Set the POI icon select field to the default icon of the selected layer
+*/
+$("#mot_usermap_poi_layer").change(function() {
+	$("#mot_usermap_poi_icon").val(motUsermap.jsLayersArr[$(this).prop('selectedIndex')]['default_icon']).change();
+});
+
+/*
+* Checks whether any of the input fields for a map overlay created or edited in the ACP is empty. If an empty field is encountered the form will not be submitted and the empty field receives the focus.
+* In addition this function checks whether the input field for language variables contains only entries complying with the rule (e.g. 'en:My POIs') and whether a variable for the English language exists.
+*
+*/
+$("#acp_usermap_layer").submit(function() {
+	// First check if name field is empty
+	if ($("#mot_usermap_layer_name").val() == '') {
+		alert(motUsermap.layerErrorMsg1);
+		$("#mot_usermap_layer_name").focus();
+		return (false);
+	}
+
+	// Check for empty language variables field
+	if ($("#mot_usermap_layer_lang_var").val() == '') {
+		alert(motUsermap.layerErrorMsg2);
+		$("#mot_usermap_layer_lang_var").focus();
+		return (false);
+	}
+
+	// Check whether input complies with rules
+	var result;
+	var isCorrect = true;
+	var isEn = false;
+	var langVar = $("#mot_usermap_layer_lang_var").val();
+	var langVarArr = langVar.split("\n");
+	var arrLength = langVarArr.length;
+	for (var i = 0; i < arrLength; i++) {
+		// check if variable complies with syntax
+		result = langVarArr[i].match(/^[a-z_]{2,}:.{1,}/);
+		if (result == null) {
+			alert(motUsermap.layerErrorMsg3 + langVarArr[i]);
+			isCorrect = false;
+		}
+		// check for English variable since it MUST be present
+		result = langVarArr[i].match( /^en:.{1,}/);
 		if (result != null) {
-			domElement.value = (result[0].length > 1 ? result[0] : '');
-		} else {
-			domElement.value = '';
+			isEn = true;
 		}
 	}
-	if (domElement.value == '') {
-		alert(errorMsg);
-		domElement.focus();
-		return false;
+	if (!isEn) {
+		alert(motUsermap.layerErrorMsg4);
 	}
-}
+
+	if (!isCorrect || !isEn) {
+		$("#mot_usermap_layer_lang_var").focus();
+		return (false);
+	}
+});
+
+$("input[type=radio][name='mot_usermap_layer_member']").change(function() {
+	if ($(this).val() == 1) {
+		$("#icon_select").hide();
+	} else {
+		$("#icon_select").show();
+	}
+});
+
+})(jQuery); // Avoid conflicts with other libraries
 
 /*
 * First replaces some characters with a comma in case somebody hit the wrong key, then erases all characters which are not a digit or a comma, erases all multible, trailing or leading commas
@@ -180,8 +261,7 @@ function checkCountryAndZipCode(inputName, matchString, errorMsg)
 *
 * @return:	a pair of integer numbers seperated by a comma
 */
-function cleanInput(inputName, defaultValue)
-{
+motUsermap.cleanInput = function(inputName, defaultValue) {
 	var pairMatch = /\d{1,2}\,\d{1,2}/;
 	var domElement = document.getElementById(inputName);
 	var elementValue = domElement.value;

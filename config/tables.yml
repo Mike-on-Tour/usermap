@@ -1,0 +1,5 @@
+parameters:
+    mot.usermap.tables.usermap_users: '%core.table_prefix%usermap_users'
+    mot.usermap.tables.usermap_zipcodes: '%core.table_prefix%usermap_zipcodes'
+    mot.usermap.tables.usermap_poi: '%core.table_prefix%usermap_poi'
+    mot.usermap.tables.usermap_layers: '%core.table_prefix%usermap_layers'

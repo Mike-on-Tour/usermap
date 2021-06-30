@@ -1,0 +1,75 @@
+<div id="tabs" class="tabs">
+	<ul>
+		{% if (VIEW_MAP_SUBSRIBED && VALID_USER) || (VIEW_MAP_ALWAYS && VALID_USER) %}
+			<li id="usermap_tab_1" class="tab" onclick="motUsermap.selectTab('1');"><a>{{ lang('TAB_RADIUS_SEARCH') }}</a></li>
+		{% endif %}
+		{% if VIEW_MAP_ALWAYS || (VIEW_MAP_SUBSRIBED && VALID_USER) %}
+			<li id="usermap_tab_2" class="tab" onclick="motUsermap.selectTab('2');"><a>{{ lang('TAB_MEMBER_SEARCH') }}</a></li>
+		{% endif %}
+		{% if POI_ENABLED && POI_VIEW %}
+			<li id="usermap_tab_3" class="tab" onclick="motUsermap.selectTab('3');"><a>{{ lang('TAB_POI_SEARCH') }}</a></li>
+			{% if GOOGLE_ENABLED && POI_CREATE %}
+				<li id="usermap_tab_4" class="tab" onclick="motUsermap.selectTab('4');"><a>{{ lang('TAB_ADDRESS_SEARCH') }}</a></li>
+			{% endif %}
+		{% endif %}
+	</ul>
+</div>
+<div class="panel bg3">
+	<div id="usermap_box_1" class="inner" hidden="true">
+		<div class="usermap_search">
+			<div class="search-form">
+				<span class="search-text">{{ MAP_SEARCH }}&nbsp;</span>
+				<form id="plz_search">
+					<select id="plz_choice" class="inputbox">
+					   <option value="1">1</option>
+					   <option value="2">2</option>
+					   <option value="5">5</option>
+					   <option value="10">10</option>
+					   <option value="25">25</option>
+					   <option value="50">50</option>
+					   <option value="100">100</option>
+					</select>
+					&nbsp;km&nbsp;
+					<input class="button1" id="plz_search_button" type="submit" value="{{ lang('SUBMIT') }}" />
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="usermap_box_2" class="inner" hidden="true">
+		<div class="usermap_search">
+			<div class="search-form">
+				<span class="search-text">{{ lang('MEMBERNAME_SEARCH') }}{{ lang('COLON') }}&nbsp;</span>
+				<form id="membername_search">
+					<input class="inputbox autowidth" id="member_choice" type="text" />&nbsp;
+					<input class="button1" id="membername_search_button" type="submit" value="{{ lang('SUBMIT') }}" />
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="usermap_box_3" class="inner" hidden="true">
+		<div class="usermap_search">
+			<div class="search-form">
+				<span class="search-text">{{ lang('POINAME_SEARCH') }}{{ lang('COLON') }}&nbsp;</span>
+				<form id="poi_search">
+					<input class="inputbox autowidth" id="poi_choice" type="text" />&nbsp;
+					<input class="button1" id="poi_search_button" type="submit" value="{{ lang('SUBMIT') }}" />
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="usermap_box_4" class="inner" hidden="true">
+		<div class="usermap_search">
+			<div class="search-form">
+				<span class="search-text">{{ lang('ADDRESS_SEARCH') }}{{ lang('COLON') }}&nbsp;</span>
+				<form id="address_search"  action="{{ AJAX_CALL }}" method="POST" data-ajax="true">
+					<input class="inputbox autowidth" id="address_choice" type="text" />&nbsp;
+					<input class="button1" id="address_search_button" type="submit" value="{{ lang('SUBMIT') }}" />
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="usermap_search">
+		<div id="seperation_hr"></div>
+		<div id="solution"></div>
+	</div>
+</div>

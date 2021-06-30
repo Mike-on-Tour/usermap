@@ -1,8 +1,7 @@
 <?php
-
 /**
 *
-* @package Usermap v0.10.0
+* @package Usermap v1.1.0
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -16,7 +15,7 @@ class v_0_10_0_4 extends \phpbb\db\migration\migration
 	/**
 	* Check for migration v_0_10_0_3 to be installed
 	*/
-	static public function depends_on()
+	public static function depends_on()
 	{
 		return array('\mot\usermap\migrations\v_0_10_0_3');
 	}
@@ -75,7 +74,7 @@ class v_0_10_0_4 extends \phpbb\db\migration\migration
 			// first we check whether a language directory exists in Usermap for this language. If it doesn't exist, we use the English language file as a fallback solution
 			$cc = file_exists($lang_dir . $row['lang_dir']) ? $row['lang_dir'] : 'en';
 			// and load this files content into an array
-			$countrycodes = file($lang_dir . $cc . '/countrycode.txt', FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES);
+			$countrycodes = file($lang_dir . $cc . '/countrycode/countrycode.txt', FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES);
 
 			// fill the insert buffer
 			$max_i = count($countrycodes);

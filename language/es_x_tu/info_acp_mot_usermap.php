@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v0.10.0
+* @package Usermap v1.1.0
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -17,7 +17,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -31,53 +31,7 @@ if (empty($lang) || !is_array($lang))
 // You do not need this where single placeholders are used, e.g. 'Message %d' is fine
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-$lang = array_merge($lang, array(
-	'PLURAL_RULE'					=> 1,
-	// Module
-	'USERMAP'						=> 'Mapa del Usuario',
-	'USERMAP_NOT_AUTHORIZED'		=> 'No estás autorizado para ver el Mapa del Usuario.',
-	'USERMAP_SEARCHFORM'			=> 'Formulario de búsqueda',
-	'USERMAP_LEGEND'				=> 'Leyenda',
-	'USERMAP_CREDENTIALS'			=> 'Las georeferencias usadas por Mapa del Usuario son cortesía de ',
-	'USERMAP_LEGEND_TEXT'			=> 'Haz zoom utilizando los botones de enfoque.',
-	'MAP_USERS'						=> array(
-		1	=> 'Actualmente hay %1$s miembro mostrado en el mapa.',
-		2	=> 'Actualmente hay %1$s miembros mostrados en el mapa.',
-	),
-	'MAP_SEARCH'					=> 'Buscar miembros en el código postal %1$s en un rango de ',
-	'MAP_RESULT'					=> 'muestra el siguiente resultado: ',
-	'MAP_NORESULT'					=> 'No se encontraron miembros dentro del rango de ',
-	'POI_LEGEND_TITLE'				=> 'Leyenda para los Puntos de Interés',
-	'STREET_DESC'					=> 'Mapa de la calle',
-	'TOPO_DESC'						=> 'Mapa topográfico',
-	'SAT_DESC'						=> 'Imagen de satélite',
-	'USER_DESC'						=> 'Usuarios',
-	'POI_DESC'						=> 'Puntos de Interés',
-	// User POI popup
-	'POI_INPUT_EXPL'				=> 'En este formulario puedes crear un nuevo PDI. Tus coordenadas se adoptarán a partir del marcador que aparece en el mapa a la izquierda de este formulario.
-										Este marcador es arrastrable, puede moverlo con el ratón hasta su destino final. Su nombre, descripción y
-										el icono con el que se representará el marcador posteriormente puede introducirse o seleccionarse en los siguientes campos del formulario.',
-	'POI_NEW_SAVED'					=> 'El PDI creado se ha guardado correctamente en la base de datos y se mostrará en el mapa.',
-	'POI_MOD_NOTIFIED'				=> 'El PDI creado se ha guardado con éxito en la base de datos, los moderadores han sido notificados a la espera de su aprobación.',
-	// Notifications
-	'NOTIFICATION_USERMAP_MOD'		=> 'Notificaciones de moderación para el Mapa de Usuario',
-	'USERMAP_SETTING_APPROVE'		=> 'Un PDI de reciente creación está a la espera de ser aprobado',
-	'USERMAP_SETTING_NOTIFY'		=> 'Alguien ha añadido un nuevo PDI al Mapa de usuario',
-	'USERMAP_NOTIFY_POI_APPROVE'	=> '<strong>Un nuevo PDI espera ser aprobado</strong><br>Un nuevo PDI llamado „<strong>%1$s</strong>“ fue creado por el usuario „%2$s“ y está a la espera de su aprobación.',
-	'USERMAP_NOTIFY_POI'			=> '<strong>PDI añadido</strong><br>El usuario „%2$s“ ha añadido un nuevo PDI llamado „<strong>%1$s</strong>“ al mapa de usuario.',
-	// Moderation
-	'POI_MOD_EXPL'					=> 'Aquí puedes comprobar los datos de un nuevo PDI creado por el usuario y editarlo si lo consideras necesario o deseas hacerlo por
-										otra razón. Puedes posicionar el marcador arrastrándolo con el ratón. Después de terminar este proceso puedes
-										guardar el PDI (y aprobarlo) o eliminarlo si no se ajusta a la política del foro.',
-	'USERMAP_MOD_NOT_AUTHORIZED'	=> '<strong>¡No estás autorizado a iniciar esta actividad!</strong>',
-	'POI_NONEXISTENT'				=> 'El PDI no existe',
-	'POI_ALREADY_APPROVED'			=> '¡Este PDI ya ha sido aprobado!',
-	'APPROVE'						=> 'Aprobar',
-	'DONE'							=> 'Listo',
-	'POI_APPROVED'					=> 'PDI aprobado con éxito.',
-	'ACTION_CONCLUDED'				=> 'Actividad concluida.',
-	'CHANGES_SUCCESSFUL'			=> 'Posibles cambios guardados con éxito.',
-	'BACK_TO_USERMAP'				=> 'Al mapa de usuario',
+$lang = array_merge($lang, [
 	// ACP
 	'ACP_USERMAP'					=> 'Mapa del Usuario',
 	'SUPPORT_USERMAP'				=> 'Si quieres donar al desarrollo de Usermap, utiliza este enlace:<br>',
@@ -85,6 +39,9 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_SETTINGS'			=> 'Opciones',
 	'ACP_USERMAP_SETTINGS_EXPLAIN'	=> 'Aquí es donde personalizas tu Mapa del Usuario.',
 	'ACP_USERMAP_SETTING_SAVED'		=> 'Configuración para el Mapa del Usuario guardada con éxito.',
+	'ACP_USERMAP_GENERAL_SETTINGS'	=> 'Ajustes generales',
+	'ACP_USERMAP_ROWS_PER_PAGE'		=> 'Filas por página de tabla',
+	'ACP_USERMAP_ROWS_PER_PAGE_EXP'	=> 'Elige el número de filas que se mostrarán por página de tabla en las otras fichas.',
 	'ACP_USERMAP_MAPSETTING_TITLE'	=> 'Configuraciones del mapa',
 	'ACP_USERMAP_MAPSETTING_TEXT'	=> 'Centro y enfoque al inicio del Mapa del Usuario.',
 	'ACP_USERMAP_LAT'				=> 'Latitud del centro del mapa',
@@ -99,40 +56,30 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_MARKERS_MOB'		=> 'El radio del círculo en la pantalla de los dispositivos móviles',
 	'ACP_USERMAP_GEONAMES_TITLE'	=> 'Nombre de usuario para geonames.org',
 	'ACP_USERMAP_GEONAMES_TEXT'		=> 'Mapa del Usuario se basa en los servicios de geonames.org para obtener las coordenadas geográficas de la ubicación del miembro identificado por el código postal y el país, además de la ubicación proporcionada en el perfil del miembro.
-										Por lo tanto hay que registrarse en
-										<a href="https://www.geonames.org/login" target="_blank">
-										<span style="text-decoration: underline;">geonames.org/login</span></a>
-										de forma obligatoria. El nombre de usuario registrado debe de ingresarse aquí.<br>
+										Por lo tanto hay que registrarse en %1$s de forma obligatoria. El nombre de usuario registrado debe de ingresarse aquí.<br>
 										Cada solicitud cuesta 1 crédito, con el servicio gratuito está limitado a un máximo de
 										1,000 crédito por hora; si tienes un foro con más de 1,000 miembros se recomienda
 										registrar un usuario por 1,000 a 1,500 miembros. De lo contrario, tus usuarios puede que vean un
 										mensaje de error al ingresar sus datos de perfil (código postal y país).<br>
 										Múltiples nombres de usuario deben estar separados por comas.<br>
 										<strong>¡ATENCIÓN:</strong> debes habilitar (activar) el servicio deseado después del primer inicio de sesión
-										en geonames.org usando el
-										<a href="https://www.geonames.org/manageaccount" target="_blank">
-										<span style="text-decoration: underline;">enlace</span></a>!!',
+										en geonames.org usando el %2$senlace</span></a>!!',
 	'ACP_USERMAP_GEONAMESUSER'		=> 'Nombre(s) de usuario(s) para geonames.org',
 	'ACP_USERMAP_GEONAMESUSER_ERR'	=> '¡Es obligatorio proporcionar al menos un nombre de usuario válido para geonames.org!',
 	'ACP_USERMAP_PROFILE_ERROR'		=> 'Esta acción no pudo concluirse con éxito ya que no se proporcionó un usuario de Geonames.org en la pestaña de configuración de Mapa del usuario. ¡Por favor hazlo inmediatamente!',
 	'ACP_USERMAP_GOOGLE_TITLE'		=> 'Configuración para usar la API de Google Maps',
-	'ACP_USERMAP_GOOGLE_TEXT'		=> 'geonames.org solo admite una lista limitada de países (ver lista
-										<a href="https://www.geonames.org/postal-codes/" target="_blank">
-										<span style="text-decoration: underline;">aquí</span></a>),
+	'ACP_USERMAP_GOOGLE_TEXT'		=> 'geonames.org solo admite una lista limitada de países (ver lista %1$saquí</span></a>),
 										si necesitas considerar países que no están en esta lista, es posible que desees utilizar adicionalmente el servicio de Google Maps.
 										El uso del servicio Google Maps se puede habilitar aquí.<br>
 										Si eliges utilizar el servicio Google Maps, necesitas obtener una clave API suscribiéndote en
-										<a href="https://developers.google.com/maps/documentation/embed/get-api-key" target="_blank">
-										<span style="text-decoration: underline;">Clave API de Google Maps</span></a>. Por favor sigue las instrucciones
+										%2$sClave API de Google Maps</span></a>. Por favor sigue las instrucciones
 										y presta atención a la activación de la ´API de geocodificación´.',
 	'ACP_USERMAP_GOOGLE_ENABLE'		=> '¿Habilitar el uso de la API de Google Maps?',
 	'ACP_USERMAP_GOOGLE_KEY'		=> 'Ingresa tu clave de API de Google Maps',
 	'ACP_USERMAP_APIKEY_ERROR'		=> '¡Esta acción no se pudo concluir con éxito ya que no se proporcionó una clave API de Google Maps después de activar esta API. ¡Por favor proporciona una clave válida!',
 	'ACP_USERMAP_GOOGLE_FORCE'		=> 'Código de países forzados a ser buscados con la API de Google Maps',
 	'ACP_USERMAP_GOOGLE_FORCE_TXT'	=> 'geonames.org por razones de derechos de autor, considera solo algunos códigos postales para algunos países, lo que conlleva a
-										coordenadas muy aproximadas. Para obtener una lista de esos países, consulta
-										<a href="http://download.geonames.org/export/zip/readme.txt" target="_blank">
-										<span style="text-decoration: underline;">este</span></a>texto.<br>
+										coordenadas muy aproximadas. Para obtener una lista de esos países, consulta %1$seste</span></a>texto.<br>
 										La API de Google Maps debería proporcionar resultados más detallados para esos países. Si deseas hacer cumplir la búsqueda
 										usando la API de Google Maps en lugar de geonames.org, ingresa las dos letras del país del código que deseas, seperadas
 										por comas.',
@@ -151,7 +98,7 @@ $lang = array_merge($lang, array(
 										El ingreso y edición de los PDI es tarea de los administradores, todos los elementos necesarios para hacer esto están accesibles a través
 										de la pestaña ´Administración de PDI´.',
 	'ACP_USERMAP_POI_ENABLE'		=> '¿Habilitar visualización de PDI?',
-	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Elegir "Sí" permite mostrar la superposición de puntos de interés con el mapa de usuario. También activa su elección para lo siguiente
+	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Elegir ´Sí´ permite mostrar la superposición de puntos de interés con el mapa de usuario. También activa su elección para lo siguiente
 										ajuste y la visualización de la leyenda que puede escribir y editar en la sección de abajo.',
 	'ACP_USERMAP_ICON_TITLE'		=> 'Valores por defecto de los iconos de PDI',
 	'ACP_USERMAP_ICON_TEXT'			=> 'Aquí puedes cambiar los valores por defecto de los iconos de PDI en cuanto a tamaño y anclaje. Los valores de los iconos están preseleccionados
@@ -188,20 +135,17 @@ $lang = array_merge($lang, array(
 	'ACP_USERMAP_DATABASE_DATA'		=> 'Datos disponibles actualmente',
 	'ACP_USERMAP_DATABASE_CC'		=> 'Código ISO del país',
 	'ACP_USERMAP_DATABASE_ZIPCODE'	=> 'Código Postal',
-	'ACP_USERMAP_DATABASE_LAT'		=> 'Latitud',
-	'ACP_USERMAP_DATABASE_LNG'		=> 'Longitud',
-	'ACP_USERMAP_DATABASE_EDIT'		=> 'Editar',
+	'ACP_USERMAP_DATABASE_NAME'		=> 'Nombre de la ubicación',
+	'ACP_USERMAP_DATABASE_EDIT'		=> 'Editar elemento de la base de datos',
 	'ACP_USERMAP_DATABASE_NOENTRY'	=> 'Datos no disponibles',
 	'ACP_USERMAP_DATABASE_NEW'		=> 'Nueva entrada en la base de datos',
 	'ACP_USERMAP_DATABASE_CC_EXP'	=> 'Ingresa el código de país con las dos letras mayúsculas del país al que se asignará esta entrada.',
 	'ACP_USERMAP_DATABASE_ZC_EXP'	=> 'Por favor ingresa el código postal al que se asignará esta entrada, solo se permiten letras mayúsculas, dígitos y guión.',
+	'ACP_USERMAP_DATABASE_NAME_EXP'	=> 'Puedes introducir un nombre para identificar y distinguir mejor esta ubicación.',
 	'ACP_USERMAP_DATABASE_ERROR'	=> '¡El campo >%1$s< no debe de estar vacío!',
 	'ACP_USERMAP_DATABASE_BIG_ERR'	=> '¡El campo no debe estar vacío!',
-	'ACP_USERMAP_DATABASE_SUCCESS'	=> 'Los cambios en la base de datos interna han sido guardados con éxito.',
 	'ACP_USERMAP_DATABASE_INVALID'	=> 'Esta combinación de código de país y código postal ya existe, ¡no debe usarse por segunda vez!<br>
 										¡No se pudo guardar esta entrada en la base de datos interna!',
-	'ACP_USERMAP_CONFIRM_DELETE'	=> '¿Estás realmente seguro de que desea eliminar este elemento de la base de datos?<br>
-										<strong>¡Esto elimina el elemento permanentemente de la base de datos y no se puede deshacer!</strong>',
 	// POI tab
 	'ACP_USERMAP_POI'				=> 'Administración de PDI',
 	'ACP_USERMAP_POI_EXPLAIN'		=> 'En esta tabla se enumeran todos los PDI ingresados hasta ahora en la base de datos.<br>
@@ -209,38 +153,63 @@ $lang = array_merge($lang, array(
 										el enlace de <i>Edit</i> en la última columna de cada línea en la tabla.<br>
 										Al seleccionar el enlace de <i>Eliminar</i> puedes eliminar una entrada de la base de datos.',
 	'ACP_USERMAP_POI_DATA'			=> 'Entradas de PDI actualmente disponibles',
-	'ACP_USERMAP_POI_NAME'			=> 'Nombre de PDI',
-	'ACP_USERMAP_POI_POPUP'			=> 'Descripción de PDI',
-	'ACP_USERMAP_POI_ICON'			=> 'Archivo de icono',
-	'ACP_USERMAP_POI_SIZE'			=> 'Tamaño del icono',
-	'ACP_USERMAP_POI_ANCHOR'		=> 'Icono de anclaje',
+	'ACP_USERMAP_POI_CREATOR'		=> 'Creador',
+	'ACP_USERMAP_POI_VISIBLE'		=> 'PDI visible',
+	'ACP_USERMAP_POI_VISIBLE_EXP'	=> 'Selecciona si este PDI debe ser visible en la superposición de mapa seleccionada.',
 	'ACP_USERMAP_POI_NEW'			=> 'Ingrese un nuevo PDI',
 	'ACP_USERMAP_POI_EDIT'			=> 'Editar PDI seleccionado',
-	'ACP_USERMAP_POI_NAME_EXP'		=> 'El nombre de este PDI se muestra como una burbuja de información sobre herramientas cuando el puntero del mouse se mueve sobre el marcador de PDI.',
-	'ACP_USERMAP_POI_POPUP_EXP'		=> 'La descripción de este PDI puede usar hasta 500 caracteres y puede contener BBCode.<br>
-										Este texto se muestra en una burbuja emergente cuando se hace clic en el marcador de PDI con el puntero del mouse.',
-	'ACP_USERMAP_POI_ICON_EXP'		=> 'Para facilitar una categorización básica de tus PDI, puedes seleccionar entre los iconos de marcadores con diferentes colores.',
-	'ACP_USERMAP_POI_SIZE_EXP'		=> 'El tamaño del icono en píxeles según la notación ´ancho´, ´alto´.<br>
-										El valor inicial es el tamaño por defecto dado en la pestaña "Configuración".',
-	'ACP_USERMAP_POI_ANCHOR_EXP'	=> 'El icono de anclaje en píxeles comenzando en la esquina superior izquierda en la notación ´valor horizontal´, ´valor vertical´.<br>
-										El valor inicial es el valor por defecto que se da en la pestaña "Configuración".',
-	// UCP
-	'MOT_ZIP'						=> 'Código Postal',
-	'MOT_ZIP_EXP'					=> 'Por favor ingresa el código postal de tu ubicación para ser listado en el Mapa del Usuario.<br>(Solo mayúsculas, números y guiones)',
-	'MOT_LAND'						=> 'País',
-	'MOT_LAND_EXP'					=> 'Por favor selecciona el país dondes vives para ser listado en el Mapa del Usuario.',
-	'MOT_UCP_GEONAMES_ERROR'		=> '¡El administrador no proporcionó un usuario de Geonames.org, por lo tanto, no se pudieron recuperar los datos del mapa de usuario!',
-	// Log entries
-	'LOG_USERMAP_GOOGLE_ERROR'		=> '<strong>La API de Google Maps falló durante la ejecución con el siguiente mensaje de error:</strong><br>» %s',
-	'LOG_USERMAP_GEONAMES_ERROR'	=> '<strong>La API de Geonames falló durante la ejecución con el siguiente mensaje de error:</strong><br>» %s',
-	'LOG_USERMAP_SETTING_UPDATED'	=> '<strong>Opciones de Mapa de Usuario cambiadas</strong>',
-	'LOG_POI_LEGEND_UPDATED'		=> '<strong>Se ha cambiado la leyenda del PDI</strong>',
-	'LOG_USERMAP_ZIPCODE_NEW'		=> '<strong>Se ha añadido una nueva entrada en la base de datos del mapa de usuarios:</strong><br>» %s',
-	'LOG_USERMAP_ZIPCODE_DELETED'	=> '<strong>Se ha eliminado una entrada en la base de datos del mapa de usuarios:</strong><br>» %s',
-	'LOG_USERMAP_INSTALL_LANG'		=> '<strong>Se ha añadido un paquete de idiomas al mapa de usuario:</strong><br>» %s',
-	'LOG_USERMAP_POI_NEW'			=> '<strong>Se ha añadido un nuevo PDI al mapa de usuario:</strong><br>» %s',
-	'LOG_USERMAP_POI_EDITED'		=> '<strong>Datos de PDI modificados:</strong><br>» %s',
-	'LOG_USERMAP_POI_DELETED'		=> '<strong>Se ha eliminado un PDI del mapa de usuario:</strong><br>» %s',
-	'LOG_USERMAP_POI_APPROVED'		=> '<strong>PDI creado por el usuario aprobado:</strong><br>» %s',
-	'LOG_USERMAP_POI_MOD_DELETED'	=> '<strong>PDI creado por el usuario eliminado:</strong><br>» %s',
-));
+	'ACP_USERMAP_POI_SUCCESS'		=> 'El PDI llamado „<strong>%1$s</strong>“ ha sido almacenado con éxito.',
+	'ACP_USERMAP_POI_DELETE'		=> '¿Estás realmente seguro de que quieres borrar el PDI llamado „<strong>%1$s</strong>“ de la base de datos?<br>
+										<strong>¡Esto elimina el PDI de forma permanente de la base de datos y no se puede deshacer!</strong>',
+	'ACP_USERMAP_POI_DEL_SUCCESS'	=> 'El PDI llamado „<strong>%1$s</strong>“ ha sido eliminado de la base de datos.',
+	'ACP_ERR_POI_NO_NAME'			=> 'El campo de entrada llamado „Nombre de PDI“ ¡no debe estar vacío!',
+	'ACP_ERR_POI_NO_LAT'			=> 'El campo de entrada llamado „Latitud“ ¡no debe estar vacío!',
+	'ACP_ERR_POI_NO_LNG'			=> 'El campo de entrada llamado „Longitud“ ¡no debe estar vacío!',
+	// Layer tab
+	'ACP_USERMAP_LAYER'				=> 'Superposición de mapas',
+	'ACP_USERMAP_LAYER_EXPLAIN'		=> 'Todas las superposiciones cartográficas existentes figuran en este cuadro.<br>
+										En la sección debajo de la tabla puede crear una nueva superposición de mapa o editar una existente haciendo clic en el enlace
+										„Editar“ de la fila de la tabla correspondiente. A continuación, se mostrarán los datos actuales de la superposición de mapas seleccionada
+										en esta sección.<br>
+										Utilizando el enlace correspondiente de la tabla puede eliminar este elemento.',
+	'ACP_USERMAP_LAYER_DATA'		=> 'Superposición de mapas existentes',
+	'ACP_USERMAP_LAYER_NAME'		=> 'Nombre de la superposición',
+	'ACP_USERMAP_LAYER_NAME_EXP'	=> 'Introduce un nombre para identificar esta superposición de mapas.',
+	'ACP_USERMAP_MEMBER_LAYER'		=> 'Superposición de miembro',
+	'ACP_USERMAP_MEMBER_LAYER_EXP'	=> 'Escoge „Sí“ para utilizar esta superposición de mapas para mostrar los marcadores de los miembros y „No“ para utilizarlo para mostrar los marcadores de PDI.<br>
+										Las superposiciones de mapas para los miembros se muestran solo con el permiso para ver a los miembros, las superposiciones de mapas para los PDI se muestran
+										si los PDI están activados y el permiso para ver los PDI es válido.',
+	'ACP_USERMAP_LAYER_ACTIVE'		=> 'Activar superposición',
+	'ACP_USERMAP_LAYER_ACTIVE_EXP'	=> 'Escoge „Sí“ para activar esta superposición de mapas y hacerla utilizable para poner PDIs en ella. Las superposiciones de mapas inactivas no son seleccionables
+										al crear un nuevo PDI.',
+	'ACP_USERMAP_SHOW_LAYER'		=> 'Mostrar permanentemente',
+	'ACP_USERMAP_SHOW_LAYER_EXP'	=> 'Escoge „Sí“ para mostrar siempre este mapa superpuesto, empezando por llamar al Mapa de Usuario.<br>
+										Si escoges que „No“ los usuarios deben seleccionar esta superposición de mapas a través del elemento de control de capas del mapa.',
+	'ACP_USERMAP_LAYER_LANG_VAR'	=> 'variables de idiomas',
+	'ACP_USERMAP_LAYER_LANG_VAR_EXP' => 'Para que tus usuarios puedan identificar las superposiciones de mapas con un término en su lengua materna, introduce aquí cada uno de los
+										idiomas instalados en su foro, un término para identificar esta superposición en el elemento de control de la capa, ejemplo. „Campamentos“ como
+										un término para identificar un mapa superpuesto que presenta los campamentos.<br>
+										Asegúrate de utilizar una etiqueta de idioma válida (revisa la tabla de paquetes de idiomas de tu ACP „ISO“ en la sección „Personalizar“)
+										seguido de dos puntos y el término de idioma deseado para asegurarse de que el sistema puede utilizar tu entrada.<br>
+										<strong>%1$sEjemplo:</span></strong> „es:Campamentos“<br>
+										¡Cada combinación de etiqueta lingüística y término lingüístico DEBE utilizar su propia línea!<br>
+										<strong>%1$s¡ATENCIÓN: Una línea con la etiqueta de idioma „es“ es OBLIGATORIA!</span></strong>',
+	'ACP_USERMAP_LAYER_DEFAULTICON'	=> 'Icono por defecto',
+	'ACP_USERMAP_LAYER_ICON_EXP'	=> 'Selecciona el archivo de iconos que se utilizará por defecto en esta superposición de mapas. Esta selección se presentará para todos los PDI
+										creado en esta superposición.',
+	'ACP_USERMAP_LAYER_NEW'			=> 'Crear una nueva superposición de mapas',
+	'ACP_USERMAP_LAYER_EDIT'		=> 'Editar una superposición de mapa existente',
+	'ACP_USERMAP_LAYER_SUCCESS'		=> 'La superposición de mapas llamada „<strong>%1$s</strong>“ ha sido almacenada con éxito.',
+	'ACP_USERMAP_LAYER_DELETE'		=> '¿Estás realmente seguro de que quieres eliminar el mapa superpuesto llamado „<strong>%1$s</strong>“ de la base de datos?<br>
+										¡Todos los PDI asignados a esta superposición de mapas dejarán de mostrarse!<br>
+										<strong>¡Esto elimina la superposición del mapa de forma permanente de la base de datos y no se puede deshacer!</strong>',
+	'ACP_USERMAP_LAYER_DEL_SUCCESS'	=> 'El mapa superpuesto llamado „<strong>%1$s</strong>“ ha sido eliminado de la base de datos.',
+	'ACP_ERR_LAYER_NO_NAME'			=> 'El campo de entrada llamado „Nombre de la superposición“ ¡no debe estar vacío!',
+	'ACP_ERR_LAYER_NO_LANG'			=> 'El campo de entrada llamado „variables de idiomas“ ¡no debe estar vacío!',
+	'ACP_ERR_LAYER_INCORRECT'		=> 'Esta variable de idioma no se ajusta a las normas: ',
+	'ACP_ERR_LAYER_NO_EN'			=> 'Variable de idioma „es“ ¡no se encuentra!',
+	// Logs
+	'LOG_USERMAP_LAYER_NEW'			=> '<strong>Se ha añadido una nueva superposición de mapas al mapa de usuario:</strong><br>» %s',
+	'LOG_USERMAP_LAYER_EDITED'		=> '<strong>Editado un mapa superpuesto:</strong><br>» %s',
+	'LOG_USERMAP_LAYER_DELETED'		=> '<strong>Se ha eliminado un mapa superpuesto del mapa de usuario:</strong><br>» %s'
+]);

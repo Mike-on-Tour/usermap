@@ -1,126 +1,175 @@
+/**
+*
+* package Usermap v1.1.0
+* copyright (c) 2020 - 2021 Mike-on-Tour
+* license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+*
+*/
+
+(function($) {  // Avoid conflicts with other libraries
+
 'use strict';
 
-var poiPos = new L.latLng;
+/* ---------------------------------------------------------------------------------------	Create map	--------------------------------------------------------------------------------------- */
 
-poiPos.lat = jsPoiData['lat'];
-poiPos.lng = jsPoiData['lng'];
+// Get POI coordinates from template and set them for map and in the input fields
+motUsermap.poiPos = new L.latLng;
 
-var poiLat = document.getElementById('usermap_poi_lat');
-poiLat.value = poiPos.lat;
-var poiLng = document.getElementById('usermap_poi_lng');
-poiLng.value = poiPos.lng;
+motUsermap.poiPos.lat = motUsermap.jsPoiData['lat'];
+motUsermap.poiPos.lng = motUsermap.jsPoiData['lng'];
 
-var mapOptions = {
-	center: poiPos,
+$("#usermap_poi_lat").val(motUsermap.poiPos.lat);
+$("#usermap_poi_lng").val(motUsermap.poiPos.lng);
+
+// Set map options and create map with
+motUsermap.mapOptions = {
+	center: motUsermap.poiPos,
 	zoom: 16,
 	attributionControl: false,
 	scrollWheelZoom: false,
 };
 
-var modMap = new L.map('map_box', mapOptions);
+motUsermap.modMap = new L.map('map_box', motUsermap.mapOptions);
 
-modMap.on('click', function() {
-	if (modMap.scrollWheelZoom.enabled()) {
-		modMap.scrollWheelZoom.disable();
+motUsermap.modMap.on('click', function() {
+	if (motUsermap.modMap.scrollWheelZoom.enabled()) {
+		motUsermap.modMap.scrollWheelZoom.disable();
 	}
 	else {
-		modMap.scrollWheelZoom.enable();
+		motUsermap.modMap.scrollWheelZoom.enable();
 	}
 });
 
-var layer = new L.TileLayer('https://\{s\}.tile.openstreetmap.org/\{z\}/\{x\}/\{y\}.png');	// International map colors
-var topoLayer = new L.TileLayer('https://\{s\}.tile.opentopomap.org/\{z\}/\{x\}/\{y\}.png');	// Topo map
-var satLayer = new L.TileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/\{z\}/\{y\}/\{x\}');
+motUsermap.layer = new L.TileLayer('https://\{s\}.tile.openstreetmap.org/\{z\}/\{x\}/\{y\}.png');	// International map colors
+motUsermap.topoLayer = new L.TileLayer('https://\{s\}.tile.opentopomap.org/\{z\}/\{x\}/\{y\}.png');	// Topo map
+motUsermap.satLayer = new L.TileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/\{z\}/\{y\}/\{x\}');
 
-modMap.addLayer(layer);
+motUsermap.modMap.addLayer(motUsermap.layer);
 
-var attribution = new L.control.attribution().addAttribution('Map Data &copy; <a href="https://www.openstreetmap.org/copyright" target=_blank" rel="noopener noreferrer">OpenStreetMap</a>').addTo(modMap);
+new L.control.attribution().addAttribution('Map Data &copy; <a href="https://www.openstreetmap.org/copyright" target=_blank" rel="noopener noreferrer">OpenStreetMap</a>').addTo(motUsermap.modMap);
 
-var scale = new L.control.scale({imperial: false}).addTo(modMap);
+new L.control.scale({imperial: false}).addTo(motUsermap.modMap);
 
-var baseMap = {
-	[jsStreetDesc]	: layer,
-	[jsTopoDesc]	: topoLayer,
-	[jsSatDesc]		: satLayer,
+motUsermap.baseMap = {
+	[motUsermap.jsStreetDesc]	: motUsermap.layer,
+	[motUsermap.jsTopoDesc]	: motUsermap.topoLayer,
+	[motUsermap.jsSatDesc]		: motUsermap.satLayer,
 }
 
-var layerControl = new L.control.layers(baseMap, null).addTo(modMap);
+new L.control.layers(motUsermap.baseMap, null).addTo(motUsermap.modMap);
 
-var poiSeperator = (jsServerConfig[jsServerConfig.length - 1] == '/') ? '' : '/';
-var poiIconPath = jsServerConfig + poiSeperator + 'ext/mot/usermap/styles/all/theme/images/poi/';
-var iconOptions = {
-	iconUrl:	poiIconPath + jsPoiData['icon'],
-	iconAnchor:	jsPoiData['icon_anchor'].split(","),
-	iconSize:	jsPoiData['icon_size'].split(","),
+motUsermap.iconOptions = {
+	iconUrl:	motUsermap.poiIconPath + motUsermap.jsPoiData['icon'],
+	iconAnchor:	motUsermap.jsPoiData['icon_anchor'].split(","),
+	iconSize:	motUsermap.jsPoiData['icon_size'].split(","),
 }
-var customIcon = L.icon(iconOptions);
-var markerOptions = {
-//	title:		jsPoiData['name'],
+motUsermap.customIcon = new L.icon(motUsermap.iconOptions);
+motUsermap.markerOptions = {
 	clickable:	true,
 	draggable:	true,
-	icon: customIcon
+	icon: motUsermap.customIcon
 }
-var marker = new L.Marker(poiPos, markerOptions);
+motUsermap.marker = new L.Marker(motUsermap.poiPos, motUsermap.markerOptions);
 
-marker.bindTooltip(jsPoiData['name']);
+motUsermap.marker.bindTooltip(motUsermap.jsPoiData['name']);
 
-if (jsPoiData['popup'] != '') {
-	marker.bindPopup(jsPoiData['popup']);
+if (motUsermap.jsPoiData['popup'] != '') {
+	motUsermap.marker.bindPopup(motUsermap.jsPoiData['popup']);
 }
 
-marker.on('move', function (evt) {
+motUsermap.marker.on('move', function (evt) {
 	var curPos = evt.latlng;
-	poiLat.value = curPos.lat;
-	$("#poiLat").load(location.href + " #poiLat" );
-	poiLng.value = curPos.lng;
-	$("#poiLng").load(location.href + " #poiLng" );
+	$("#usermap_poi_lat").val(curPos.lat);
+	$("#usermap_poi_lng").val(curPos.lng);
 });
 
-marker.addTo(modMap);
+motUsermap.marker.addTo(motUsermap.modMap);
 
 /*
-*	The following functions change the POI icon while changing properties at approval
+* Check whether a user created POI has a name and if not, go back to the name input
 */
-function changePoiName(elementId) {
-	var name = document.getElementById(elementId).value;
-	marker.unbindTooltip();
-	if (name != '') {
-		marker.bindTooltip(name);
-	}
-}
-
-function changePoiPopup(elementId) {
-	var popupString = document.getElementById(elementId).value;
-	var html = bbcodeParser.bbcodeToHtml(popupString);
-	var popup = marker.getPopup();
-	if ((typeof popup == 'undefined') && (html != '')) {
-		marker.bindPopup(html);
-	}
-	if (html != '') {
-		marker.bindPopup(html);
-	}
-	if (html == '') {
-		marker.unbindPopup();
-	}
-}
-
-function changePoiIcon(iconUrlElement, iconSizeElement, iconAnchorElement) {
-
-	var markerIconOptions = {
-		iconUrl:	poiIconPath + document.getElementById(iconUrlElement).value,
-		iconSize:	document.getElementById(iconSizeElement).value.split(","),
-		iconAnchor:	document.getElementById(iconAnchorElement).value.split(","),
-	}
-	var markerIcon = L.icon(markerIconOptions);
-	marker.setIcon(markerIcon);
-}
-
-// Check whether a user created POI has a name and if not, go back to the input
-function checkPoiName(errorMsg) {
-	var poiName = document.getElementById('usermap_poi_name');
-	if (poiName.value == '') {
-		alert(errorMsg);
-		poiName.focus();
+$("#poi_edit").submit(function() {
+	if ($("#usermap_poi_name").val() == '') {
+		alert(motUsermap.errorMsg);
+		$("#usermap_poi_name").focus();
 		return (false);
 	}
-}
+});
+
+/*
+* Changes the POI name (tooltip)  at approval
+*/
+$("#usermap_poi_name").blur(function() {
+	var name = $(this).val();
+	motUsermap.marker.unbindTooltip();
+	if (name != '') {
+		motUsermap.marker.bindTooltip(name);
+	}
+});
+
+/*
+* Change the popup after editing the text
+*/
+$("#usermap_poi_popup").blur(function() {
+	var popupString = $(this).val();
+	var html = bbcodeParser.bbcodeToHtml(popupString);
+	var popup = motUsermap.marker.getPopup();
+	if ((typeof popup == 'undefined') && (html != '')) {
+		motUsermap.marker.bindPopup(html);
+	}
+	if (html != '') {
+		motUsermap.marker.bindPopup(html);
+	}
+	if (html == '') {
+		motUsermap.marker.unbindPopup();
+	}
+});
+
+/*
+* Set the POI icon select field to the default icon of the selected layer
+*/
+$("#usermap_poi_layer").change(function() {
+	$("#usermap_poi_icon").val(motUsermap.jsPoiLayers[$(this).prop('selectedIndex')]['default_icon']).change();
+});
+
+/*
+*  Change the POI icon image, size or anchor after the respective field gets changed
+*/
+$("#usermap_poi_icon, #usermap_poi_icon_size, #usermap_poi_icon_anchor").change(function() {
+	motUsermap.markerIconOptions = {
+		iconUrl:	motUsermap.poiIconPath + $("#usermap_poi_icon").val(),
+		iconSize:	$("#usermap_poi_icon_size").val().split(","),
+		iconAnchor:	$("#usermap_poi_icon_anchor").val().split(","),
+	}
+	motUsermap.markerIcon = new L.icon(motUsermap.markerIconOptions);
+	motUsermap.marker.setIcon(motUsermap.markerIcon);
+});
+
+/*
+* First replaces some characters with a comma in case somebody hit the wrong key, then erases all characters which are not a digit or a comma, erases all multible, trailing or leading commas
+* and checks whether the expression is of 'dd,dd' to make sure we get only two numbers seperated by a comma and then writes either the entered value or the default into the input
+*
+*/
+$("#usermap_poi_icon_size, #usermap_poi_icon_anchor").blur(function() {
+	var elementValue = $(this).val();
+	if (elementValue != '') {
+		elementValue = elementValue.replace(/[;:\._-]/g, ",");		// replace some characters with a comma (in case someone fooled while typing)
+		elementValue = elementValue.replace(/[^,\d]/g, "");			// erase all characters which are not a digit or a comma
+		elementValue = elementValue.replace(/,{2,10}/g, ",");		// erase multiple commas
+		elementValue = elementValue.replace(/^,*/, "");				// erase all leading commas
+		elementValue = elementValue.replace(/,*$/, "");				// erase all trailing commas
+	}
+	var result = elementValue.match(/\d{1,2}\,\d{1,2}/);
+	if (result == null) {
+		if ($(this).attr('id') == 'usermap_poi_icon_size') {
+			$(this).val(motUsermap.defaultPoiIconSize);		// input doesn't match the pattern, we use the default value for icon size
+		}
+		if ($(this).attr('id') == 'usermap_poi_icon_anchor') {
+			$(this).val(motUsermap.defaultPoiIconAnchor);		// input doesn't match the pattern, we use the default value for icon anchor
+		}
+	} else {
+		$(this).val(result[0]);			// input matches th search pattern, we use it
+	}
+});
+
+})(jQuery); // Avoid conflicts with other libraries
