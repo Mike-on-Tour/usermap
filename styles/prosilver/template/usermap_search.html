@@ -1,15 +1,15 @@
 <div id="tabs" class="tabs">
 	<ul>
 		{% if (VIEW_MAP_SUBSRIBED && VALID_USER) || (VIEW_MAP_ALWAYS && VALID_USER) %}
-			<li id="usermap_tab_1" class="tab" onclick="motUsermap.selectTab('1');"><a>{{ lang('TAB_RADIUS_SEARCH') }}</a></li>
+			<li id="usermap_tab_1" class="tab"><a>{{ lang('TAB_RADIUS_SEARCH') }}</a></li>
 		{% endif %}
 		{% if VIEW_MAP_ALWAYS || (VIEW_MAP_SUBSRIBED && VALID_USER) %}
-			<li id="usermap_tab_2" class="tab" onclick="motUsermap.selectTab('2');"><a>{{ lang('TAB_MEMBER_SEARCH') }}</a></li>
+			<li id="usermap_tab_2" class="tab"><a>{{ lang('TAB_MEMBER_SEARCH') }}</a></li>
 		{% endif %}
 		{% if POI_ENABLED && POI_VIEW %}
-			<li id="usermap_tab_3" class="tab" onclick="motUsermap.selectTab('3');"><a>{{ lang('TAB_POI_SEARCH') }}</a></li>
+			<li id="usermap_tab_3" class="tab"><a>{{ lang('TAB_POI_SEARCH') }}</a></li>
 			{% if GOOGLE_ENABLED && POI_CREATE %}
-				<li id="usermap_tab_4" class="tab" onclick="motUsermap.selectTab('4');"><a>{{ lang('TAB_ADDRESS_SEARCH') }}</a></li>
+				<li id="usermap_tab_4" class="tab"><a>{{ lang('TAB_ADDRESS_SEARCH') }}</a></li>
 			{% endif %}
 		{% endif %}
 	</ul>

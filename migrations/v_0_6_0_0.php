@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.1
 * @copyright (c) 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -50,7 +50,7 @@ class v_0_6_0_0 extends \phpbb\db\migration\migration
 		*/
 		$country_names = $matches = array();
 		$country_names[] = '';
-		$handle = fopen($lang_dir . 'en/countrycode.txt', "rb");
+		$handle = fopen($lang_dir . 'en/countrycode/countrycode.txt', "rb");
 		while (!feof($handle))
 		{
 			$line = fgets($handle);

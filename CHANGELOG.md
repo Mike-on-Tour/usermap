@@ -4,6 +4,25 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.1] - 2021-07-07
+
+### Added
+-	Migration file `migrations/v_1_1_1.php` to set the new version number in `CONFIG_TABLE`
+
+### Changed
+-	'click' event handlers for search tabs moved from `styles/prosilver/template/usermap_search.html` to `styles/all/template/mot_usermap_tabs.js`
+-	The path to the phpBB editor from `./../assets/javascript/editor.js` to `./assets/javascript/editor.js` in
+	`styles/prosilver/template/usermap_poi_input_bbcode.html`
+-	`composer.json` and `README.md` to show new version number
+
+### Fixed
+-	A wrong path to the English countrycode file in `migrations/v_0_6_0_0.php`
+-	Undefined permissions variables to hand over to javascript in `styles/prosilver/template/usermap_main.html` due to defining them in the wrong if-clause
+	within `controller/main.php` (`POI_VIEW` and `POI_CREATE` never got defined if POIs were disabled)
+
+### Removed
+  
+  
 ## [1.1.0] - 2021-06-30
 
 ### Added

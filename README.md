@@ -1,6 +1,6 @@
 # **Usermap for phpBB**
 
-![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-green)  
+![Version: 1.1.1](https://img.shields.io/badge/Version-1.1.1-green)  
   
 ![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)  
@@ -255,7 +255,7 @@ Starting with ver 1.1.0 Usermap can be used to place user markers as precise as 
 The solution is twofold: Firstly the administator must enable the usage of the Google Maps API (see Usermap settings), get an API key and insert the two-letter-
 countrycode of the country this should work for into the input field "Country code of those countries enforced to look up with Google Maps API". This ensures
 that entries for the respective country will not be processed through the (default) Geonames database but through the Google Maps database which provides
-coordinates down to strreet address level.
+coordinates down to street address level.
   
 Secondly the users have to enter their address into phpBB's location profile field, they do have several choices:  
 +	The user provides no input. In this case the marker for his/her location on the map is still very general (similar, but possibly not identical to the one 
@@ -263,7 +263,7 @@ Secondly the users have to enter their address into phpBB's location profile fie
 +	The user provides just the name of the town/village he/she is living in. In this case the Google Maps database provides a coordinate to place the user
 	marker a little bit more precisely on the respective town's coordinates.
 +	The user provides a street name (if this name is not unique within the postal code area please provide the town name followed by space and the street name).
-	In this case the Google Maps database provides a cordinate representing this street.
+	In this case the Google Maps database provides a coordinate representing this street.
 +	The user provides a fully qualified street address consisting of the town's name (if the street is not unique to the postal code area) and/or a street name
 	and a house number (or whatever qualifies as a valid street address in the respective country). In this case the user marker will be placed on the rooftop
 	of the house this user lives in.  

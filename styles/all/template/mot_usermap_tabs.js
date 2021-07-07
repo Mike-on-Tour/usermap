@@ -1,6 +1,6 @@
 /**
 *
-* package Usermap v1.1.0
+* package Usermap v1.1.1
 * copyright (c) 2020 - 2021 Mike-on-Tour
 * license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -9,6 +9,25 @@
 (function($) {  // Avoid conflicts with other libraries
 
 'use strict';
+
+/*
+* Event handlers for search tabs
+*/
+$("#usermap_tab_1").click(function() {
+	motUsermap.selectTab('1');
+});
+
+$("#usermap_tab_2").click(function() {
+	motUsermap.selectTab('2');
+});
+
+$("#usermap_tab_3").click(function() {
+	motUsermap.selectTab('3');
+});
+
+$("#usermap_tab_4").click(function() {
+	motUsermap.selectTab('4');
+});
 
 /*
 * Select the tab as active and the corresponding content box after a tab was selected

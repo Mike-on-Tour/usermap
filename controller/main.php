@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.1
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -420,8 +420,6 @@ class main
 				'POIDATA'					=> json_encode($poi_data),
 				'POI_COUNT'					=> count($poi_data),
 				'POI_LAYERDATA'				=> json_encode($poi_layers),
-				'POI_VIEW'					=> $view_poi ? 1 : 0,
-				'POI_CREATE'				=> ($add_poi || $add_approve_poi) ? 1 : 0,
 				'POI_LEGEND'				=> $poi_legend,
 				'POI_ALREADY_APPROVED'		=> false,
 				'USERMAP_POI_ICON_SIZE'		=> $this->config['mot_usermap_iconsize_default'],
@@ -497,6 +495,8 @@ class main
 			'POI_ENABLED'				=> $poi_enabled,
 			'VIEW_MAP_ALWAYS'			=> $view_map ? 1 : 0,
 			'VIEW_MAP_SUBSRIBED'		=> $view_map_subscribed ? 1 : 0,
+			'POI_VIEW'					=> $view_poi ? 1 : 0,
+			'POI_CREATE'				=> ($add_poi || $add_approve_poi) ? 1 : 0,
 			'DISPLAY_PERMISSIONS'		=> $permission_overview,
 			'TAB'						=> $tab,
 			)
