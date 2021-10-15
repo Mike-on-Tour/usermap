@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.1
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -212,7 +212,7 @@ class main
 					$this->notification_manager->add_notifications('mot.usermap.notification.type.notify_poi', $notification_data);
 
 					// tell user about success
-					trigger_error($this->language->lang('POI_NEW_SAVED') . $this->usermap_functions->usermap_back_link($this->root_path."usermap", $this->language->lang('BACK_TO_PREV')), E_USER_NOTICE);
+					trigger_error($this->language->lang('POI_NEW_SAVED') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_PREV')), E_USER_NOTICE);
 				}
 				else if ($add_approve_poi)
 				{
@@ -221,12 +221,12 @@ class main
 					$this->notification_manager->add_notifications('mot.usermap.notification.type.approve_poi', $notification_data);
 
 					// tell user about success
-					trigger_error($this->language->lang('POI_MOD_NOTIFIED') . $this->usermap_functions->usermap_back_link($this->root_path."usermap", $this->language->lang('BACK_TO_PREV')), E_USER_NOTICE);
+					trigger_error($this->language->lang('POI_MOD_NOTIFIED') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_PREV')), E_USER_NOTICE);
 				}
 			}
 			else
 			{
-				trigger_error($this->language->lang('FORM_INVALID') . $this->usermap_functions->usermap_back_link($this->root_path."usermap", $this->language->lang('BACK_TO_PREV')), E_USER_WARNING);
+				trigger_error($this->language->lang('FORM_INVALID') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_PREV')), E_USER_WARNING);
 			}
 		}
 
@@ -293,14 +293,13 @@ class main
 		$layers = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
 
-		$layernames = $poi_layers = $member_layers = [];
+		$poi_layers = $member_layers = [];
 		foreach ($layers as &$arr)
 		{
 			$lang_vars = json_decode($arr['layer_lang_var'], true);
 			// write only current user's language variable into the layers array
 			$arr['layer_lang_var'] = array_key_exists ($this->user->data['user_lang'], $lang_vars) ? $lang_vars[$this->user->data['user_lang']] : $lang_vars['en'];
 			// and prepare layer_id and layer_name for the modal window
-			$layernames[$arr['layer_id']] = $arr['layer_name'];
 			switch ($arr['member_layer'])
 			{
 				// POI layer
@@ -440,40 +439,39 @@ class main
 			));
 		}
 
-		$permission_overview = '<p>';
+		$permission_overview = '';
 		if ($view_map)
 		{
-			$permission_overview .= $this->language->lang('USERMAP_PERM_VIEW_ALWAYS') . '<br>';
+			$permission_overview .= $this->language->lang('USERMAP_PERM_VIEW_ALWAYS');
 		}
 		else if ($view_map_subscribed)
 		{
-			$permission_overview .= $this->language->lang('USERMAP_PERM_VIEW_SUBSCRIBED') . '<br>';
+			$permission_overview .= $this->language->lang('USERMAP_PERM_VIEW_SUBSCRIBED');
 		}
 		else if (!$view_map && !$view_map_subscribed)
 		{
-			$permission_overview .= $this->language->lang('USERMAP_NO_VIEW_SUBSCRIBED') . '<br>';
+			$permission_overview .= $this->language->lang('USERMAP_NO_VIEW_SUBSCRIBED');
 		}
 		if ($view_poi)
 		{
-			$permission_overview .= $this->language->lang('USERMAP_PERM_VIEW_POI') . '<br>';
+			$permission_overview .= $this->language->lang('USERMAP_PERM_VIEW_POI');
 		}
 		else
 		{
-			$permission_overview .= $this->language->lang('USERMAP_NO_VIEW_POI') . '<br>';
+			$permission_overview .= $this->language->lang('USERMAP_NO_VIEW_POI');
 		}
 		if (!$add_poi && !$add_approve_poi)
 		{
-			$permission_overview .= $this->language->lang('USERMAP_NO_ADD_POI') . '<br>';
+			$permission_overview .= $this->language->lang('USERMAP_NO_ADD_POI');
 		}
 		else if ($add_poi)
 		{
-			$permission_overview .= $this->language->lang('USERMAP_PERM_ADD_POI') . '<br>';
+			$permission_overview .= $this->language->lang('USERMAP_PERM_ADD_POI');
 		}
 		else if ($add_approve_poi)
 		{
-			$permission_overview .= $this->language->lang('USERMAP_PERM_ADD_POI_MOD') . '<br>';
+			$permission_overview .= $this->language->lang('USERMAP_PERM_ADD_POI_MOD');
 		}
-		$permission_overview .= '</p>';
 
 		// Select default search tab
 		$tab = 1;

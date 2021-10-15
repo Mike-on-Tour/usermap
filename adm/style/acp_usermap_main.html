@@ -182,14 +182,14 @@
 	{% endif %}
 {% endif %}
 
-<p class="centered_text">
-{{ USERMAP_VERSION }}
-</p>
+<fieldset>
+	<dl>
+		<dt><label>{{ lang('SUPPORT_USERMAP') }}</label></dt>
+		<dd><a href="https://paypal.me/MichaelVormwald?locale.x=de_DE" target="_blank" rel="noopener noreferrer">{{ ICON_PAYPAL }}</a></dd>
+	</dl>
+</fieldset>
 
-<p class="centered_text">
-{{ lang('SUPPORT_USERMAP') }}
-<a href="https://paypal.me/MichaelVormwald?locale.x=de_DE" target="_blank" rel="noopener noreferrer">{{ ICON_PAYPAL }}</a>
-</p>
+<p class="centered_text">{{ USERMAP_VERSION }}</p>
 
 {% if JUMP_TO_POI_LEGEND %}
 	<script>scrollToElement('acp_usermap_poi_legend');</script>

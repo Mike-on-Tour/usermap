@@ -31,7 +31,7 @@ $("#acp_usermap_settings").submit(function() {
 });
 
 /*
-* Checks whether the value of the latitude input element with a regular expression to make certain we get the value we want
+* Checks the value of the latitude input element with a regular expression to make certain we get the value we want
 *
 * @return:	writes either the default value or - if it matches the pattern and is within the boundaries - the given value into the DOM element's value
 */
@@ -48,7 +48,7 @@ $("#mot_usermap_lat,#mot_usermap_poi_lat,#mot_usermap_database_lat").blur(functi
 });
 
 /*
-* Checks whether the value of the longitude input element with a regular expression to make certain we get the value we want
+* Checks the value of the longitude input element with a regular expression to make certain we get the value we want
 *
 * @return:	writes either the default value or - if it matches the pattern and is within the boundaries - the given value into the DOM element's value
 */

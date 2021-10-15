@@ -29,7 +29,7 @@ class ajax_call
 		$address = $this->request->variable('address', '', true);
 		$json_request = "https://maps.googleapis.com/maps/api/geocode/json?key=" . $this->config['mot_usermap_google_apikey'] . "&address=" . urlencode($address);
 		$json = file_get_contents($json_request);
-		$xml = json_decode($json, true);
+		$xml = $json != '' ? json_decode($json, true) : ['status' => 'notOK',];
 		if ($xml['status'] == 'OK')
 		{
 			$result = [
@@ -40,7 +40,7 @@ class ajax_call
 		}
 		else
 		{
-			$result = ['success' => false];
+			$result = ['success' => false,];
 		}
 		return new \Symfony\Component\HttpFoundation\JsonResponse($result);
 	}

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -32,7 +32,6 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 $lang = array_merge($lang, [
-	'PLURAL_RULE'					=> 1,
 	// Module
 	'USERMAP'						=> 'Mitgliederkarte',
 	'USERMAP_NOT_AUTHORIZED'		=> 'Sie sind nicht befugt, die Mitgliederkarte zu sehen.',
@@ -58,6 +57,7 @@ $lang = array_merge($lang, [
 	'MAP_SEARCH'					=> 'Mitgliedersuche um die PLZ %1$s mit dem Radius ',
 	'MAP_RESULT'					=> 'ergab folgendes Ergebnis:',
 	'MAP_NORESULT'					=> 'fand keine Mitglieder innerhalb des Radius von ',
+	'MAP_KM'						=> 'km',
 	'MEMBERNAME_SEARCH'				=> 'Geben Sie den Namen des gesuchten Mitgliedes ein (Platzhalter * möglich)',
 	'MEMBERNAME_RESULT'				=> 'Ihre Suche fand folgende Mitglieder:',
 	'MEMBERNAME_NORESULT'			=> 'Zu Ihrer Suche wurden keine passenden Mitglieder gefunden.',
@@ -75,14 +75,14 @@ $lang = array_merge($lang, [
 	'SAT_DESC'						=> 'Satellitenbild',
 	// Permission overview
 	'USERMAP_PERM_OVERVIEW'			=> 'Berechtigungen auf dieser Seite',
-	'USERMAP_PERM_VIEW_ALWAYS'		=> 'Sie <strong>dürfen</strong> die Mitglieder immer sehen.',
-	'USERMAP_PERM_VIEW_SUBSCRIBED'	=> 'Sie <strong>dürfen</strong> die Mitglieder sehen, wenn Sie selbst registriert sind.',
-	'USERMAP_NO_VIEW_SUBSCRIBED'	=> 'Sie dürfen die Mitglieder <strong>nicht</strong> sehen.',
-	'USERMAP_PERM_VIEW_POI'			=> 'Sie <strong>dürfen</strong> POIs sehen.',
-	'USERMAP_NO_VIEW_POI'			=> 'Sie dürfen <strong>keine</strong> POIs sehen.',
-	'USERMAP_NO_ADD_POI'			=> 'Sie dürfen <strong>keine</strong> POIs erstellen.',
-	'USERMAP_PERM_ADD_POI'			=> 'Sie <strong>dürfen</strong> POIs ohne Freigabe erstellen.',
-	'USERMAP_PERM_ADD_POI_MOD'		=> 'Sie <strong>dürfen</strong> POIs mit Freigabe erstellen.',
+	'USERMAP_PERM_VIEW_ALWAYS'		=> 'Sie <strong>dürfen</strong> die Mitglieder immer sehen.<br>',
+	'USERMAP_PERM_VIEW_SUBSCRIBED'	=> 'Sie <strong>dürfen</strong> die Mitglieder sehen, wenn Sie selbst registriert sind.<br>',
+	'USERMAP_NO_VIEW_SUBSCRIBED'	=> 'Sie dürfen die Mitglieder <strong>nicht</strong> sehen.<br>',
+	'USERMAP_PERM_VIEW_POI'			=> 'Sie <strong>dürfen</strong> POIs sehen.<br>',
+	'USERMAP_NO_VIEW_POI'			=> 'Sie dürfen <strong>keine</strong> POIs sehen.<br>',
+	'USERMAP_NO_ADD_POI'			=> 'Sie dürfen <strong>keine</strong> POIs erstellen.<br>',
+	'USERMAP_PERM_ADD_POI'			=> 'Sie <strong>dürfen</strong> POIs ohne Freigabe erstellen.<br>',
+	'USERMAP_PERM_ADD_POI_MOD'		=> 'Sie <strong>dürfen</strong> POIs mit Freigabe erstellen.<br>',
 	// Error messages
 	'USERMAP_GN_USER_ERROR'			=> ': Dieser Geonames Nutzer existiert nicht oder wurde für diesen Service nicht aktiviert!',
 	// User POI popup

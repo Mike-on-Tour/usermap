@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -32,7 +32,6 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 $lang = array_merge($lang, [
-	'PLURAL_RULE'					=> 1,
 	// Module
 	'USERMAP'						=> 'User Map',
 	'USERMAP_NOT_AUTHORIZED'		=> 'You are not authorized to see the user map.',
@@ -58,6 +57,7 @@ $lang = array_merge($lang, [
 	'MAP_SEARCH'					=> 'Search for members at postal (zip) code %1$s within a range of ',
 	'MAP_RESULT'					=> 'shows the following result:',
 	'MAP_NORESULT'					=> 'found no members within the range of ',
+	'MAP_KM'						=> 'km',
 	'MEMBERNAME_SEARCH'				=> 'Enter the username of the member (wildcard * available)',
 	'MEMBERNAME_RESULT'				=> 'The following members were found:',
 	'MEMBERNAME_NORESULT'			=> 'There are no members with a username matching your request.',
@@ -74,14 +74,14 @@ $lang = array_merge($lang, [
 	'SAT_DESC'						=> 'Satellite image',
 	// Permission overview
 	'USERMAP_PERM_OVERVIEW'			=> 'Permissions on this page',
-	'USERMAP_PERM_VIEW_ALWAYS'		=> 'You <strong>can</strong> always see members .',
-	'USERMAP_PERM_VIEW_SUBSCRIBED'	=> 'You <strong>can</strong> only see members if registered yourself on the Usermap.',
-	'USERMAP_NO_VIEW_SUBSCRIBED'	=> 'You <strong>cannot</strong> see the members.',
-	'USERMAP_PERM_VIEW_POI'			=> 'You <strong>can</strong> see POIs.',
-	'USERMAP_NO_VIEW_POI'			=> 'You <strong>cannot</strong> see POIs.',
-	'USERMAP_NO_ADD_POI'			=> 'You <strong>cannot</strong> create POIs.',
-	'USERMAP_PERM_ADD_POI'			=> 'You <strong>can</strong> create POIs without moderator approval.',
-	'USERMAP_PERM_ADD_POI_MOD'		=> 'You <strong>can</strong> create POIs with moderator approval.',
+	'USERMAP_PERM_VIEW_ALWAYS'		=> 'You <strong>can</strong> always see members.<br>',
+	'USERMAP_PERM_VIEW_SUBSCRIBED'	=> 'You <strong>can</strong> only see members if registered yourself on the Usermap.<br>',
+	'USERMAP_NO_VIEW_SUBSCRIBED'	=> 'You <strong>cannot</strong> see the members.<br>',
+	'USERMAP_PERM_VIEW_POI'			=> 'You <strong>can</strong> see POIs.<br>',
+	'USERMAP_NO_VIEW_POI'			=> 'You <strong>cannot</strong> see POIs.<br>',
+	'USERMAP_NO_ADD_POI'			=> 'You <strong>cannot</strong> create POIs.<br>',
+	'USERMAP_PERM_ADD_POI'			=> 'You <strong>can</strong> create POIs without moderator approval.<br>',
+	'USERMAP_PERM_ADD_POI_MOD'		=> 'You <strong>can</strong> create POIs with moderator approval.<br>',
 	// Error messages
 	'USERMAP_GN_USER_ERROR'			=> ': Geonames user does not exist or is not activated for this service!',
 	// User POI popup

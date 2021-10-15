@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -27,8 +27,8 @@ class lang_module
 		add_form_key('acp_usermap_langs');
 
 		// Set some variables first
-		$langs_2_install = array();		// array holding the languages waiting for installation
-		$missing_langs = array();		// array with the languages which are installed on the board but without a language pack within the extension
+		$langs_2_install = [];		// array holding the languages waiting for installation
+		$missing_langs = [];		// array with the languages which are installed on the board but without a language pack within the extension
 
 		// Get the field_id of the 'mot_land' field from the profile_fields table
 		$query = "SELECT field_id FROM " . PROFILE_FIELDS_TABLE . " WHERE field_name = 'mot_land'";
@@ -48,13 +48,13 @@ class lang_module
 
 		$action = $request->variable('action', '');
 		$iso = $request->variable('iso', '');
-		$lang_id = $request->variable('lang_id', 0);	// interger with the lang_id of the language to be installed
+		$lang_id = $request->variable('lang_id', 0);	// integer with the lang_id of the language to be installed
 
 		switch ($action)
 		{
 			case 'install':
 				// at this point we do know: field_id of mot_land ($mot_land_id), iso code  and language id of the language to install and therefore it's subdirectory (ISO) name
-				// first we have to delete the current lines for this field_id and lang_id in the profile_fields_lang table first since it may contain the en language variables if the language to be installed wasn't available at activation
+				// first we have to delete the current lines for this field_id and lang_id in the profile_fields_lang table since it may contain the en language variables if the language to be installed wasn't available at activation
 				$sql_arr = array(
 					'field_id'	=> $mot_land_id,
 					'lang_id'	=> $lang_id,
@@ -150,7 +150,7 @@ class lang_module
 
 		$template->assign_vars(array(
 			'U_ACTION'				=> $this->u_action,
-			'USERMAP_VERSION'		=> 'Usermap ver ' . $config['mot_usermap_version'] . ' &copy; 2020 - ' . date('Y') . ' by Mike-on-Tour',
+			'USERMAP_VERSION'		=> $language->lang('ACP_USERMAP_VERSION', $config['mot_usermap_version'], date('Y')),
 		));
 	}
 

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -32,7 +32,6 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 $lang = array_merge($lang, [
-	'PLURAL_RULE'					=> 1,
 	// Module
 	'USERMAP'						=> 'Mapa del Usuario',
 	'USERMAP_NOT_AUTHORIZED'		=> 'No estás autorizado para ver el Mapa del Usuario.',
@@ -58,6 +57,7 @@ $lang = array_merge($lang, [
 	'MAP_SEARCH'					=> 'Buscar miembros en el código postal %1$s en un rango de ',
 	'MAP_RESULT'					=> 'Muestra el siguiente resultado: ',
 	'MAP_NORESULT'					=> 'No se encontraron miembros dentro del rango de ',
+	'MAP_KM'						=> 'km',
 	'MEMBERNAME_SEARCH'				=> 'Introduce el nombre de usuario del socio (comodín * disponible)',
 	'MEMBERNAME_RESULT'				=> 'Se encontraron los siguientes miembros:',
 	'MEMBERNAME_NORESULT'			=> 'No hay miembros con un nombre de usuario que coincida con tu solicitud.',
@@ -74,14 +74,14 @@ $lang = array_merge($lang, [
 	'SAT_DESC'						=> 'Imagen de satélite',
 	// Permission overview
 	'USERMAP_PERM_OVERVIEW'			=> 'Permisos en esta página',
-	'USERMAP_PERM_VIEW_ALWAYS'		=> 'Tú <strong>puedes</strong> ver siempre a los miembros .',
-	'USERMAP_PERM_VIEW_SUBSCRIBED'	=> 'Tú <strong>puedes</strong> solo ver a los miembros si están registrados en el mapa de usuarios.',
-	'USERMAP_NO_VIEW_SUBSCRIBED'	=> 'Tú <strong>no puedes</strong> ver a los miembros.',
-	'USERMAP_PERM_VIEW_POI'			=> 'Tú <strong>puedes</strong> ver PDI.',
-	'USERMAP_NO_VIEW_POI'			=> 'Tú <strong>no puedes</strong> ver PDI.',
-	'USERMAP_NO_ADD_POI'			=> 'Tú <strong>no puedes</strong> crear PDI.',
-	'USERMAP_PERM_ADD_POI'			=> 'Tú <strong>puedes</strong> crear PDI sin la aprobación del moderador.',
-	'USERMAP_PERM_ADD_POI_MOD'		=> 'Tú <strong>puedes</strong> crear PDI con la aprobación del moderador.',
+	'USERMAP_PERM_VIEW_ALWAYS'		=> 'Tú <strong>puedes</strong> ver siempre a los miembros.<br>',
+	'USERMAP_PERM_VIEW_SUBSCRIBED'	=> 'Tú <strong>puedes</strong> solo ver a los miembros si están registrados en el mapa de usuarios.<br>',
+	'USERMAP_NO_VIEW_SUBSCRIBED'	=> 'Tú <strong>no puedes</strong> ver a los miembros.<br>',
+	'USERMAP_PERM_VIEW_POI'			=> 'Tú <strong>puedes</strong> ver PDI.<br>',
+	'USERMAP_NO_VIEW_POI'			=> 'Tú <strong>no puedes</strong> ver PDI.<br>',
+	'USERMAP_NO_ADD_POI'			=> 'Tú <strong>no puedes</strong> crear PDI.<br>',
+	'USERMAP_PERM_ADD_POI'			=> 'Tú <strong>puedes</strong> crear PDI sin la aprobación del moderador.<br>',
+	'USERMAP_PERM_ADD_POI_MOD'		=> 'Tú <strong>puedes</strong> crear PDI con la aprobación del moderador.<br>',
 	// Error messages
 	'USERMAP_GN_USER_ERROR'			=> ': ¡El usuario de Geonames no existe o no está activado para este servicio.',
 	// User POI popup

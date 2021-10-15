@@ -45,6 +45,9 @@ class v_1_1_0_1 extends \phpbb\db\migration\migration
 		{
 			define("USERMAP_LAYER_TABLE",	$this->table_prefix . 'usermap_layers');
 			define('USERMAP_USERS_TABLE',	$this->table_prefix . 'usermap_users');
+		}
+		if (!defined('USERMAP_POI_TABLE'))
+		{
 			define('USERMAP_POI_TABLE',		$this->table_prefix . 'usermap_poi');
 		}
 

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -146,12 +146,12 @@ class mod_poi
 				case 'submit_approve':
 					$this->db->sql_query($sql);
 					$this->log->add('mod', $this->user->data['user_id'], $this->user->ip, 'LOG_USERMAP_POI_APPROVED', false, array($poi_name));
-					trigger_error($this->language->lang('POI_APPROVED') . ' ' . $this->language->lang('CHANGES_SUCCESSFUL') . $this->usermap_functions->usermap_back_link($this->root_path."usermap", $this->language->lang('BACK_TO_USERMAP')), E_USER_NOTICE);
+					trigger_error($this->language->lang('POI_APPROVED') . ' ' . $this->language->lang('CHANGES_SUCCESSFUL') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_USERMAP')), E_USER_NOTICE);
 					break;
 
 				case 'submit_notify':
 					$this->db->sql_query($sql);
-					trigger_error($this->language->lang('ACTION_CONCLUDED') . ' ' . $this->language->lang('CHANGES_SUCCESSFUL') . $this->usermap_functions->usermap_back_link($this->root_path."usermap", $this->language->lang('BACK_TO_USERMAP')), E_USER_NOTICE);
+					trigger_error($this->language->lang('ACTION_CONCLUDED') . ' ' . $this->language->lang('CHANGES_SUCCESSFUL') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_USERMAP')), E_USER_NOTICE);
 					break;
 
 				case 'submit_delete':
@@ -164,7 +164,7 @@ class mod_poi
 						$sql = 'DELETE FROM ' . $this->usermap_poi_table . ' WHERE poi_id = ' . (int) $poi_id;
 						$this->db->sql_query($sql);
 						$this->log->add('mod', $this->user->data['user_id'], $this->user->ip, 'LOG_USERMAP_POI_MOD_DELETED', false, array($row['name']));
-						trigger_error($this->language->lang('ACP_USERMAP_DATABASE_SUCCESS') . $this->usermap_functions->usermap_back_link($this->root_path."usermap", $this->language->lang('BACK_TO_USERMAP')), E_USER_NOTICE);
+						trigger_error($this->language->lang('ACP_USERMAP_DATABASE_SUCCESS') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_USERMAP')), E_USER_NOTICE);
 					}
 					else
 					{

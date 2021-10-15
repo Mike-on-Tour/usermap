@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -510,7 +510,6 @@ class main_listener implements EventSubscriberInterface
 		{
 			return false;
 		}
-		$xml = array();
 		$city_name = '';
 		// retrieve only letters from the city name
 		$city = preg_replace('/[^A-Za-zaäöüßÄÖÜôáàâé]+/', '', $city);
@@ -526,6 +525,7 @@ class main_listener implements EventSubscriberInterface
 			*	[4] => Access-Control-Allow-Origin: * [5] => Content-Length: 56 [6] => Connection: close [7] => Content-Type: application/json;charset=UTF-8 )
 			*/
 			$error_msg = $http_response_header[0];
+			$msg = '';	// prevent errors at line 534 due to an undefined variable
 			if ($error_msg == 'HTTP/1.1 401 Unauthorized')
 			{
 				$msg = $this->language->lang('USERMAP_GN_USER_ERROR');
@@ -644,7 +644,7 @@ class main_listener implements EventSubscriberInterface
 		}
 		else
 		{
-			$city = str_replace(' ', '%20', $city);
+			$city = rawurlencode($city);
 			$json_request = "https://maps.googleapis.com/maps/api/geocode/json?key=" . $google_key . "&address=" . $postal_code . "," . $country . "," . $city;
 		}
 		$json = file_get_contents($json_request);
@@ -844,18 +844,10 @@ class main_listener implements EventSubscriberInterface
 	*/
 	function check_user_id ($array2check, $user_id, &$key_cc, &$key_zc)
 	{
-
-/*		if (empty($array2check))
-		{
-			return false;
-		}
-*/		$val_cc = '';
-		$val_zc = '';
 		foreach ($array2check as $key_cc => $val_cc)
 		{
 			foreach ($val_cc as $key_zc => $val_zc)
 			{
-
 				$i = 0;
 				foreach ((array) $array2check[$key_cc][$key_zc] as $val)
 				{

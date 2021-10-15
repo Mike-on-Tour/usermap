@@ -23,6 +23,7 @@ class v_0_3_0 extends \phpbb\db\migration\migration
 
 	public function update_data()
 	{
+		setlocale(LC_ALL, 'C');
 		return array(
 
 			// Add the config variable we want to be able to set

@@ -1,6 +1,6 @@
 /**
 *
-* package Usermap v1.1.0
+* package Usermap v1.1.2
 * copyright (c) 2020 - 2021 Mike-on-Tour
 * license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -177,7 +177,7 @@ motUsermap.getSurroundingUsers = function() {
 						+ '<span style="color:#' + searchResult[i][1] + ';">'
 						+ searchResult[i][0] + '</span></a></li>'
 						+ ': '
-						+ searchResult[i][2] + 'km';
+						+ searchResult[i][2] + motUsermap.jsMapKm;
 	}
 	outPut = outPut + '</ul>';
 
@@ -185,7 +185,7 @@ motUsermap.getSurroundingUsers = function() {
 		$("#seperation_hr").html('<hr>' + motUsermap.jsMapResult + '<br>');
 		$("#solution").html(outPut);
 	} else {
-		$("#seperation_hr").html('<hr>' + motUsermap.jsMapNoResult + umRadius + 'km');
+		$("#seperation_hr").html('<hr>' + motUsermap.jsMapNoResult + umRadius + motUsermap.jsMapKm);
 		$("#solution").html('');
 	}
 	this.jumpTo(this.map, userLat, userLng, this.zoomFactor[umRadius]);

@@ -6,13 +6,13 @@
 {% if not INCLUDED_LEAFLETJS %}
 	{% INCLUDECSS '@mot_usermap/leaflet.css' %}
 	{% INCLUDECSS '@mot_usermap/usermap.css' %}
-	{% INCLUDEJS '@mot_usermap/leaflet.js' %}
+	{% INCLUDEJS '@mot_usermap/thirdparty/leaflet.js' %}
 	{% INCLUDEJS '@mot_usermap/bbcode.js' %}
 	{% INCLUDEJS '@mot_usermap/mot_usermap.js' %}
 	{% INCLUDEJS '@mot_usermap/mot_usermap_tabs.js' %}
 	{% set INCLUDED_LEAFLETJS = true %}
 {% endif %}
-
+ 
 <div id="page-body" class="page-body">
 
 {% if VIEW_MAP_ALWAYS || (VIEW_MAP_SUBSRIBED && VALID_USER) || (POI_ENABLED && POI_VIEW) %}
@@ -118,7 +118,7 @@
 
 <div class="stat-block permissions">
 	<h3>{{ lang('USERMAP_PERM_OVERVIEW') }}</h3>
-	{{ DISPLAY_PERMISSIONS  }}
+	<p>{{ DISPLAY_PERMISSIONS  }}</p>
 </div>
 
 {# Handover of all necessary data to the js script #}
@@ -141,6 +141,7 @@
 	motUsermap.jsCurrentUser = {{ USER }};
 	motUsermap.jsMapResult = "{{ lang('MAP_RESULT')|e('js') }}";
 	motUsermap.jsMapNoResult = "{{ lang('MAP_NORESULT')|e('js') }}";
+	motUsermap.jsMapKm = "{{ lang('MAP_KM')|e('js') }}";
 	motUsermap.jsMemberResult = "{{ lang('MEMBERNAME_RESULT')|e('js') }}";
 	motUsermap.jsMemberNoResult = "{{ lang('MEMBERNAME_NORESULT')|e('js') }}";
 	motUsermap.jsStreetDesc = "{{ lang('STREET_DESC')|e('js') }}";
@@ -164,6 +165,7 @@
 	<script>
 	// <![CDATA[
 		motUsermap.poiIconPath = {{ POI_ICON_PATH }};
+		motUsermap.poiIconPath = motUsermap.poiIconPath.slice(0,motUsermap.poiIconPath.lastIndexOf('/')+1); // prevent misconfigured(?) (mobile) browsers from not getting images
 
 		motUsermap.errorMsg = '{{ ERROR_MSG|e('js') }}';
 		motUsermap.jsAddressResult = "{{ lang('ADDRESS_RESULT')|e('js') }}";

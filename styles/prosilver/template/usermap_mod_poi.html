@@ -8,7 +8,7 @@
 	{% if POI_EXIST %}
 		{% if not INCLUDED_LEAFLETJS %}
 			{% INCLUDECSS '@mot_usermap/leaflet.css' %}
-			{% INCLUDEJS '@mot_usermap/leaflet.js' %}
+			{% INCLUDEJS '@mot_usermap/thirdparty/leaflet.js' %}
 			{% INCLUDEJS '@mot_usermap/bbcode.js' %}
 			{% INCLUDEJS '@mot_usermap/mot_usermap_mod_poi.js' %}
 			{% set INCLUDED_LEAFLETJS = true %}

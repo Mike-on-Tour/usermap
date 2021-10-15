@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -135,7 +135,7 @@ class database_module
 				);
 				$sql = "UPDATE " . $this->usermap_zipcode_table . "
 						SET " . $db->sql_build_array('UPDATE', $sql_arr) . "
-						WHERE country_code = '$cc' AND zip_code = '$zc'";
+						WHERE country_code = '" . $db->sql_escape($cc) . "' AND zip_code = '" . $db->sql_escape($zc) . "'";
 
 				$db->sql_query($sql);
 
@@ -187,7 +187,7 @@ class database_module
 			'U_ACTION'			=> $this->u_action . $act,
 			'ERROR_CC'			=> $language->lang('ACP_USERMAP_DATABASE_ERROR', $language->lang('ACP_USERMAP_DATABASE_CC')),
 			'ERROR_ZC'			=> $language->lang('ACP_USERMAP_DATABASE_ERROR', $language->lang('ACP_USERMAP_DATABASE_ZIPCODE')),
-			'USERMAP_VERSION'	=> 'Usermap ver ' . $config['mot_usermap_version'] . ' &copy; 2020 - ' . date('Y') . ' by Mike-on-Tour',
+			'USERMAP_VERSION'	=> $language->lang('ACP_USERMAP_VERSION', $config['mot_usermap_version'], date('Y')),
 		));
 	}
 }

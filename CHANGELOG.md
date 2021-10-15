@@ -4,6 +4,27 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.2] - 2021-10-12
+
+### Added
+-	Migration file `migrations/v_1_1_2.php` to set the new version number in `CONFIG_TABLE`
+-	Javascript command to delete possible SID characters in POI path in `styles/prosilver/template/usermap_main.html`, line 168
+
+### Changed
+-	`composer.json` and `README.md` to show new version number
+-	Including phpBB's editor is now done with TWIG command instead of `<script src=....` in `styles/prosilver/template/usermap_poi_input_box.html`
+
+### Fixed
+-	A possible SQL injection in `acp/database_module.php` line 138
+-	Hard coded language in all ACP module files
+-	Usage of router helper in `controller/main.php` and `controller/mod_poi.php`
+-	Two instances of hard-coded language in `styles/all/template/mot_usermap.js`
+  
+### Removed
+-	Unused array `layernames` from `controller/main.php`
+-	'Plural mode' from all language files
+  
+  
 ## [1.1.1] - 2021-07-07
 
 ### Added

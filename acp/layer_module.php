@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -223,7 +223,7 @@ class layer_module
 			'NEW_LAYER'					=> $new_layer,
 			'U_ACTION'					=> $this->u_action . $act,
 			'LAYER_LANG_VAR_EXP'		=> $language->lang('ACP_USERMAP_LAYER_LANG_VAR_EXP', $red_span),
-			'USERMAP_VERSION'			=> 'Usermap ver ' . $config['mot_usermap_version'] . ' &copy; 2020 - ' . date('Y') . ' by Mike-on-Tour',
+			'USERMAP_VERSION'			=> $language->lang('ACP_USERMAP_VERSION', $config['mot_usermap_version'], date('Y')),
 		));
 	}
 

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -34,6 +34,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// ACP
 	'ACP_USERMAP'					=> 'User Map',
+	'ACP_USERMAP_VERSION'			=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic" /><br>&copy; 2020 - %2$d by Mike-on-Tour',
 	'SUPPORT_USERMAP'				=> 'If you want to donate to Usermap´s development please use this link:<br>',
 	// Settings tab
 	'ACP_USERMAP_SETTINGS'			=> 'Settings',

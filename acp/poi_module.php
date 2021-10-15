@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -275,7 +275,7 @@ class poi_module
 			'U_ACTION'						=> $this->u_action . $act,
 			'U_ACTION_PREVIEW'				=> $this->u_action_preview,
 			'PREVIEW_TEXT'					=> $preview_text,
-			'USERMAP_VERSION'				=> 'Usermap ver ' . $config['mot_usermap_version'] . ' &copy; 2020 - ' . date('Y') . ' by Mike-on-Tour',
+			'USERMAP_VERSION'				=> $language->lang('ACP_USERMAP_VERSION', $config['mot_usermap_version'], date('Y')),
 			'DEFAULT_POI_ICON_SIZE'			=> $config['mot_usermap_iconsize_default'],
 			'DEFAULT_POI_ICON_ANCHOR'		=> $config['mot_usermap_iconanchor_default'],
 			'LAYERS_ARR'					=> json_encode($layers),

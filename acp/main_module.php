@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -107,7 +107,7 @@ class main_module
 		$google_key = '<a href="https://developers.google.com/maps/documentation/embed/get-api-key" target="_blank"><span style="text-decoration: underline;">';
 		$geonames_readme = '<a href="http://download.geonames.org/export/zip/readme.txt" target="_blank"><span style="text-decoration: underline;">';
 		$template->assign_vars(array(
-			'USERMAP_VERSION'					=> 'Usermap ver ' . $config['mot_usermap_version'] . ' &copy; 2020 - ' . date('Y') . ' by Mike-on-Tour',
+			'USERMAP_VERSION'					=> $language->lang('ACP_USERMAP_VERSION', $config['mot_usermap_version'], date('Y')),
 			'ACP_USERMAP_ROWS_PER_PAGE'			=> $config['mot_usermap_rows_per_page'],
 			'ACP_USERMAP_LAT'					=> $config['mot_usermap_lat'],
 			'ACP_USERMAP_LON'					=> $config['mot_usermap_lon'],

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.0
+* @package Usermap v1.1.2
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -32,7 +32,6 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 $lang = array_merge($lang, [
-	'PLURAL_RULE'					=> 9,
 	// Module
 	'USERMAP'						=> 'Mapa Użytkowników',
 	'USERMAP_NOT_AUTHORIZED'		=> 'Nie masz wystarczających uprawnień do przeglądania Mapy Użytkowników. Wpisz Kod Pocztowy w Profilu!',
@@ -58,6 +57,7 @@ $lang = array_merge($lang, [
 	'MAP_SEARCH'					=> 'Szukaj Użytkowników po kodzie pocztowym %1$s w zasięgu ',
 	'MAP_RESULT'					=> 'Pokazuje następujący wynik:',
 	'MAP_NORESULT'					=> 'Nie znaleziono użytkowników w zasięgu ',
+	'MAP_KM'						=> 'km',
 	'MEMBERNAME_SEARCH'				=> 'Wprowadź nazwę użytkownika (dozwolone są symbole wieloznaczne *)',
 	'MEMBERNAME_RESULT'				=> 'Znaleziono następujących użytkowników:',
 	'MEMBERNAME_NORESULT'			=> 'Nie ma użytkowników o nazwie odpowiadającej Twojemu żądaniu.',
@@ -74,14 +74,14 @@ $lang = array_merge($lang, [
 	'SAT_DESC'						=> 'Mapa satelitarna',
 	// Permission overview
 	'USERMAP_PERM_OVERVIEW'			=> 'Uprawnienia na tej stronie',
-	'USERMAP_PERM_VIEW_ALWAYS'		=> '<strong>Możesz</strong> zawsze widzieć użytkowników.',
-	'USERMAP_PERM_VIEW_SUBSCRIBED'	=> '<strong>Możesz</strong> widzieć użtkowników tylko wtedy, gdy jesteś zarejestrowany w Mapie Użytkowników.',
-	'USERMAP_NO_VIEW_SUBSCRIBED'	=> '<strong>Nie możesz</strong> widzieć użytkowników.',
-	'USERMAP_PERM_VIEW_POI'			=> '<strong>Możesz</strong> widzieć POI.',
-	'USERMAP_NO_VIEW_POI'			=> '<strong>Nie możesz</strong> widzieć POI.',
-	'USERMAP_NO_ADD_POI'			=> '<strong>Nie możesz</strong> tworzyć punktów POI.',
-	'USERMAP_PERM_ADD_POI'			=> '<strong>Możesz</strong> tworzyć punkty POI bez zgody moderatora.',
-	'USERMAP_PERM_ADD_POI_MOD'		=> '<strong>Możesz</strong> tworzyć punkty POI za zgodą moderatora.',
+	'USERMAP_PERM_VIEW_ALWAYS'		=> '<strong>Możesz</strong> zawsze widzieć użytkowników.<br>',
+	'USERMAP_PERM_VIEW_SUBSCRIBED'	=> '<strong>Możesz</strong> widzieć użtkowników tylko wtedy, gdy jesteś zarejestrowany w Mapie Użytkowników.<br>',
+	'USERMAP_NO_VIEW_SUBSCRIBED'	=> '<strong>Nie możesz</strong> widzieć użytkowników.<br>',
+	'USERMAP_PERM_VIEW_POI'			=> '<strong>Możesz</strong> widzieć POI.<br>',
+	'USERMAP_NO_VIEW_POI'			=> '<strong>Nie możesz</strong> widzieć POI.<br>',
+	'USERMAP_NO_ADD_POI'			=> '<strong>Nie możesz</strong> tworzyć punktów POI.<br>',
+	'USERMAP_PERM_ADD_POI'			=> '<strong>Możesz</strong> tworzyć punkty POI bez zgody moderatora.<br>',
+	'USERMAP_PERM_ADD_POI_MOD'		=> '<strong>Możesz</strong> tworzyć punkty POI za zgodą moderatora.<br>',
 	// Error messages
 	'USERMAP_GN_USER_ERROR'			=> ': Użytkownik Geonames nie istnieje lub nie jest aktywowany w tej usłudze!',
 	// User POI popup
