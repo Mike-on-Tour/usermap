@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v1.1.2
+* @package Usermap v1.1.3
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -16,10 +16,11 @@ class lang_module
 
 	public function main()
 	{
-		global $template, $request, $db, $phpbb_container, $config, $user, $phpbb_root_path;
+		global $template, $request, $db, $phpbb_container, $user, $phpbb_root_path;
 
 		$language = $phpbb_container->get('language');
 		$log = $phpbb_container->get('log');
+		$this->md_manager = $phpbb_container->get('ext.manager')->create_extension_metadata_manager('mot/usermap');
 		$this->tpl_name = 'acp_usermap_lang';
 		$this->page_title = $language->lang('ACP_USERMAP') . ' ' . $language->lang('ACP_USERMAP_LANGS');
 		$this->lang_path = $phpbb_root_path . 'ext/mot/usermap/language/';
@@ -148,9 +149,10 @@ class lang_module
 			));
 		}
 
+		$mot_usermap_version = $this->md_manager->get_metadata('version');
 		$template->assign_vars(array(
 			'U_ACTION'				=> $this->u_action,
-			'USERMAP_VERSION'		=> $language->lang('ACP_USERMAP_VERSION', $config['mot_usermap_version'], date('Y')),
+			'USERMAP_VERSION'		=> $language->lang('ACP_USERMAP_VERSION', $mot_usermap_version, date('Y')),
 		));
 	}
 

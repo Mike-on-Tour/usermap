@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v1.1.2
+* @package Usermap v1.1.3
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -20,6 +20,7 @@ class poi_module
 
 		$language = $phpbb_container->get('language');
 		$log = $phpbb_container->get('log');
+		$this->md_manager = $phpbb_container->get('ext.manager')->create_extension_metadata_manager('mot/usermap');
 		$this->tpl_name = 'acp_usermap_poi';
 		$this->page_title = $language->lang('ACP_USERMAP') . ' ' . $language->lang('ACP_USERMAP_POI');
 		$this->icon_path = $phpbb_root_path . 'ext/mot/usermap/styles/all/theme/images/poi/';
@@ -90,8 +91,8 @@ class poi_module
 					'name'			=> $name,
 					'popup'			=> $popup_value,
 					'icon'			=> $request->variable('mot_usermap_poi_icon', ''),
-					'lat'			=> $request->variable('mot_usermap_poi_lat', ''),
-					'lng'			=> $request->variable('mot_usermap_poi_lon', ''),
+					'lat'			=> $request->variable('mot_usermap_poi_lat', 0.0),
+					'lng'			=> $request->variable('mot_usermap_poi_lon', 0.0),
 					'icon_size'		=> $request->variable('mot_usermap_poi_icon_size', ''),
 					'icon_anchor'	=> $request->variable('mot_usermap_poi_icon_anchor', ''),
 					'disabled'		=> $request->variable('mot_usermap_show_poi', 0),
@@ -140,8 +141,8 @@ class poi_module
 					'name'			=> $name,
 					'popup'			=> $popup_value,
 					'icon'			=> $request->variable('mot_usermap_poi_icon', ''),
-					'lat'			=> $request->variable('mot_usermap_poi_lat', ''),
-					'lng'			=> $request->variable('mot_usermap_poi_lon', ''),
+					'lat'			=> $request->variable('mot_usermap_poi_lat', 0.0),
+					'lng'			=> $request->variable('mot_usermap_poi_lon', 0.0),
 					'icon_size'		=> $request->variable('mot_usermap_poi_icon_size', ''),
 					'icon_anchor'	=> $request->variable('mot_usermap_poi_icon_anchor', ''),
 					'creator_id'	=> $user->data['user_id'],
@@ -269,13 +270,14 @@ class poi_module
 		}
 
 		$act = ($act == '') ? '&amp;action=submit' : $act;
+		$mot_usermap_version = $this->md_manager->get_metadata('version');
 		$template->assign_vars(array(
 			'NEW_POI'						=> $new_poi,
 			'ACP_USERMAP_POPUP_PREVIEW'		=> $poi_popup_preview,
 			'U_ACTION'						=> $this->u_action . $act,
 			'U_ACTION_PREVIEW'				=> $this->u_action_preview,
 			'PREVIEW_TEXT'					=> $preview_text,
-			'USERMAP_VERSION'				=> $language->lang('ACP_USERMAP_VERSION', $config['mot_usermap_version'], date('Y')),
+			'USERMAP_VERSION'				=> $language->lang('ACP_USERMAP_VERSION', $mot_usermap_version, date('Y')),
 			'DEFAULT_POI_ICON_SIZE'			=> $config['mot_usermap_iconsize_default'],
 			'DEFAULT_POI_ICON_ANCHOR'		=> $config['mot_usermap_iconanchor_default'],
 			'LAYERS_ARR'					=> json_encode($layers),

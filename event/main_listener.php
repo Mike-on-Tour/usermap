@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.2
+* @package Usermap v1.1.3
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -638,15 +638,12 @@ class main_listener implements EventSubscriberInterface
 		$return = false;
 
 		// send the request
-		if ($city == '')
+		$address = $postal_code . "," . $country;
+		if ($city != '')
 		{
-			$json_request = "https://maps.googleapis.com/maps/api/geocode/json?key=" . $google_key . "&address=" . $postal_code . "," . $country;
+			$address .= "," . $city;
 		}
-		else
-		{
-			$city = rawurlencode($city);
-			$json_request = "https://maps.googleapis.com/maps/api/geocode/json?key=" . $google_key . "&address=" . $postal_code . "," . $country . "," . $city;
-		}
+		$json_request = "https://maps.googleapis.com/maps/api/geocode/json?key=" . $google_key . "&address=" . urlencode($address);
 		$json = file_get_contents($json_request);
 		$xml = json_decode($json, true);
 

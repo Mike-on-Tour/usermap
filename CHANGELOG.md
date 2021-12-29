@@ -4,6 +4,25 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.3] - 2021-12-28
+
+### Added
+-	Migration file `migrations/v_1_1_3.php`
+-	Generating the version number in the ACP tabs from the `composer.json` file
+
+### Changed
+-	`composer.json` and `README.md` to show new version number
+-	Length of `user_plz` column in the `phpbb_usermap_users` table from 8 to 10 characters to prevent errors while saving a postal code with the maximum length
+	of 8 characters but including a dash (e.g. Brasilian postal codes like 68721-000) and thus exceeding the maximum column length
+
+### Fixed
+-	A possible source for a bad HTML request because of address string wasn't properly URL encoded in `event/main_listener.php`, line 650
+-	A possible source for spammers to save POIs through the modal window if guests are permitted to see the map
+  
+### Removed
+-	Config variable holding the version number
+  
+  
 ## [1.1.2] - 2021-10-12
 
 ### Added

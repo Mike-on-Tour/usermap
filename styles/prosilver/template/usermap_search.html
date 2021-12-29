@@ -1,9 +1,9 @@
 <div id="tabs" class="tabs">
 	<ul>
-		{% if (VIEW_MAP_SUBSRIBED && VALID_USER) || (VIEW_MAP_ALWAYS && VALID_USER) %}
+		{% if (VIEW_MAP_SUBSCRIBED && VALID_USER) || (VIEW_MAP_ALWAYS && VALID_USER) %}
 			<li id="usermap_tab_1" class="tab"><a>{{ lang('TAB_RADIUS_SEARCH') }}</a></li>
 		{% endif %}
-		{% if VIEW_MAP_ALWAYS || (VIEW_MAP_SUBSRIBED && VALID_USER) %}
+		{% if VIEW_MAP_ALWAYS || (VIEW_MAP_SUBSCRIBED && VALID_USER) %}
 			<li id="usermap_tab_2" class="tab"><a>{{ lang('TAB_MEMBER_SEARCH') }}</a></li>
 		{% endif %}
 		{% if POI_ENABLED && POI_VIEW %}

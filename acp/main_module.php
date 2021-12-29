@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v1.1.2
+* @package Usermap v1.1.3
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -20,6 +20,7 @@ class main_module
 
 		$language = $phpbb_container->get('language');
 		$log = $phpbb_container->get('log');
+		$this->md_manager = $phpbb_container->get('ext.manager')->create_extension_metadata_manager('mot/usermap');
 		$this->tpl_name = 'acp_usermap_main';
 		$this->page_title = $language->lang('ACP_USERMAP') . ' ' . $language->lang('ACP_USERMAP_SETTINGS');
 		$this->config_text = $phpbb_container->get('config_text');
@@ -106,8 +107,9 @@ class main_module
 		$geonames_list = '<a href="https://www.geonames.org/postal-codes/" target="_blank"><span style="text-decoration: underline;">';
 		$google_key = '<a href="https://developers.google.com/maps/documentation/embed/get-api-key" target="_blank"><span style="text-decoration: underline;">';
 		$geonames_readme = '<a href="http://download.geonames.org/export/zip/readme.txt" target="_blank"><span style="text-decoration: underline;">';
+		$mot_usermap_version = $this->md_manager->get_metadata('version');
 		$template->assign_vars(array(
-			'USERMAP_VERSION'					=> $language->lang('ACP_USERMAP_VERSION', $config['mot_usermap_version'], date('Y')),
+			'USERMAP_VERSION'					=> $language->lang('ACP_USERMAP_VERSION', $mot_usermap_version, date('Y')),
 			'ACP_USERMAP_ROWS_PER_PAGE'			=> $config['mot_usermap_rows_per_page'],
 			'ACP_USERMAP_LAT'					=> $config['mot_usermap_lat'],
 			'ACP_USERMAP_LON'					=> $config['mot_usermap_lon'],

@@ -21,6 +21,7 @@ class database_module
 		setlocale(LC_ALL, 'C');
 		$language = $phpbb_container->get('language');
 		$log = $phpbb_container->get('log');
+		$this->md_manager = $phpbb_container->get('ext.manager')->create_extension_metadata_manager('mot/usermap');
 		$this->tpl_name = 'acp_usermap_database';
 		$this->page_title = $language->lang('ACP_USERMAP') . ' ' . $language->lang('ACP_USERMAP_DATABASE');
 		$this->usermap_zipcode_table = $phpbb_container->getParameter('mot.usermap.tables.usermap_zipcodes');
@@ -98,8 +99,8 @@ class database_module
 					'country_code'	=> $cc,
 					'zip_code'		=> $zc,
 					'loc_name'		=> substr($request->variable('mot_usermap_database_name', ''), 0, 25),
-					'lat'			=> substr($request->variable('mot_usermap_database_lat', ''), 0, 10),
-					'lng'			=> substr($request->variable('mot_usermap_database_lon', ''), 0, 11),
+					'lat'			=> $request->variable('mot_usermap_database_lat', 0.0),
+					'lng'			=> $request->variable('mot_usermap_database_lon', 0.0),
 				);
 				$sql = 'INSERT INTO ' . $this->usermap_zipcode_table . ' ' . $db->sql_build_array('INSERT', $sql_arr);
 				$db->sql_return_on_error(true);
@@ -130,8 +131,8 @@ class database_module
 				$zc = substr($request->variable('mot_usermap_database_zc', ''), 0, 10);
 				$sql_arr = array(
 					'loc_name'		=> substr($request->variable('mot_usermap_database_name', ''), 0, 25),
-					'lat'			=> substr($request->variable('mot_usermap_database_lat', ''), 0, 10),
-					'lng'			=> substr($request->variable('mot_usermap_database_lon', ''), 0, 11),
+					'lat'			=> $request->variable('mot_usermap_database_lat', 0.0),
+					'lng'			=> $request->variable('mot_usermap_database_lon', 0.0),
 				);
 				$sql = "UPDATE " . $this->usermap_zipcode_table . "
 						SET " . $db->sql_build_array('UPDATE', $sql_arr) . "
@@ -182,12 +183,13 @@ class database_module
 		}
 
 		$act = ($act == '') ? '&amp;action=submit' : $act;
+		$mot_usermap_version = $this->md_manager->get_metadata('version');
 		$template->assign_vars(array(
 			'NEW_ZIPCODE'		=> $new_zipcode,
 			'U_ACTION'			=> $this->u_action . $act,
 			'ERROR_CC'			=> $language->lang('ACP_USERMAP_DATABASE_ERROR', $language->lang('ACP_USERMAP_DATABASE_CC')),
 			'ERROR_ZC'			=> $language->lang('ACP_USERMAP_DATABASE_ERROR', $language->lang('ACP_USERMAP_DATABASE_ZIPCODE')),
-			'USERMAP_VERSION'	=> $language->lang('ACP_USERMAP_VERSION', $config['mot_usermap_version'], date('Y')),
+			'USERMAP_VERSION'	=> $language->lang('ACP_USERMAP_VERSION', $mot_usermap_version, date('Y')),
 		));
 	}
 }

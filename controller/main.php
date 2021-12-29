@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.1.2
+* @package Usermap v1.1.3
 * @copyright (c) 2020 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -145,8 +145,8 @@ class main
 					'name'			=> $poi_name,
 					'popup'			=> $popup_value,
 					'icon'			=> $this->request->variable('usermap_poi_icon', ''),
-					'lat'			=> substr($this->request->variable('usermap_poi_lat', ''), 0, 20),
-					'lng'			=> substr($this->request->variable('usermap_poi_lng', ''), 0, 20),
+					'lat'			=> $this->request->variable('usermap_poi_lat', 0.0),
+					'lng'			=> $this->request->variable('usermap_poi_lng', 0.0),
 					'icon_size'		=> $icon_size == '' ? $this->config['mot_usermap_iconsize_default'] : $icon_size,
 					'icon_anchor'	=> $icon_anchor == '' ? $this->config['mot_usermap_iconanchor_default'] : $icon_anchor,
 					'creator_id'	=> $user_id,
@@ -492,7 +492,7 @@ class main
 			'MAP_SEARCH'				=> $this->language->lang('MAP_SEARCH', $zip_code),
 			'POI_ENABLED'				=> $poi_enabled,
 			'VIEW_MAP_ALWAYS'			=> $view_map ? 1 : 0,
-			'VIEW_MAP_SUBSRIBED'		=> $view_map_subscribed ? 1 : 0,
+			'VIEW_MAP_SUBSCRIBED'		=> $view_map_subscribed ? 1 : 0,
 			'POI_VIEW'					=> $view_poi ? 1 : 0,
 			'POI_CREATE'				=> ($add_poi || $add_approve_poi) ? 1 : 0,
 			'DISPLAY_PERMISSIONS'		=> $permission_overview,

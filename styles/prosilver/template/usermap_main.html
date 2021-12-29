@@ -1,7 +1,9 @@
 {% include 'overall_header.html' %}
 
-{# include the html code for user POI input #}
-{% include '@mot_usermap/usermap_poi_input.html' %}
+{# include the html code for user POI input if creating POIs is permitted #}
+{% if POI_CREATE %}
+	{% include '@mot_usermap/usermap_poi_input.html' %}
+{% endif %}
 
 {% if not INCLUDED_LEAFLETJS %}
 	{% INCLUDECSS '@mot_usermap/leaflet.css' %}
@@ -15,7 +17,7 @@
  
 <div id="page-body" class="page-body">
 
-{% if VIEW_MAP_ALWAYS || (VIEW_MAP_SUBSRIBED && VALID_USER) || (POI_ENABLED && POI_VIEW) %}
+{% if VIEW_MAP_ALWAYS || (VIEW_MAP_SUBSCRIBED && VALID_USER) || (POI_ENABLED && POI_VIEW) %}
 	{% if VIEW_MAP_ALWAYS || VALID_USER || (POI_ENABLED && POI_VIEW) %}
 		<div class="forabg">
 			<div class="inner">
@@ -151,7 +153,7 @@
 </script>
 
 {# if user is permitted to see members the following data must be handed over #}
-{% if VIEW_MAP_ALWAYS || VIEW_MAP_SUBSRIBED %}
+{% if VIEW_MAP_ALWAYS || VIEW_MAP_SUBSCRIBED %}
 	<script>
 	// <![CDATA[
 		motUsermap.jsMemberData = {{ MEMBERDATA }};
