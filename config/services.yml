@@ -4,6 +4,9 @@ imports:
 services:
     mot.usermap.functions_usermap:
         class: mot\usermap\includes\functions_usermap
+        arguments:
+            - '@dbal.conn'
+            - '%mot.usermap.tables.usermap_layers%'
         tags:
             - { name: usermap_functions, tag: mot.usermap.functions_usermap }
 
@@ -28,6 +31,26 @@ services:
             - '%mot.usermap.tables.usermap_users%'
             - '%mot.usermap.tables.usermap_poi%'
             - '%mot.usermap.tables.usermap_layers%'
+
+    mot.usermap.controller.acp_controller:
+        class: mot\usermap\controller\mot_usermap_acp
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@config_text'
+            - '@dbal.conn'
+            - '@group_helper'
+            - '@language'
+            - '@log'
+            - '@pagination'
+            - '@ext.manager'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@mot.usermap.functions_usermap'
+            - '%mot.usermap.tables.usermap_layers%'
+            - '%mot.usermap.tables.usermap_poi%'
+            - '%mot.usermap.tables.usermap_zipcodes%'
 
     mot.usermap.mod_poi:
         class: mot\usermap\controller\mod_poi

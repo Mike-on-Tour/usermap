@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.1.2
-* @copyright (c) 2020 - 2021 Mike-on-Tour
+* @package Usermap v1.2.0
+* @copyright (c) 2020 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -84,6 +84,7 @@ $lang = array_merge($lang, [
 	'USERMAP_PERM_ADD_POI_MOD'		=> 'Tú <strong>puedes</strong> crear PDI con la aprobación del moderador.<br>',
 	// Error messages
 	'USERMAP_GN_USER_ERROR'			=> ': ¡El usuario de Geonames no existe o no está activado para este servicio.',
+	'USERMAP_NO_MATCH_FOUND'		=> 'No se encontró ninguna coincidencia para <strong>%1$s</strong>!',
 	// User POI popup
 	'POI_INPUT_EXPL'				=> 'En este formulario puedes crear un nuevo PDI. Tus coordenadas se adoptarán a partir del marcador que aparece en el mapa a la izquierda de este formulario.
 										Este marcador es arrastrable, puede moverlo con el ratón hasta su destino final. Su nombre, descripción y
@@ -108,7 +109,7 @@ $lang = array_merge($lang, [
 	'ACP_USERMAP_POI_LAYER'			=> 'Superposición del mapa',
 	'ACP_USERMAP_POI_LAYER_EXP'		=> 'Selecciona la superposición del mapa en la que se mostrará este PDI.',
 	'ACP_USERMAP_DATABASE_SUCCESS'	=> 'Los cambios en la base de datos interna han sido guardados con éxito.',
-	'ACP_USERMAP_CONFIRM_DELETE'	=> '¿Estás realmente seguro de que desea eliminar este elemento de la base de datos?<br>
+	'ACP_USERMAP_CONFIRM_DELETE'	=> '¿Estás seguro de que desea eliminar este elemento de la base de datos?<br>
 										<strong>¡Esto elimina el elemento permanentemente de la base de datos y no se puede deshacer!</strong>',
 	'USERMAP_POI_NAME_ERROR'		=> '¡El campo >%1$s< no debe de estar vacío!',
 	// Notifications

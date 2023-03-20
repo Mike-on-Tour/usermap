@@ -1,11 +1,11 @@
-Subject: Neuer POI wartet auf Freigabe
+Subject: New POI awaits approval
 
 Hello {USERNAME},
 
 you are receiving this e-mail because there is a recently created POI for the Usermap on "{SITENAME}" which awaits approval:
 The user "{CREATOR}" created a new POI named "{POI_NAME}" which has to be approved.
 
-If you want to approve this POI please klick the following link:
+If you want to approve this POI please click the following link:
 
 {U_APPROVE}
 

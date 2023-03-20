@@ -1,7 +1,7 @@
 {% include 'overall_header.html' %}
 {% INCLUDECSS '@mot_usermap/mot_usermap_acp.css' %}
 {% if not INCLUDED_USERMAP_ACP %}
-	{% INCLUDEJS '@mot_usermap/admin_mot_usermap.js' %}
+	{% INCLUDEJS '@mot_usermap/mot_usermap_acp.js' %}
     {% set INCLUDED_USERMAP_ACP = true %}
 {% endif %}
 
@@ -31,7 +31,7 @@
 		<legend>{{ lang('ACP_USERMAP_GENERAL_SETTINGS') }}</legend>
 		<dl>
 			<dt><label for="mot_usermap_rows_per_page">{{ lang('ACP_USERMAP_ROWS_PER_PAGE') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_ROWS_PER_PAGE_EXP') }}</p></dt>
-			<dd><input id="mot_usermap_rows_per_page" type="number" min="2" max="50" name="mot_usermap_rows_per_page" value="{{ ACP_USERMAP_ROWS_PER_PAGE }}" /></dd>
+			<dd><input id="mot_usermap_rows_per_page" type="number" min="2" max="50" name="mot_usermap_rows_per_page" value="{{ ACP_USERMAP_ROWS_PER_PAGE }}"></dd>
 		</dl>
 	</fieldset>
 	<fieldset>
@@ -39,36 +39,36 @@
 		<p>{{ lang('ACP_USERMAP_MAPSETTING_TEXT') }}</p>
         <dl>
             <dt><label for="mot_usermap_lat">{{ lang('ACP_USERMAP_LAT') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAT_EXP') }}</p></dt>
-            <dd><input id="mot_usermap_lat" type="text" size="10" maxlength="10" name="mot_usermap_lat" value="{{ ACP_USERMAP_LAT }}" /></dd>
+            <dd><input id="mot_usermap_lat" type="text" size="10" maxlength="10" name="mot_usermap_lat" value="{{ ACP_USERMAP_LAT }}"></dd>
         </dl>
         <dl>
-            <dt><label for="mot_usermap_lon">{{ lang('ACP_USERMAP_LON') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LON_EXP') }}</dt>
-            <dd><input id="mot_usermap_lon" type="text" size="10" maxlength="11" name="mot_usermap_lon" value="{{ ACP_USERMAP_LON }}" /></dd>
+            <dt><label for="mot_usermap_lon">{{ lang('ACP_USERMAP_LON') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LON_EXP') }}</p></dt>
+            <dd><input id="mot_usermap_lon" type="text" size="10" maxlength="11" name="mot_usermap_lon" value="{{ ACP_USERMAP_LON }}"></dd>
         </dl>
         <dl>
             <dt><label for="mot_usermap_zoom">{{ lang('ACP_USERMAP_ZOOM') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_usermap_zoom" type="number" min="2" max="10" name="mot_usermap_zoom" value="{{ ACP_USERMAP_ZOOM }}" /></dd>
+            <dd><input id="mot_usermap_zoom" type="number" min="2" max="10" name="mot_usermap_zoom" value="{{ ACP_USERMAP_ZOOM }}"></dd>
         </dl>
 
 		<hr>
-		
+
 		<p>{{ lang('ACP_USERMAP_MARKERS_TEXT') }}</p>
         <dl>
             <dt><label for="mot_usermap_markers_pc">{{ lang('ACP_USERMAP_MARKERS_PC') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_usermap_markers_pc" type="number" min="1" max="10" name="mot_usermap_markers_pc" value="{{ ACP_USERMAP_MARKERS_PC }}" /></dd>
+            <dd><input id="mot_usermap_markers_pc" type="number" min="1" max="10" name="mot_usermap_markers_pc" value="{{ ACP_USERMAP_MARKERS_PC }}"></dd>
         </dl>
         <dl>
             <dt><label for="mot_usermap_markers_mob">{{ lang('ACP_USERMAP_MARKERS_MOB') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_usermap_markers_mob" type="number" min="1" max="10" name="mot_usermap_markers_mob" value="{{ ACP_USERMAP_MARKERS_MOB }}" /></dd>
+            <dd><input id="mot_usermap_markers_mob" type="number" min="1" max="10" name="mot_usermap_markers_mob" value="{{ ACP_USERMAP_MARKERS_MOB }}"></dd>
         </dl>
 	</fieldset>
-	
+
 	<fieldset>
 		<legend>{{ lang('ACP_USERMAP_GEONAMES_TITLE') }}</legend>
 		<p>{{ GEONAMES_TEXT }}</p>
 		<dl>
             <dt><label for="mot_usermap_geonamesuser">{{ lang('ACP_USERMAP_GEONAMESUSER') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_usermap_geonamesuser" type="text" size="50" maxlength="255" name="mot_usermap_geonamesuser" value="{{ ACP_USERMAP_GEONAMESUSER }}" /></dd>
+            <dd><input id="mot_usermap_geonamesuser" type="text" size="50" maxlength="255" name="mot_usermap_geonamesuser" value="{{ ACP_USERMAP_GEONAMESUSER }}"></dd>
 		</dl>
 	</fieldset>
 	
@@ -77,17 +77,17 @@
 		<p>{{ GOOGLE_TEXT }}</p>
  		<dl>
 			<dt><label for="mot_usermap_google_enable">{{ lang('ACP_USERMAP_GOOGLE_ENABLE') }}{{ lang('COLON') }}</label></dt>
-			<dd><label><input type="radio" class="radio" name="mot_usermap_google_enable" value="1"{% if ACP_USERMAP_GOOGLE_ENABLE %} id="mot_usermap_google_enable" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="mot_usermap_google_enable" value="0"{% if not ACP_USERMAP_GOOGLE_ENABLE %} id="mot_usermap_google_enable" checked="checked"{%  endif %} /> {{ lang('NO') }}</label></dd>
+			<dd><label><input type="radio" class="radio" name="mot_usermap_google_enable" id="mot_usermap_google_enable" value="1" {{ ACP_USERMAP_GOOGLE_ENABLE == 1 ? 'checked' }}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="mot_usermap_google_enable" id="mot_usermap_google_enable" value="0" {{ ACP_USERMAP_GOOGLE_ENABLE == 0 ? 'checked' }}> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
             <dt><label for="mot_usermap_google_key">{{ lang('ACP_USERMAP_GOOGLE_KEY') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_usermap_google_key" type="text" size="50" maxlength="255" name="mot_usermap_google_key" value="{{ ACP_USERMAP_GOOGLE_KEY }}" /></dd>
+            <dd><input id="mot_usermap_google_key" type="text" size="50" maxlength="255" name="mot_usermap_google_key" value="{{ ACP_USERMAP_GOOGLE_KEY }}"></dd>
 		</dl>
 		<hr>
 		<dl>
             <dt><label for="mot_usermap_google_force">{{ lang('ACP_USERMAP_GOOGLE_FORCE') }}{{ lang('COLON') }}</label><p>{{ GOOGLE_FORCE }}</p></dt>
-            <dd><input id="mot_usermap_google_force" type="text" size="50" maxlength="255" name="mot_usermap_google_force" value="{{ ACP_USERMAP_GOOGLE_FORCE }}" /></dd>
+            <dd><input id="mot_usermap_google_force" type="text" size="50" maxlength="255" name="mot_usermap_google_force" value="{{ ACP_USERMAP_GOOGLE_FORCE }}"></dd>
 		</dl>	
 	</fieldset>
 	
@@ -96,8 +96,8 @@
 		<p>{{ lang('ACP_USERMAP_DATABASE_TEXT') }}</p>
  		<dl>
 			<dt><label for="mot_usermap_database_enable">{{ lang('ACP_USERMAP_DATABASE_ENABLE') }}{{ lang('COLON') }}</label></dt>
-			<dd><label><input type="radio" class="radio" name="mot_usermap_database_enable" value="1"{% if ACP_USERMAP_DATABASE_ENABLE %} id="mot_usermap_database_enable" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="mot_usermap_database_enable" value="0"{% if not ACP_USERMAP_DATABASE_ENABLE %} id="mot_usermap_database_enable" checked="checked"{%  endif %} /> {{ lang('NO') }}</label></dd>
+			<dd><label><input type="radio" class="radio" name="mot_usermap_database_enable" id="mot_usermap_database_enable" value="1"{{ ACP_USERMAP_DATABASE_ENABLE == 1 ? 'checked' }}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="mot_usermap_database_enable" id="mot_usermap_database_enable" value="0"{{ ACP_USERMAP_DATABASE_ENABLE == 0 ? 'checked' }}> {{ lang('NO') }}</label></dd>
 		</dl>
 	</fieldset>
 	
@@ -106,8 +106,8 @@
 		<p>{{ lang('ACP_USERMAP_POI_TEXT') }}</p>
  		<dl>
 			<dt><label for="mot_usermap_poi_enable">{{ lang('ACP_USERMAP_POI_ENABLE') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_POI_ENABLE_EXP') }}</p></dt>
-			<dd><label><input type="radio" class="radio" name="mot_usermap_poi_enable" value="1"{% if ACP_USERMAP_POI_ENABLE %} id="mot_usermap_poi_enable" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="mot_usermap_poi_enable" value="0"{% if not ACP_USERMAP_POI_ENABLE %} id="mot_usermap_poi_enable" checked="checked"{%  endif %} /> {{ lang('NO') }}</label></dd>
+			<dd><label><input type="radio" class="radio" name="mot_usermap_poi_enable" id="mot_usermap_poi_enable" value="1"{{ ACP_USERMAP_POI_ENABLE == 1 ? 'checked' }}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="mot_usermap_poi_enable" id="mot_usermap_poi_enable" value="0"{{ ACP_USERMAP_POI_ENABLE == 0 ? 'checked' }}> {{ lang('NO') }}</label></dd>
 		</dl>
 	</fieldset>
 
@@ -120,7 +120,7 @@
 				<p>{{ lang('ACP_USERMAP_ICONSIZE_EXP') }}</p>
 			</dt>
 			<dd>
-				<input id="mot_usermap_iconsize_default" type="text" size="11" maxlength="10" name="mot_usermap_iconsize_default" onblur="motUsermap.cleanInput('mot_usermap_iconsize_default', '{{ MOT_USERMAP_ICONSIZE_DEFAULT|e('js') }}')" value="{{ MOT_USERMAP_ICONSIZE_DEFAULT }}" />
+				<input id="mot_usermap_iconsize_default" type="text" size="11" maxlength="10" name="mot_usermap_iconsize_default" onblur="motUsermap.cleanInput('mot_usermap_iconsize_default', '{{ MOT_USERMAP_ICONSIZE_DEFAULT|e('js') }}')" value="{{ MOT_USERMAP_ICONSIZE_DEFAULT }}">
 			</dd>
 		</dl>
 		<dl>
@@ -129,15 +129,15 @@
 				<p>{{ lang('ACP_USERMAP_ICONANCHOR_EXP') }}</p>
 			</dt>
 			<dd>
-				<input id="mot_usermap_iconanchor_default" type="text" size="11" maxlength="10" name="mot_usermap_iconanchor_default" onblur="motUsermap.cleanInput('mot_usermap_iconanchor_default', '{{ ACP_USERMAP_ICONANCHOR_DEFAULT|e('js') }}')" value="{{ ACP_USERMAP_ICONANCHOR_DEFAULT }}" />
+				<input id="mot_usermap_iconanchor_default" type="text" size="11" maxlength="10" name="mot_usermap_iconanchor_default" onblur="motUsermap.cleanInput('mot_usermap_iconanchor_default', '{{ ACP_USERMAP_ICONANCHOR_DEFAULT|e('js') }}')" value="{{ ACP_USERMAP_ICONANCHOR_DEFAULT }}">
 			</dd>
 		</dl>
 	</fieldset>
 
 	<fieldset>
         <p class="submit-buttons">
-            <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
-            <input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+            <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">&nbsp;
+            <input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}">
         </p>
 	{{ S_FORM_TOKEN }}
 	</fieldset>
@@ -163,7 +163,7 @@
 				</dt>
 				<dd>
 					<textarea id="mot_usermap_poi_legend_text" name="mot_usermap_poi_legend_text" rows="12" cols="50" maxlength="1000" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true">{{ ACP_USERMAP_POI_LGND }}</textarea>
-					<br><input class="button2" type="submit" name="preview" formaction="{{ U_ACTION_LGND_PREVIEW }}" value="{{ lang('PREVIEW') }}" />
+					<br><input class="button2" type="submit" name="preview" formaction="{{ U_ACTION_LGND_PREVIEW }}" value="{{ lang('PREVIEW') }}">
 				</dd>
 			</dl>
 			<dl>
@@ -171,7 +171,7 @@
 				<dd id="preview">{{ PREVIEW_TEXT }}</dd>
 			</dl>
 			<p class="submit-buttons">
-				<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
+				<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">
 			</p>
 		{{ S_FORM_TOKEN }}
 		</fieldset>
@@ -185,7 +185,13 @@
 <fieldset>
 	<dl>
 		<dt><label>{{ lang('SUPPORT_USERMAP') }}</label></dt>
-		<dd><a href="https://paypal.me/MichaelVormwald?locale.x=de_DE" target="_blank" rel="noopener noreferrer">{{ ICON_PAYPAL }}</a></dd>
+		<dd>
+			<form action="https://www.paypal.com/donate" method="post" target="_top">
+				<input type="hidden" name="hosted_button_id" value="JQQ5R6VM2XHW4">
+				<input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button">
+				<img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1">
+			</form>
+		</dd>
 	</dl>
 </fieldset>
 

@@ -1,5 +1,5 @@
 #map_container {
-	height: 600px;
+	height: calc(100vh - 50px);	/* Set map height to screen height minus 50 pixels */
 	width: 100%;
 	padding: 0; margin: 0;
 }

@@ -7,8 +7,11 @@
 
 {% if not INCLUDED_LEAFLETJS %}
 	{% INCLUDECSS '@mot_usermap/leaflet.css' %}
+	{% INCLUDECSS '@mot_usermap/MarkerCluster.css' %}
+	{% INCLUDECSS '@mot_usermap/MarkerCluster.Default.css' %}
 	{% INCLUDECSS '@mot_usermap/usermap.css' %}
 	{% INCLUDEJS '@mot_usermap/thirdparty/leaflet.js' %}
+	{% INCLUDEJS '@mot_usermap/thirdparty/leaflet.markercluster.js' %}
 	{% INCLUDEJS '@mot_usermap/bbcode.js' %}
 	{% INCLUDEJS '@mot_usermap/mot_usermap.js' %}
 	{% INCLUDEJS '@mot_usermap/mot_usermap_tabs.js' %}
@@ -149,6 +152,7 @@
 	motUsermap.jsStreetDesc = "{{ lang('STREET_DESC')|e('js') }}";
 	motUsermap.jsTopoDesc = "{{ lang('TOPO_DESC')|e('js') }}";
 	motUsermap.jsSatDesc = "{{ lang('SAT_DESC')|e('js') }}";
+	motUsermap.jsDisplayBBCode = {{ DISPLAY_BBCODE }};
 // ]]>
 </script>
 

@@ -17,61 +17,61 @@ class v_0_10_0_3 extends \phpbb\db\migration\migration
 	*/
 	public static function depends_on()
 	{
-		return array('\mot\usermap\migrations\v_0_10_0_2');
+		return ['\mot\usermap\migrations\v_0_10_0_2'];
 	}
 
 	public function update_data()
 	{
-		return array(
-			array('if', array(
+		return [
+			['if', [
 				$this->check_module('acp', 'ACP_USERMAP', 'ACP_USERMAP_SETTINGS'),
-				array('module.add', array(
+				['module.add', [
 					'acp',
 					'ACP_USERMAP',
-					array(
+					[
 						'module_basename'	=> '\mot\usermap\acp\main_module',
 						'module_langname'	=> 'ACP_USERMAP_SETTINGS',
 						'module_mode'		=> 'settings',
 						'module_auth'		=> 'ext_mot/usermap && acl_a_manage_usermap',
-				))),
-			)),
-			array('if', array(
+				]]],
+			]],
+			['if', [
 				$this->check_module('acp', 'ACP_USERMAP', 'ACP_USERMAP_LANGS'),
-				array('module.add', array(
+				['module.add', [
 					'acp',
 					'ACP_USERMAP',
-					array(
+					[
 						'module_basename'	=> '\mot\usermap\acp\lang_module',
 						'module_langname'	=> 'ACP_USERMAP_LANGS',
 						'module_mode'		=> 'lang',
 						'module_auth'		=> 'ext_mot/usermap && acl_a_manage_usermap',
-				))),
-			)),
-			array('if', array(
+				]]],
+			]],
+			['if', [
 				$this->check_module('acp', 'ACP_USERMAP', 'ACP_USERMAP_DATABASE'),
-				array('module.add', array(
+				['module.add', [
 					'acp',
 					'ACP_USERMAP',
-					array(
+					[
 						'module_basename'	=> '\mot\usermap\acp\database_module',
 						'module_langname'	=> 'ACP_USERMAP_DATABASE',
 						'module_mode'		=> 'database',
 						'module_auth'		=> 'ext_mot/usermap && acl_a_manage_usermap',
-				))),
-			)),
-			array('if', array(
+				]]],
+			]],
+			['if', [
 				$this->check_module('acp', 'ACP_USERMAP', 'ACP_USERMAP_POI'),
-				array('module.add', array(
+				['module.add', [
 					'acp',
 					'ACP_USERMAP',
-					array(
+					[
 						'module_basename'	=> '\mot\usermap\acp\poi_module',
 						'module_langname'	=> 'ACP_USERMAP_POI',
 						'module_mode'		=> 'poi',
 						'module_auth'		=> 'ext_mot/usermap && acl_a_manage_usermap',
-				))),
-			)),
-		);
+				]]],
+			]],
+		];
 	}
 
 	/*

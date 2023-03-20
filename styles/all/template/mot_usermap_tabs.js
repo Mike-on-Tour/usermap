@@ -37,6 +37,9 @@ $("#usermap_tab_4").click(function() {
 * @return	none
 */
 motUsermap.selectTab = function(index) {
+	// Hide loading indicator
+	$("#loading_indicator").hide();
+
 	var elementId = "";
 
 	// Hide all boxes

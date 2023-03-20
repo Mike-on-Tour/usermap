@@ -17,29 +17,29 @@ class v_0_10_0_2 extends \phpbb\db\migration\migration
 	*/
 	public static function depends_on()
 	{
-		return array('\mot\usermap\migrations\v_0_10_0_1');
+		return ['\mot\usermap\migrations\v_0_10_0_1'];
 	}
 
 	public function update_data()
 	{
-		return array(
+		return [
 			// Remove the old ACP modules
-			array('if', array(
-				array('module.exists', array('acp', 'ACP_USERMAP', 'ACP_USERMAP_SETTINGS')),
-				array('module.remove', array('acp', 'ACP_USERMAP', 'ACP_USERMAP_SETTINGS')),
-			)),
-			array('if', array(
-				array('module.exists', array('acp', 'ACP_USERMAP', 'ACP_USERMAP_LANGS')),
-				array('module.remove', array('acp', 'ACP_USERMAP', 'ACP_USERMAP_LANGS')),
-			)),
-			array('if', array(
-				array('module.exists', array('acp', 'ACP_USERMAP', 'ACP_USERMAP_DATABASE')),
-				array('module.remove', array('acp', 'ACP_USERMAP', 'ACP_USERMAP_DATABASE')),
-			)),
-			array('if', array(
-				array('module.exists', array('acp', 'ACP_USERMAP', 'ACP_USERMAP_POI')),
-				array('module.remove', array('acp', 'ACP_USERMAP', 'ACP_USERMAP_POI')),
-			)),
-		);
+			['if', [
+				['module.exists', ['acp', 'ACP_USERMAP', 'ACP_USERMAP_SETTINGS']],
+				['module.remove', ['acp', 'ACP_USERMAP', 'ACP_USERMAP_SETTINGS']],
+			]],
+			['if', [
+				['module.exists', ['acp', 'ACP_USERMAP', 'ACP_USERMAP_LANGS']],
+				['module.remove', ['acp', 'ACP_USERMAP', 'ACP_USERMAP_LANGS']],
+			]],
+			['if', [
+				['module.exists', ['acp', 'ACP_USERMAP', 'ACP_USERMAP_DATABASE']],
+				['module.remove', ['acp', 'ACP_USERMAP', 'ACP_USERMAP_DATABASE']],
+			]],
+			['if', [
+				['module.exists', ['acp', 'ACP_USERMAP', 'ACP_USERMAP_POI']],
+				['module.remove', ['acp', 'ACP_USERMAP', 'ACP_USERMAP_POI']],
+			]],
+		];
 	}
 }

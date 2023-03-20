@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.1.2
-* @copyright (c) 2020 - 2021 Mike-on-Tour
+* @package Usermap v1.2.0
+* @copyright (c) 2020 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -84,6 +84,7 @@ $lang = array_merge($lang, [
 	'USERMAP_PERM_ADD_POI_MOD'		=> '<strong>Możesz</strong> tworzyć punkty POI za zgodą moderatora.<br>',
 	// Error messages
 	'USERMAP_GN_USER_ERROR'			=> ': Użytkownik Geonames nie istnieje lub nie jest aktywowany w tej usłudze!',
+'USERMAP_NO_MATCH_FOUND'		=> 'No match found for <strong>%1$s</strong>!',
 	// User POI popup
 	'POI_INPUT_EXPL'				=> 'W tym formularzu możesz utworzyć nowe POI. Jego współrzędne zostaną przejęte ze znacznika na mapie po lewej stronie tego formularza.
 										Ten znacznik można przeciągać, można go przesuwać myszą do miejsca docelowego. Jego nazwę, opis, a także

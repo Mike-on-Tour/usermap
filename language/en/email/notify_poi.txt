@@ -1,9 +1,9 @@
-Subject: Neuer POI erstellt
+Subject: New POI created
 
 Hello {USERNAME},
 
-you are receiving this e-mail because there is recently created POI for the Usermap on "{SITENAME}" and you wanted to be notified in this case:
-The user "{CREATOR}" created a new POI named "{POI_NAME}"; if you want to have a look at it please klick the following link:
+you are receiving this e-mail because there is a recently created POI for the Usermap on "{SITENAME}" and you wanted to be notified in this case:
+The user "{CREATOR}" created a new POI named "{POI_NAME}"; if you want to have a look at it please click the following link:
 
 {U_APPROVE}
 

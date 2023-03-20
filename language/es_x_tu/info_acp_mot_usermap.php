@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.1.2
-* @copyright (c) 2020 - 2021 Mike-on-Tour
+* @package Usermap v1.2.0
+* @copyright (c) 2020 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -63,8 +63,7 @@ $lang = array_merge($lang, [
 										registrar un usuario por 1,000 a 1,500 miembros. De lo contrario, tus usuarios puede que vean un
 										mensaje de error al ingresar sus datos de perfil (código postal y país).<br>
 										Múltiples nombres de usuario deben estar separados por comas.<br>
-										<strong>¡ATENCIÓN:</strong> debes habilitar (activar) el servicio deseado después del primer inicio de sesión
-										en geonames.org usando el %2$senlace</span></a>!!',
+										<strong>¡ATENCIÓN:</strong> debes habilitar (activar) el servicio deseado después del primer inicio de sesión en geonames.org usando el %2$senlace</span></a>!!',
 	'ACP_USERMAP_GEONAMESUSER'		=> 'Nombre(s) de usuario(s) para geonames.org',
 	'ACP_USERMAP_GEONAMESUSER_ERR'	=> '¡Es obligatorio proporcionar al menos un nombre de usuario válido para geonames.org!',
 	'ACP_USERMAP_PROFILE_ERROR'		=> 'Esta acción no pudo concluirse con éxito ya que no se proporcionó un usuario de Geonames.org en la pestaña de configuración de Mapa del usuario. ¡Por favor hazlo inmediatamente!',
@@ -117,7 +116,7 @@ $lang = array_merge($lang, [
 	'ACP_USERMAP_LANGS_EXPLAIN'		=> 'Aquí es donde puedes instalar los paquetes de idiomas adicionales para el Mapa del Usuario. Esto puede ser necesario después de agregar
 										paquetes de idiomas para el Mapa del Usuario después de su primera activación porque los datos no han sido
 										incorporados en la lista desplegable para seleccionar el país; esto puedes hacerlo aquí después de cargar el paquete de idioma
-										con un programa ftp en el subdirectorio <i>language</i>  de esta extensión.',
+										con un programa ftp en el subdirectorio <i>language</i> de esta extensión.',
 	'ACP_USERMAP_INSTALLABLE_LANG'	=> 'Paquetes de idiomas listos para la instalación',
 	'ACP_USERMAP_INSTALL_LANG_EXP'	=> 'Paquetes de idioma de Mapa del Usuario esperando para instalarse.',
 	'ACP_USERMAP_MISSING_LANG'		=> 'Paquetes de idiomas faltantes',
@@ -141,7 +140,7 @@ $lang = array_merge($lang, [
 	'ACP_USERMAP_DATABASE_NOENTRY'	=> 'Datos no disponibles',
 	'ACP_USERMAP_DATABASE_NEW'		=> 'Nueva entrada en la base de datos',
 	'ACP_USERMAP_DATABASE_CC_EXP'	=> 'Ingresa el código de país con las dos letras mayúsculas del país al que se asignará esta entrada.',
-	'ACP_USERMAP_DATABASE_ZC_EXP'	=> 'Por favor ingresa el código postal al que se asignará esta entrada, solo se permiten letras mayúsculas, dígitos y guión.',
+	'ACP_USERMAP_DATABASE_ZC_EXP'	=> 'Por favor, ingresa el código postal al que se asignará esta entrada, solo se permiten letras mayúsculas, dígitos y guión.',
 	'ACP_USERMAP_DATABASE_NAME_EXP'	=> 'Puedes introducir un nombre para identificar y distinguir mejor esta ubicación.',
 	'ACP_USERMAP_DATABASE_ERROR'	=> '¡El campo >%1$s< no debe de estar vacío!',
 	'ACP_USERMAP_DATABASE_BIG_ERR'	=> '¡El campo no debe estar vacío!',
@@ -151,9 +150,11 @@ $lang = array_merge($lang, [
 	'ACP_USERMAP_POI'				=> 'Administración de PDI',
 	'ACP_USERMAP_POI_EXPLAIN'		=> 'En esta tabla se enumeran todos los PDI ingresados hasta ahora en la base de datos.<br>
 										Debajo de esta tabla puedes insertar una nueva entrada, además, aquí es donde puedes editar una entrada existente después de seleccionar
-										el enlace de <i>Edit</i> en la última columna de cada línea en la tabla.<br>
+										el enlace de <i>Editar</i> en la última columna de cada línea en la tabla.<br>
 										Al seleccionar el enlace de <i>Eliminar</i> puedes eliminar una entrada de la base de datos.',
 	'ACP_USERMAP_POI_DATA'			=> 'Entradas de PDI actualmente disponibles',
+	'ACP_USERMAP_SELECT_POI_LAYER'	=> 'Selecciones superpuestas',
+	'ACP_USERMAP_POI_LAYER_ALL'		=> 'Todo',
 	'ACP_USERMAP_POI_CREATOR'		=> 'Creador',
 	'ACP_USERMAP_POI_VISIBLE'		=> 'PDI visible',
 	'ACP_USERMAP_POI_VISIBLE_EXP'	=> 'Selecciona si este PDI debe ser visible en la superposición de mapa seleccionada.',
@@ -173,31 +174,40 @@ $lang = array_merge($lang, [
 										„Editar“ de la fila de la tabla correspondiente. A continuación, se mostrarán los datos actuales de la superposición de mapas seleccionada
 										en esta sección.<br>
 										Utilizando el enlace correspondiente de la tabla puede eliminar este elemento.',
+	'ACP_USERMAP_LAYER_SELECT_TYPE'	=> 'Seleccione el tipo de superposición que se mostrará',
 	'ACP_USERMAP_LAYER_DATA'		=> 'Superposición de mapas existentes',
 	'ACP_USERMAP_LAYER_NAME'		=> 'Nombre de la superposición',
 	'ACP_USERMAP_LAYER_NAME_EXP'	=> 'Introduce un nombre para identificar esta superposición de mapas.',
-	'ACP_USERMAP_MEMBER_LAYER'		=> 'Superposición de miembro',
-	'ACP_USERMAP_MEMBER_LAYER_EXP'	=> 'Escoge „Sí“ para utilizar esta superposición de mapas para mostrar los marcadores de los miembros y „No“ para utilizarlo para mostrar los marcadores de PDI.<br>
-										Las superposiciones de mapas para los miembros se muestran solo con el permiso para ver a los miembros, las superposiciones de mapas para los PDI se muestran
-										si los PDI están activados y el permiso para ver los PDI es válido.',
+	'ACP_USERMAP_LAYER_TYPE_USER'	=> 'Usuarios',
+	'ACP_USERMAP_LAYER_TYPE_POI'	=> 'POI',
 	'ACP_USERMAP_LAYER_ACTIVE'		=> 'Activar superposición',
-	'ACP_USERMAP_LAYER_ACTIVE_EXP'	=> 'Escoge „Sí“ para activar esta superposición de mapas y hacerla utilizable para poner PDIs en ella. Las superposiciones de mapas inactivas no son seleccionables
-										al crear un nuevo PDI.',
+	'ACP_USERMAP_LAYER_ACTIVE_EXP'	=> 'Escoge „Si“ para activar esta superposición de mapa y hacerla utilizable para colocar marcadores en ella. Las superposiciones de mapas inactivas no son
+										seleccionable para la visualización.',
 	'ACP_USERMAP_SHOW_LAYER'		=> 'Mostrar permanentemente',
 	'ACP_USERMAP_SHOW_LAYER_EXP'	=> 'Escoge „Sí“ para mostrar siempre este mapa superpuesto, empezando por llamar al Mapa de Usuario.<br>
 										Si escoges que „No“ los usuarios deben seleccionar esta superposición de mapas a través del elemento de control de capas del mapa.',
-	'ACP_USERMAP_LAYER_LANG_VAR'	=> 'variables de idiomas',
-	'ACP_USERMAP_LAYER_LANG_VAR_EXP' => 'Para que tus usuarios puedan identificar las superposiciones de mapas con un término en su lengua materna, introduce aquí cada uno de los
+	'ACP_USERMAP_LAYER_CLUSTERS'	=> 'Marcadores de racimo',
+	'ACP_USERMAP_LAYER_CLUSTERS_EXP'	=> 'Para evitar saturar el mapa con una gran cantidad de marcadores, puede activar esta configuración para crear grupos de marcadores.
+											Estos grupos varían con el zoom.',
+	'ACP_USERMAP_LAYER_LANG_VAR'	=> 'Variables de idiomas',
+	'ACP_USERMAP_LAYER_LANG_VAR_EXP'	=> 'Para que tus usuarios puedan identificar las superposiciones de mapas con un término en su lengua materna, introduce aquí cada uno de los
 										idiomas instalados en su foro, un término para identificar esta superposición en el elemento de control de la capa, ejemplo. „Campamentos“ como
 										un término para identificar un mapa superpuesto que presenta los campamentos.<br>
 										Asegúrate de utilizar una etiqueta de idioma válida (revisa la tabla de paquetes de idiomas de tu ACP „ISO“ en la sección „Personalizar“)
 										seguido de dos puntos y el término de idioma deseado para asegurarse de que el sistema puede utilizar tu entrada.<br>
-										<strong>%1$sEjemplo:</span></strong> „es:Campamentos“<br>
+										<strong>%1$sEjemplo:</strong> „es:Campamentos“<br>
 										¡Cada combinación de etiqueta lingüística y término lingüístico DEBE utilizar su propia línea!<br>
 										<strong>%1$s¡ATENCIÓN: Una línea con la etiqueta de idioma „es“ es OBLIGATORIA!</span></strong>',
 	'ACP_USERMAP_LAYER_DEFAULTICON'	=> 'Icono por defecto',
 	'ACP_USERMAP_LAYER_ICON_EXP'	=> 'Selecciona el archivo de iconos que se utilizará por defecto en esta superposición de mapas. Esta selección se presentará para todos los PDI
 										creado en esta superposición.',
+	'ACP_USERMAP_GROUPS_VIEWING'	=> 'Grupos permitidos',
+	'ACP_USERMAP_PERMITTED_GROUPS'	=> 'Grupos autorizados para ver esta superposición',
+	'ACP_USERMAP_PERMITTED_GROUPS_EXP'	=> 'Las superposiciones de mapas para los miembros se muestran solo con el permiso para ver a los miembros, las superposiciones de mapas para los PDI se muestran
+										si los PDI están activados y el permiso para ver los PDI es válido.<br>
+										Con esta configuración, puedes restringir aún más la visualización de superposiciones individuales a distintos grupos predeterminados que mantienen
+										uno o más de estos permisos seleccionando los grupos predeterminados que deberían poder ver una determinada superposición.<br>
+										Para seleccionar varios grupos, mantén presionada la tecla Shift o Ctrl mientras haces clic en los grupos deseados.',
 	'ACP_USERMAP_LAYER_NEW'			=> 'Crear una nueva superposición de mapas',
 	'ACP_USERMAP_LAYER_EDIT'		=> 'Editar una superposición de mapa existente',
 	'ACP_USERMAP_LAYER_SUCCESS'		=> 'La superposición de mapas llamada „<strong>%1$s</strong>“ ha sido almacenada con éxito.',
@@ -209,6 +219,8 @@ $lang = array_merge($lang, [
 	'ACP_ERR_LAYER_NO_LANG'			=> 'El campo de entrada llamado „variables de idiomas“ ¡no debe estar vacío!',
 	'ACP_ERR_LAYER_INCORRECT'		=> 'Esta variable de idioma no se ajusta a las normas: ',
 	'ACP_ERR_LAYER_NO_EN'			=> 'Variable de idioma „es“ ¡no se encuentra!',
+	// Route tab
+	'ACP_USERMAP_ROUTE'				=> 'Rutas',
 	// Logs
 	'LOG_USERMAP_LAYER_NEW'			=> '<strong>Se ha añadido una nueva superposición de mapas al mapa de usuario:</strong><br>» %s',
 	'LOG_USERMAP_LAYER_EDITED'		=> '<strong>Editado un mapa superpuesto:</strong><br>» %s',

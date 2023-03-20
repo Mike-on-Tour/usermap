@@ -1,0 +1,23 @@
+{% if VIEW_MAP_ALWAYS || (VIEW_MAP_SUBSCRIBED && VALID_USER) || (POI_ENABLED && POI_VIEW) %}
+	<div class="forabg" style="margin-top:5px;">
+		<div class="inner">
+			<ul class="topiclist">
+				<li class="header">
+					<dl class="row-item">
+						<dt>
+							<div class="list-inner">
+								Your title goes here
+							</div>
+						</dt>
+					</dl>
+				</li>
+			</ul>
+		</div>
+
+		<div class="panel bg1">
+			<div class="inner" style="margin: 5px auto; text-align: center;">
+				Your content goes here
+			</div>
+		</div>
+	</div>
+{% endif %}

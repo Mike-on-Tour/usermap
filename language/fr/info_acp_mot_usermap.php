@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.1.2
-* @copyright (c) 2020 - 2021 Mike-on-Tour
+* @package Usermap v1.2.0
+* @copyright (c) 2020 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -95,14 +95,14 @@ $lang = array_merge($lang, [
 										par geonames.org, vous pouvez utiliser cette option sans utiliser l’API Google Maps.',
 	'ACP_USERMAP_DATABASE_ENABLE'	=> 'Activer l’utilisation de la base de données interne?',
 	'ACP_USERMAP_POI_TITLE'			=> 'Afficher des POIs',
-	'ACP_USERMAP_POI_TEXT'			=> 'En plus d’afficher les membres enregistrés, la carte des membres peut afficher des points d’intérêt particulier pour les
+'ACP_USERMAP_POI_TEXT'			=> 'En plus d’afficher les membres enregistrés, la carte des membres peut afficher des points d’intérêt particulier pour les
 										membres, par ex. Points de rendez-vous et hôtels pour motards ou emplacements des stades de football. Les paramètres à
 										cet effet peuvent être définis dans cette section. <br> Dans la section suivante, une légende pour la signification des
 										différentes catégories peut être saisie. Cette légende est alors également affichée sous la carte de membre.<br>
-										La saisie et l’édition des POI doivent être effectuées par l’administrateur, les éléments à cet effet sont accessibles
+La saisie et l’édition des POI doivent être effectuées par l’administrateur, les éléments à cet effet sont accessibles
 										via l’onglet «Édition des POI».',
 	'ACP_USERMAP_POI_ENABLE'		=> 'Activer l’affichage des POIs?',
-	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Si vous sélectionnez «Oui» ici, la superposition de POI sera activée lorsque la carte de membre sera affichée. En même
+'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Si vous sélectionnez «Oui» ici, la superposition de POI sera activée lorsque la carte de membre sera affichée. En même
 										temps, le réglage suivant et l’affichage de la légende sont activés.',
 	'ACP_USERMAP_ICON_TITLE'		=> 'Valeurs par défaut des icônes de POI',
 	'ACP_USERMAP_ICON_TEXT'			=> 'Ici, vous pouvez modifier les valeurs par défaut pour la taille et le point d’ancrage des icônes de POI. Les valeurs
@@ -157,6 +157,8 @@ $lang = array_merge($lang, [
 										sont affichées pour modification. <br> Les entrées individuelles peuvent être supprimées via le lien correspondant dans
 										le tableau.',
 	'ACP_USERMAP_POI_DATA'			=> 'POIs enregistrés',
+'ACP_USERMAP_SELECT_POI_LAYER'		=> 'Overlay selections',
+'ACP_USERMAP_POI_LAYER_ALL'			=> 'All',
 	'ACP_USERMAP_POI_CREATOR'		=> 'Créateur',
 	'ACP_USERMAP_POI_VISIBLE'		=> 'POI visible',
 	'ACP_USERMAP_POI_VISIBLE_EXP'	=> 'Sélectionnez si ce POI doit être visible sur la superposition de la carte sélectionnée.',
@@ -176,20 +178,21 @@ $lang = array_merge($lang, [
 										cliquant sur le lien «Modifier» de la ligne de tableau respective. Les données actuelles de la superposition de carte
 										sélectionnée seront alors affichées dans cette section.<br>
 										En utilisant le lien respectif du tableau, vous pouvez supprimer cet élément.',
+'ACP_USERMAP_LAYER_SELECT_TYPE'		=> 'Select the layer type to be displayed',
 	'ACP_USERMAP_LAYER_DATA'		=> 'Superpositions de carte existantes',
 	'ACP_USERMAP_LAYER_NAME'		=> 'Nom de la superposition',
 	'ACP_USERMAP_LAYER_NAME_EXP'	=> 'Entrez un nom pour identifier cette superposition de carte.',
-	'ACP_USERMAP_MEMBER_LAYER'		=> 'Superposition de carte membres',
-	'ACP_USERMAP_MEMBER_LAYER_EXP'	=> 'Choisissez «Oui» pour utiliser cette superposition de carte pour afficher les marqueurs de membre et «Non» pour l´utiliser
-										pour afficher les marqueurs de POI.<br>
-										Les superpositions de carte pour les membres sont affichées uniquement avec l´autorisation de voir les membres, les
-										superpositions de carte pour les POI sont affichées si les POI sont activés et l´autorisation de voir les POI est valide.',
+'ACP_USERMAP_LAYER_TYPE_USER'		=> 'Users',
+'ACP_USERMAP_LAYER_TYPE_POI'		=> 'POI',
 	'ACP_USERMAP_LAYER_ACTIVE'		=> 'Activer la superposition de carte',
-	'ACP_USERMAP_LAYER_ACTIVE_EXP'	=> 'Choisissez «Oui» pour activer cette superposition de carte et la rendre utilisable pour y placer des POI. Les superpositions
-										de carte inactives ne peuvent pas être sélectionnées lors de la création d´un nouveau POI.',
+'ACP_USERMAP_LAYER_ACTIVE_EXP'		=> 'Choose „Yes“ to activate this map overlay and make it usable to put markers on it. Inactive map overlays are not
+											selectable for display.',
 	'ACP_USERMAP_SHOW_LAYER'		=> 'Afficher en permanence',
 	'ACP_USERMAP_SHOW_LAYER_EXP'	=> 'Choisissez «Oui» pour toujours afficher cette superposition de carte, en commençant par appeler la carte d´utilisateur.<br>
 										Si vous choisissez «Non», les utilisateurs doivent sélectionner cette superposition de carte via l´élément de contrôle de la carte.',
+'ACP_USERMAP_LAYER_CLUSTERS'		=> 'Cluster markers',
+'ACP_USERMAP_LAYER_CLUSTERS_EXP'	=> 'To avoid cluttering the map with a high number of markers you can activate this setting to build clusters of markers.
+											These clusters vary with the zoom.',
 	'ACP_USERMAP_LAYER_LANG_VAR'	=> 'Variables des versions linguistiques',
 	'ACP_USERMAP_LAYER_LANG_VAR_EXP' => 'Pour permettre à vos utilisateurs didentifier les superpositions de carte avec un terme dans leur langue maternelle,
 										veuillez entrer ici pour chacune des langues installées sur votre carte un terme pour identifier cette superposition
@@ -204,6 +207,13 @@ $lang = array_merge($lang, [
 	'ACP_USERMAP_LAYER_DEFAULTICON'	=> 'Icône par défaut',
 	'ACP_USERMAP_LAYER_ICON_EXP'	=> 'Sélectionnez le fichier d´icône qui sera utilisé par défaut sur cette superposition de carte. Cette sélection sera
 										présentée pour tous les POI créés sur cette superposition de carte.',
+'ACP_USERMAP_GROUPS_VIEWING'		=> 'Permitted groups',
+'ACP_USERMAP_PERMITTED_GROUPS'		=> 'Groups permitted to see this overlay',
+'ACP_USERMAP_PERMITTED_GROUPS_EXP'	=> 'Les superpositions de carte pour les membres sont affichées uniquement avec l´autorisation de voir les membres, les
+										superpositions de carte pour les POI sont affichées si les POI sont activés et l´autorisation de voir les POI est valide.<br>
+	With this setting you can further restrict displaying of individual overlays to distinct default groups holding
+	one or more of these permissions by selecting the default groups which should be able to see a certain overlay.<br>
+	For selecting multiple groups please hold down the Shift or Ctrl key while clicking on the desired groups.',
 	'ACP_USERMAP_LAYER_NEW'			=> 'Créer une nouvelle superposition de cartey',
 	'ACP_USERMAP_LAYER_EDIT'		=> 'Modifier une superposition de carte existante',
 	'ACP_USERMAP_LAYER_SUCCESS'		=> 'La superposition de carte nommée «<strong>%1$s</strong>» a été correctement sauvée.',
@@ -215,6 +225,8 @@ $lang = array_merge($lang, [
 	'ACP_ERR_LAYER_NO_LANG'		=> 'Le champ de saisie «Variables de langue» ne doit pas être vide!',
 	'ACP_ERR_LAYER_INCORRECT'	=> 'Cette variable de langue ne respecte pas les règles: ',
 	'ACP_ERR_LAYER_NO_EN'		=> 'La variable de langue «en» est manquante!',
+	// Route tab
+'ACP_USERMAP_ROUTE'					=> 'Routes',
 	// Logs
 	'LOG_USERMAP_LAYER_NEW'			=> '<strong>Une nouvelle superposition de carte a été ajoutée à la carte d´utilisateur:</strong><br>» %s',
 	'LOG_USERMAP_LAYER_EDITED'		=> '<strong>Modification d´une superposition de carte:</strong><br>» %s',

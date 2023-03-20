@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.1.2
-* @copyright (c) 2020 - 2021 Mike-on-Tour
+* @package Usermap v1.2.0
+* @copyright (c) 2020 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -85,6 +85,7 @@ $lang = array_merge($lang, [
 	'USERMAP_PERM_ADD_POI_MOD'		=> 'Du <strong>darfst</strong> POIs mit Freigabe erstellen.<br>',
 	// Error messages
 	'USERMAP_GN_USER_ERROR'			=> ': Dieser Geonames Nutzer existiert nicht oder wurde für diesen Service nicht aktiviert!',
+	'USERMAP_NO_MATCH_FOUND'		=> 'Kein Eintrag für <strong>%1$s</strong> gefunden!',
 	// User POI popup
 	'POI_INPUT_EXPL'				=> 'Hier kannst du einen POI erstellen. Seine Koordinaten werden von dem Marker auf der Karte links übernommen. Dieser
 										Marker kann mit der Maus bewegt werden, um ihn an seine endgültige Position zu setzen. Namen, Beschreibung sowie das

@@ -1,7 +1,7 @@
 /**
 *
-* package Usermap v1.1.2
-* copyright (c) 2020 - 2021 Mike-on-Tour
+* package Usermap v1.2.0
+* copyright (c) 2020 - 2022 Mike-on-Tour
 * license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -73,41 +73,49 @@ $("#usermap_poi_icon").change(function() {
 /* ---------------------------------------------------------------------------------------	Event handlers for search forms	--------------------------------------------------------------------------------------- */
 // Event handler for plz search field
 $("#plz_search").submit(function(evt) {
-	motUsermap.getSurroundingUsers();
 	evt.preventDefault();
+	$("#loading_indicator").show();
+	motUsermap.getSurroundingUsers();
+	$("#loading_indicator").hide();
 });
 
 // Event handler for member search field
 $("#membername_search").submit(function(evt) {
-	motUsermap.searchUserByName();
 	evt.preventDefault();
+	$("#loading_indicator").show();
+	motUsermap.searchUserByName();
+	$("#loading_indicator").hide();
 });
 
 // Event handler for POI search field
 $("#poi_search").submit(function(evt) {
-	motUsermap.searchPoiByName();
 	evt.preventDefault();
+	$("#loading_indicator").show();
+	motUsermap.searchPoiByName();
+	$("#loading_indicator").hide();
 });
 
 // Event handler for address search field
 $("#address_search_button").click(function(evt) {
+	evt.preventDefault();
+	$("#loading_indicator").show();
 	var address = $("#address_choice").val().toLowerCase();
 	$(this).blur();
 	$.post(motUsermap.jsAjaxCall,
-			{address: address},
-			function(result) {
-				if (result['success']) {
-					var lat = parseFloat(result['lat']);
-					var lng = parseFloat(result['lng']);
-					$("#seperation_hr").html('<hr>' + motUsermap.jsAddressResult + '<br>');
-					L.marker([lat, lng]).addTo(motUsermap.map);
-					motUsermap.jumpTo(motUsermap.map, lat, lng, 13);
-				} else {
-					$("#seperation_hr").html('<hr>' + motUsermap.jsAddressNoResult);
-				}
+		{address: address},
+		function(result) {
+			if (result['success']) {
+				var lat = parseFloat(result['lat']);
+				var lng = parseFloat(result['lng']);
+				$("#seperation_hr").html('<hr>' + motUsermap.jsAddressResult + '<br>');
+				L.marker([lat, lng]).addTo(motUsermap.map);
+				motUsermap.jumpTo(motUsermap.map, lat, lng, 13);
+			} else {
+				$("#seperation_hr").html('<hr>' + motUsermap.jsAddressNoResult);
 			}
+			$("#loading_indicator").hide();
+		}
 	);
-	evt.preventDefault();
 });
 
 /* --------------------------------------------------------------------------------------- 	Search functions	--------------------------------------------------------------------------------------- */
@@ -434,7 +442,7 @@ motUsermap.addPoiLayer = function(myLayerGroup, myIconPath, lat, lng, myName, my
 		title:		myName,
 		clickable:	true,
 		draggable:	false,
-		icon: customIcon
+		icon:		customIcon
 	}
 	var marker = new L.Marker([lat, lng], markerOptions);
 	if (myPopup != '') {
@@ -453,6 +461,8 @@ motUsermap.zoomFactor[10] = 11;
 motUsermap.zoomFactor[25] = 10;
 motUsermap.zoomFactor[50] = 9;
 motUsermap.zoomFactor[100] = 8;
+motUsermap.zoomFactor[200] = 7;
+motUsermap.zoomFactor[300] = 6;
 
 var userAgent = navigator.userAgent.toLowerCase();
 if(userAgent.match('iphone') || userAgent.match('android') || userAgent.match('windows phone')) {
@@ -466,6 +476,7 @@ motUsermap.mapOptions = {
 	zoom: motUsermap.jsMapConfig['Zoom'],
 	attributionControl: false,
 	scrollWheelZoom: false,
+	tab: false,	// To prevent errors on Mac with Safari
 }
 
 motUsermap.map = new L.map('map_container', motUsermap.mapOptions);
@@ -479,20 +490,55 @@ motUsermap.map.on('click', function() {
 	}
 });
 
-motUsermap.layer = new L.TileLayer('https://\{s\}.tile.openstreetmap.org/\{z\}/\{x\}/\{y\}.png');	// International map colors
-//	motUsermap.layer = new L.TileLayer('https://\{s\}.tile.openstreetmap.de/\{z\}/\{x\}/\{y\}.png');	// German map colors
-motUsermap.topoLayer = new L.TileLayer('https://\{s\}.tile.opentopomap.org/\{z\}/\{x\}/\{y\}.png');	// Topo map
-motUsermap.satLayer = new L.TileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/\{z\}/\{y\}/\{x\}');
+// International map colors
+motUsermap.layer = new L.TileLayer('https://\{s\}.tile.openstreetmap.org/\{z\}/\{x\}/\{y\}.png', {
+	maxZoom		: 19,
+	attribution	: 'Map Data &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
+});
+/*
+// German map colors
+motUsermap.layer = new L.TileLayer('https://\{s\}.tile.openstreetmap.de/tiles/osmde/\{z\}/\{x\}/\{y\}.png', {
+	maxZoom		: 19,
+	attribution	: 'Map Data &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
+});
+*/
+// Topo map
+motUsermap.topoLayer = new L.TileLayer('https://\{s\}.tile.opentopomap.org/\{z\}/\{x\}/\{y\}.png', {
+	maxZoom		: 18,
+	attribution	: 'Kartendaten: &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>-Mitwirkende, <a href="http://viewfinderpanoramas.org/" target="_blank" rel="noopener">SRTM</a> | Kartendarstellung: &copy; <a href="https://opentopomap.org" target="_blank" rel="noopener">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC-BY-SA</a>)',
+});
 
+// Satellite image
+motUsermap.satLayer = new L.TileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/\{z\}/\{y\}/\{x\}', {
+	maxZoom		: 20,
+	attribution	: 'Map Data &copy; <a href="https://www.esri.com/en-us/home" target="_blank" rel="noopener">Esri</a>',
+});
+/*
+// In the following definitions the parameter lyrs can have the values 'm' for street map, 's' for satellite, 'p' for terrain and 's,h' for hybrid
+motUsermap.googleStreet = new L.TileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+	subdomains	: ['mt0','mt1','mt2','mt3'],
+	maxZoom		: 20,
+	attribution	: 'Map Data &copy; Google Maps',
+});
+
+motUsermap.googleSatellite = new L.TileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+	subdomains	: ['mt0','mt1','mt2','mt3'],
+	maxZoom		: 21,
+	attribution	: 'Map Data &copy; Google Maps',
+});
+*/
+// Add the OSM street map as default layer to the map
 motUsermap.map.addLayer(motUsermap.layer);
 
 motUsermap.baseMap = {
-	[motUsermap.jsStreetDesc]	: motUsermap.layer,
-	[motUsermap.jsTopoDesc]	: motUsermap.topoLayer,
-	[motUsermap.jsSatDesc]		: motUsermap.satLayer,
+	[motUsermap.jsStreetDesc]				: motUsermap.layer,
+	[motUsermap.jsTopoDesc]					: motUsermap.topoLayer,
+	[motUsermap.jsSatDesc]					: motUsermap.satLayer,
+//	['Google ' + motUsermap.jsStreetDesc]	: motUsermap.googleStreet,
+//	['Google ' + motUsermap.jsSatDesc]		: motUsermap.googleSatellite,
 }
 
-motUsermap.attribution = new L.control.attribution().addAttribution('Map Data &copy; <a href="https://www.openstreetmap.org/copyright" target=_blank">OpenStreetMap</a>').addTo(motUsermap.map);
+motUsermap.attribution = new L.control.attribution().addAttribution('').addTo(motUsermap.map);
 
 motUsermap.scale = new L.control.scale({imperial: false}).addTo(motUsermap.map);
 
@@ -507,7 +553,8 @@ if (motUsermap.jsAuthUser || motUsermap.jsMapViewAlways && motUsermap.jsMemberLa
 	layersLength = motUsermap.jsMemberLayers.length;
 
 	while (l < layersLength) {
-		motUsermap.jsMemberLayers[l]['layer_group'] = new L.layerGroup();
+		// Check for clusters enabled
+		motUsermap.jsMemberLayers[l]['layer_group'] = (motUsermap.jsMemberLayers[l]['enable_clusters'] == 1) ? new L.markerClusterGroup() : new L.layerGroup();
 		userOverlays[motUsermap.jsMemberLayers[l]['layer_lang_var']] = motUsermap.jsMemberLayers[l]['layer_group'];
 		i = 0;
 		while (i < memberDataLength) {											// show all user markers on the map
@@ -532,7 +579,11 @@ if (motUsermap.jsPoiEnabled && motUsermap.jsPoiView && motUsermap.jsPoiLayers.le
 	layersLength = motUsermap.jsPoiLayers.length;
 
 	while (l < layersLength) {
-		motUsermap.jsPoiLayers[l]['layer_group'] = new L.layerGroup();
+		motUsermap.groupOptions = {
+			tab: false,	// To prevent errors on Mac with Safari
+		}
+		// Check for clusters enabled
+		motUsermap.jsPoiLayers[l]['layer_group'] = (motUsermap.jsPoiLayers[l]['enable_clusters'] == 1) ? new L.markerClusterGroup(motUsermap.groupOptions) : new L.layerGroup(motUsermap.groupOptions);
 		userOverlays[motUsermap.jsPoiLayers[l]['layer_lang_var']] = motUsermap.jsPoiLayers[l]['layer_group'];
 		i = 0;
 
@@ -556,6 +607,13 @@ if (!(motUsermap.jsAuthUser || motUsermap.jsMapViewAlways) && motUsermap.jsPoiEn
 }
 
 motUsermap.layerControl = new L.control.layers(motUsermap.baseMap, userOverlays).addTo(motUsermap.map);
+
+if (motUsermap.jsDisplayBBCode['type'] == 'User') {
+	motUsermap.goToUser(motUsermap.jsDisplayBBCode['user_lat'], motUsermap.jsDisplayBBCode['user_lng'], motUsermap.jsDisplayBBCode['layer_id']);
+}
+if (motUsermap.jsDisplayBBCode['type'] == 'POI') {
+	motUsermap.goToPoi(motUsermap.jsDisplayBBCode['lat'], motUsermap.jsDisplayBBCode['lng'], motUsermap.jsDisplayBBCode['layer_id']);
+}
 
 /* ---------------------------------------------------------------------------------------	Functions for the modal POI input	--------------------------------------------------------------------------------------- */
 /*

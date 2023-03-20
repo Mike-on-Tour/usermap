@@ -1,3 +1,4 @@
+<div id="loading_indicator" class="loading_indicator" hidden="true"></div>
 <div id="tabs" class="tabs">
 	<ul>
 		{% if (VIEW_MAP_SUBSCRIBED && VALID_USER) || (VIEW_MAP_ALWAYS && VALID_USER) %}
@@ -29,7 +30,7 @@
 					   <option value="50">50</option>
 					   <option value="100">100</option>
 					</select>
-					&nbsp;km&nbsp;
+					&nbsp;{{ lang('MAP_KM') }}&nbsp;
 					<input class="button1" id="plz_search_button" type="submit" value="{{ lang('SUBMIT') }}" />
 				</form>
 			</div>

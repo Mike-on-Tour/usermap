@@ -1,0 +1,12 @@
+Subject: Nieuwe POI gemaakt
+
+Hallo {USERNAME},
+
+je ontvangt deze e-mail omdat er onlangs een POI is gemaakt voor de gebruikerskaart op "{SITENAME}" en je in dit geval een melding wilt ontvangen:
+De gebruiker "{CREATOR}" heeft een nieuwe POI gemaakt met de naam "{POI_NAME}"; als je het wilt zien, klik dan op de volgende link: 
+
+{U_APPROVE}
+
+Als u geen meldingen wilt ontvangen over nieuw aangemaakte POI's die wachten op goedkeuring, kunt u dit wijzigen in de meldingsopties van het gebruikerspaneel. 
+
+{EMAIL_SIG}

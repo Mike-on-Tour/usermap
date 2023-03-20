@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.1.2
-* @copyright (c) 2020 - 2021 Mike-on-Tour
+* @package Usermap v1.2.0
+* @copyright (c) 2020 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -84,6 +84,7 @@ $lang = array_merge($lang, [
 	'USERMAP_PERM_ADD_POI_MOD'		=> 'Vous <strong>pouvez</strong> créez des POI avec l´approbation du modérateur.<br>',
 	// Error messages
 	'USERMAP_GN_USER_ERROR'			=> ': L´utilisateur Geonames n´existe pas ou n´est pas activé pour ce service!',
+'USERMAP_NO_MATCH_FOUND'		=> 'No match found for <strong>%1$s</strong>!',
 	// User POI popup
 	'POI_INPUT_EXPL'				=> 'Ici, vous pouvez créer un POI. Ses coordonnées sont tirées du marqueur sur la carte à gauche. Ce marqueur peut être
 										déplacé avec la souris pour le mettre dans sa position finale. Le nom, la description et l’icône à utiliser

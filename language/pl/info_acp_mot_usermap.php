@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.1.2
-* @copyright (c) 2020 - 2021 Mike-on-Tour
+* @package Usermap v1.2.0
+* @copyright (c) 2020 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -86,15 +86,15 @@ $lang = array_merge($lang, [
 										interfejsu API Google Map.',
 	'ACP_USERMAP_DATABASE_ENABLE'	=> 'Włączyć korzystanie z wewnętrznej bazy danych?',
 	'ACP_USERMAP_POI_TITLE'			=> 'Wyświetl interesujące miejsca (POI)',
-	'ACP_USERMAP_POI_TEXT'			=> 'Oprócz wyświetlania lokalizacji użytkowników Mapa Użytkowników może wyświetlać dodatkową nakładkę z lokalizacjami, które mogą
+'ACP_USERMAP_POI_TEXT'			=> 'Oprócz wyświetlania lokalizacji użytkowników Mapa Użytkowników może wyświetlać dodatkową nakładkę z lokalizacjami, które mogą
 										być szczególne interesujące dla użytkowników, np. miejsca odpoczynku i hotele dla rowerzystów lub lokalizacje aren sportowych.
 										W tej sekcji możesz wybrać ustawienia tej nakładki.<br>
 										Poniższa sekcja umożliwia pisanie i edycję opisu określającego znaczenie różnych kategorii punktów POI,
 										która zostanie wyświetlona pod mapą jako legenda.<br>
-										Wprowadzanie i edytowanie punktów POI jest zadaniem administratora, wszystkie niezbędne do tego elementy są dostępne przez
+Wprowadzanie i edytowanie punktów POI jest zadaniem administratora, wszystkie niezbędne do tego elementy są dostępne przez
 										zakładkę „obsługa POI”.',
 	'ACP_USERMAP_POI_ENABLE'		=> 'Włączyć wyświetlanie punktów POI?',
-	'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Wybranie „Tak” umożliwia wyświetlenie nakładki POI z Mapą Użytkowników. Aktywuje również Twój wybór w następujących przypadkach
+'ACP_USERMAP_POI_ENABLE_EXP'	=> 'Wybranie „Tak” umożliwia wyświetlenie nakładki POI z Mapą Użytkowników. Aktywuje również Twój wybór w następujących przypadkach
 										ustawianie i wyświetlanie legendy, którą możesz pisać i edytować w sekcji poniżej.',
 	'ACP_USERMAP_ICON_TITLE'		=> 'Domyślne wartości ikon POI',
 	'ACP_USERMAP_ICON_TEXT'			=> 'Tutaj możesz zmienić domyślne wartości ikon POI, ich rozmiaru i kotwicy. Wstępnie wybrane są wartości ikon
@@ -146,6 +146,8 @@ $lang = array_merge($lang, [
 										linku <i>Edycja</i> w ostatniej kolumnie każdego wiersza tabeli.<br>
 										Wybierając łącze <i>Usuń</i>, możesz usunąć wpis ze swojej bazy danych.',
 	'ACP_USERMAP_POI_DATA'			=> 'Aktualnie dostępne pozycje POI',
+'ACP_USERMAP_SELECT_POI_LAYER'		=> 'Overlay selections',
+'ACP_USERMAP_POI_LAYER_ALL'			=> 'All',
 	'ACP_USERMAP_POI_CREATOR'		=> 'Twórca',
 	'ACP_USERMAP_POI_VISIBLE'		=> 'Widoczne POI',
 	'ACP_USERMAP_POI_VISIBLE_EXP'	=> 'Wybierz, czy ten punkt POI powinien być widoczny na wybranej nakładce mapy.',
@@ -165,19 +167,21 @@ $lang = array_merge($lang, [
 										link „Edytuj” w odpowiednim wierszu tabeli. Zostaną wyświetlone aktualne dane wybranej nakładki mapy
 										w tej sekcji.<br>
 										Korzystając z odpowiedniego łącza w tabeli, możesz usunąć ten element.',
+'ACP_USERMAP_LAYER_SELECT_TYPE'		=> 'Select the layer type to be displayed',
 	'ACP_USERMAP_LAYER_DATA'		=> 'Istniejące nakładki mapy',
 	'ACP_USERMAP_LAYER_NAME'		=> 'Nazwa nakładki',
 	'ACP_USERMAP_LAYER_NAME_EXP'	=> 'Wprowadź nazwę, aby zidentyfikować tę nakładkę mapy.',
-	'ACP_USERMAP_MEMBER_LAYER'		=> 'Nakładka Użytkowników',
-	'ACP_USERMAP_MEMBER_LAYER_EXP'	=> 'Wybierz „Tak”, aby użyć tej nakładki mapy do wyświetlania znaczników Użtkowników lub „Nie”, aby użyć jej do wyświetlania znaczników POI.<br>
-										Nakładki Mapy Użytkowników są wyświetlane tylko dla uprawnienionych do przeglądania Użytkowników, nakładki dla POI są wyświetlane
-										jeśli POI są aktywowane i uprawnienia do przeglądania POI są włączone.',
+'ACP_USERMAP_LAYER_TYPE_USER'		=> 'Users',
+'ACP_USERMAP_LAYER_TYPE_POI'		=> 'POI',
 	'ACP_USERMAP_LAYER_ACTIVE'		=> 'Aktywuj nakładkę',
-	'ACP_USERMAP_LAYER_ACTIVE_EXP'	=> 'Wybierz „Tak”, aby aktywować tę nakładkę mapy i umożliwić umieszczanie na niej punktów POI. Nieaktywnych nakładek mapy nie można wybrać
-										podczas tworzenia nowego POI.',
+'ACP_USERMAP_LAYER_ACTIVE_EXP'		=> 'Choose „Yes“ to activate this map overlay and make it usable to put markers on it. Inactive map overlays are not
+											selectable for display.',
 	'ACP_USERMAP_SHOW_LAYER'		=> 'Wyświetlaj na stałe',
 	'ACP_USERMAP_SHOW_LAYER_EXP'	=> 'Wybierz „Tak”, aby zawsze wyświetlać tę nakładkę mapy, startując od wywołania Mapy Użytkowników.<br>
 										Jeśli wybierzesz opcję „Nie”, użytkownicy muszą wybrać tę nakładkę mapy za pomocą elementu kontrolnego nakładki mapy.',
+'ACP_USERMAP_LAYER_CLUSTERS'		=> 'Cluster markers',
+'ACP_USERMAP_LAYER_CLUSTERS_EXP'	=> 'To avoid cluttering the map with a high number of markers you can activate this setting to build clusters of markers.
+											These clusters vary with the zoom.',
 	'ACP_USERMAP_LAYER_LANG_VAR'	=> 'Zmienne językowe',
 	'ACP_USERMAP_LAYER_LANG_VAR_EXP' => 'Aby umożliwić użytkownikom identyfikowanie nakładek mapy w ich ojczystym języku, wprowadź tutaj każdy z
 										języków zainstalowanych na tym forum identyfikujący tę nakładkę w elemencie kontrolnym warstwy, np. „Pola kempingowe“ jako
@@ -190,6 +194,13 @@ $lang = array_merge($lang, [
 	'ACP_USERMAP_LAYER_DEFAULTICON'	=> 'Ikona domyślna',
 	'ACP_USERMAP_LAYER_ICON_EXP'	=> 'Wybierz plik ikony, który będzie używany jako domyślny na tej nakładce mapy. Ten wybór zostanie użyty dla wszystkich POI
 										stworzonych w tej.',
+'ACP_USERMAP_GROUPS_VIEWING'		=> 'Permitted groups',
+'ACP_USERMAP_PERMITTED_GROUPS'		=> 'Groups permitted to see this overlay',
+'ACP_USERMAP_PERMITTED_GROUPS_EXP'	=> 'Nakładki Mapy Użytkowników są wyświetlane tylko dla uprawnienionych do przeglądania Użytkowników, nakładki dla POI są wyświetlane
+										jeśli POI są aktywowane i uprawnienia do przeglądania POI są włączone.<br>
+	With this setting you can further restrict displaying of individual overlays to distinct default groups holding
+	one or more of these permissions by selecting the default groups which should be able to see a certain overlay.<br>
+	For selecting multiple groups please hold down the Shift or Ctrl key while clicking on the desired groups.',
 	'ACP_USERMAP_LAYER_NEW'			=> 'Utwórz nową nakładkę mapy',
 	'ACP_USERMAP_LAYER_EDIT'		=> 'Edytuj istniejącą nakładkę mapy',
 	'ACP_USERMAP_LAYER_SUCCESS'		=> 'Nakładka mapy o nazwie „<strong>%1$s</strong>“ została pomyślnie zapisana.',
@@ -201,6 +212,8 @@ $lang = array_merge($lang, [
 	'ACP_ERR_LAYER_NO_LANG'			=> 'Pole wejściowe o nazwie „Zmienne językowe” nie może być puste!',
 	'ACP_ERR_LAYER_INCORRECT'		=> 'Ta zmienna językowa nie jest zgodna z zasadami: ',
 	'ACP_ERR_LAYER_NO_EN'			=> 'Brak zmiennej językowej „en”!',
+	// Route tab
+'ACP_USERMAP_ROUTE'					=> 'Routes',
 	// Logs
 	'LOG_USERMAP_LAYER_NEW'			=> '<strong>Do Mapy Użytkowników dodano nową nakładkę mapy:</strong><br>» %s',
 	'LOG_USERMAP_LAYER_EDITED'		=> '<strong>Edytowano nakładkę mapy:</strong><br>» %s',

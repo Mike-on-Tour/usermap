@@ -242,14 +242,6 @@ $("#acp_usermap_layer").submit(function() {
 	}
 });
 
-$("input[type=radio][name='mot_usermap_layer_member']").change(function() {
-	if ($(this).val() == 1) {
-		$("#icon_select").hide();
-	} else {
-		$("#icon_select").show();
-	}
-});
-
 })(jQuery); // Avoid conflicts with other libraries
 
 /*

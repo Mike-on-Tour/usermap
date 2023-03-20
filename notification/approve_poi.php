@@ -27,10 +27,10 @@ class approve_poi extends \phpbb\notification\type\base
 	* @var	bool|array		False if the service should use it's default data
 	* 					Array of data (including keys 'id', 'lang', and 'group')
 	*/
-	public static $notification_option = array(
+	public static $notification_option = [
 		'lang'	=> 'USERMAP_SETTING_APPROVE',
 		'group'	=> 'NOTIFICATION_USERMAP_MOD',
-	);
+	];
 
 	/** @var \phpbb\user_loader */
 	protected $user_loader;
@@ -90,7 +90,7 @@ class approve_poi extends \phpbb\notification\type\base
 	*
 	* @return		array with users to notify
 	*/
-	public function find_users_for_notification($data, $options = array())
+	public function find_users_for_notification($data, $options = [])
 	{
 		if (is_null($data['user_ids']))
 		{
@@ -107,7 +107,7 @@ class approve_poi extends \phpbb\notification\type\base
 	*/
 	public function users_to_query()
 	{
-		return array();
+		return [];
 	}
 
 	/**
@@ -127,10 +127,10 @@ class approve_poi extends \phpbb\notification\type\base
 	*/
 	public function get_url()
 	{
-		$url = $this->helper->route('mot_usermap_mod_poi_route', array(
+		$url = $this->helper->route('mot_usermap_mod_poi_route', [
 			'work_mode' => $this->get_data('work_mode'),
 			'poi_id' => $this->get_data('poi_id'),
-		));
+		]);
 		return $url;
 	}
 
@@ -151,11 +151,11 @@ class approve_poi extends \phpbb\notification\type\base
 	*/
 	public function get_email_template_variables()
 	{
-		$mail_vars = array(
+		$mail_vars = [
 			'CREATOR'		=> strip_tags(htmlspecialchars_decode($this->get_data('creator'))),
 			'POI_NAME'		=> strip_tags(htmlspecialchars_decode($this->get_data('poi_name'))),
-			'U_APPROVE'		=> generate_board_url(true) . $this->helper->route('mot_usermap_mod_poi_route', array('work_mode' => $this->get_data('work_mode'),'poi_id' => $this->get_data('poi_id'),), false),
-		);
+			'U_APPROVE'		=> generate_board_url(true) . $this->helper->route('mot_usermap_mod_poi_route', ['work_mode' => $this->get_data('work_mode'),'poi_id' => $this->get_data('poi_id'),], false),
+		];
 		return $mail_vars;
 	}
 
@@ -167,7 +167,7 @@ class approve_poi extends \phpbb\notification\type\base
 	* 		array		$pre_create_data Data from pre_create_insert_array()
 	*
 	*/
-	public function create_insert_array($data, $pre_create_data = array())
+	public function create_insert_array($data, $pre_create_data = [])
 	{
 		$this->set_data('poi_id', $data['poi_id']);
 		$this->set_data('poi_name', $data['poi_name']);

@@ -1,5 +1,39 @@
+/* style settings for table divs */
+.usermap-acp-div {
+	height: 20px;
+}
+
 /* style settings for version and copyright notice */
 .centered_text {
 	text-align: center;
 	vertical-align: middle;
+}
+
+/*
+* The following style orders are only needed with phpBB 3.2.x and 3.3.x up to and including 3.3.4
+*/
+.acp-icon {
+	font-size: 1.5em;
+}
+/* stylelint-enable declaration-property-unit-whitelist */
+
+.acp-icon-move-up,
+.acp-icon-move-down {
+	color: #4ba5de;
+}
+
+.acp-icon-settings {
+	color: #62c046;
+}
+
+.acp-icon-delete {
+	color: #d74558;
+}
+
+.acp-icon-resync {
+	color: #f69934;
+}
+
+.acp-icon-disabled {
+	color: #d0d0d0;
 }

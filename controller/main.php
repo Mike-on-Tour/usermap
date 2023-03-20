@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.1.3
-* @copyright (c) 2020 - 2021 Mike-on-Tour
+* @package Usermap v1.2.0
+* @copyright (c) 2020 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -11,9 +11,6 @@ namespace mot\usermap\controller;
 
 class main
 {
-
-	/* @var Container */
-	protected $phpbb_container;
 
 	/** @var \phpbb\auth\auth */
 	protected $auth;
@@ -95,6 +92,8 @@ class main
 		$this->usermap_layer_table = $mot_usermap_layer_table;
 
 		$this->ext_path = $this->phpbb_extension_manager->get_extension_path('mot/usermap', true);
+		$this->md_manager = $this->phpbb_extension_manager->create_extension_metadata_manager('mot/usermap');
+		$this->ext_data = $this->md_manager->get_metadata();
 	}
 
 
@@ -106,7 +105,7 @@ class main
 		$this->google_key = $this->config['mot_usermap_google_apikey'];
 
 		// Add the language variables for BBCodes
-		$this->language->add_lang(array('posting'));
+		$this->language->add_lang(['posting']);
 
 		// Get permissions
 		$add_poi = $this->auth->acl_get('u_add_poi');
@@ -125,150 +124,203 @@ class main
 		$flags = OPTION_FLAG_LINKS + OPTION_FLAG_BBCODE;	// === 0b0101   ( this really is of no interest since this variable gets set in the called function according to every flag set to true
 		$name_flags = 0;
 		$uid = $bitfield = '';
+		$usermap_result = [];
+		$usermap_result['type'] = 'none';
+		$usermap_config = [];
 
 		$action = $this->request->variable('action', '');
 
-		if ($action == 'submit')
+		switch ($action)
 		{
-			if (check_form_key('poi_edit'))
-			{
-				setlocale(LC_ALL, 'C');
-				$uid = $bitfield = '';
-				$poi_name = $this->request->variable('usermap_poi_name', '', true);
-				generate_text_for_storage($poi_name, $uid, $bitfield, $name_flags);
-				$popup_value = $this->request->variable('usermap_poi_popup', '', true);
-				generate_text_for_storage($popup_value, $uid, $bitfield, $flags, true, true);
-				$icon_size = $this->request->variable('usermap_poi_icon_size', '');
-				$icon_anchor = $this->request->variable('usermap_poi_icon_anchor', '');
-
-				$sql_arr = array(
-					'name'			=> $poi_name,
-					'popup'			=> $popup_value,
-					'icon'			=> $this->request->variable('usermap_poi_icon', ''),
-					'lat'			=> $this->request->variable('usermap_poi_lat', 0.0),
-					'lng'			=> $this->request->variable('usermap_poi_lng', 0.0),
-					'icon_size'		=> $icon_size == '' ? $this->config['mot_usermap_iconsize_default'] : $icon_size,
-					'icon_anchor'	=> $icon_anchor == '' ? $this->config['mot_usermap_iconanchor_default'] : $icon_anchor,
-					'creator_id'	=> $user_id,
-					'layer_id'		=> $this->request->variable('usermap_poi_layer', 0),
-				);
-
-				if ($add_poi)
+			case 'submit':
+				if (check_form_key('poi_edit'))
 				{
-					$sql_arr['disabled'] = 0;
+					setlocale(LC_ALL, 'C');
+					$uid = $bitfield = '';
+					// Get the POIs name
+					$poi_name = $this->request->variable('usermap_poi_name', '', true);
+					// Decode double quotes
+					$poi_name = htmlspecialchars_decode($poi_name, ENT_COMPAT);
+					// Remove some unwanted characters
+					$poi_name = str_replace($this->usermap_functions::MOT_USERMAP_POI_NONECHARS, '', $poi_name);
+					// and encode it again as done by the request classes type_cast_helper
+					$poi_name = htmlentities($poi_name, ENT_COMPAT, 'UTF-8');
+					generate_text_for_storage($poi_name, $uid, $bitfield, $name_flags);
+					$popup_value = $this->request->variable('usermap_poi_popup', '', true);
+					generate_text_for_storage($popup_value, $uid, $bitfield, $flags, true, true);
+					$icon_size = $this->request->variable('usermap_poi_icon_size', '');
+					$icon_anchor = $this->request->variable('usermap_poi_icon_anchor', '');
+
+					$sql_arr = [
+						'name'			=> $poi_name,
+						'popup'			=> $popup_value,
+						'icon'			=> $this->request->variable('usermap_poi_icon', ''),
+						'lat'			=> $this->request->variable('usermap_poi_lat', 0.0),
+						'lng'			=> $this->request->variable('usermap_poi_lng', 0.0),
+						'icon_size'		=> $icon_size == '' ? $this->config['mot_usermap_iconsize_default'] : $icon_size,
+						'icon_anchor'	=> $icon_anchor == '' ? $this->config['mot_usermap_iconanchor_default'] : $icon_anchor,
+						'creator_id'	=> $user_id,
+						'layer_id'		=> $this->request->variable('usermap_poi_layer', 0),
+					];
+
+					if ($add_poi)
+					{
+						$sql_arr['disabled'] = 0;
+					}
+					else if ($add_approve_poi)
+					{
+						$sql_arr['disabled'] = 1;
+					}
+
+					// store the data in the USERMAP_POI_TABLE
+					$sql = 'INSERT INTO ' . $this->usermap_poi_table . ' ' . $this->db->sql_build_array('INSERT', $sql_arr);
+					$this->db->sql_query($sql);
+					$poi_id = $this->db->sql_nextid();	// returns a string
+
+					// get the users supposed to get notified of a new POI
+					$query = 'SELECT user_id
+							FROM  ' . USERS_TABLE . '
+							WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL, USER_FOUNDER]) . '
+							ORDER BY user_id ASC';
+					$result = $this->db->sql_query($query);
+					$users_total = $this->db->sql_fetchrowset($result);
+					$this->db->sql_freeresult($result);
+					$users_all = [];
+					foreach ($users_total as $row)
+					{
+						$users_all[] = $row['user_id'];
+					}
+					$usermap_mods = $this->auth->acl_get_list($users_all, 'm_release_poi');
+
+					// Make sure we have at least an empty array to prevent errors
+					if (empty($usermap_mods))
+					{
+						$usermap_mods[0]['m_release_poi'] = [];
+					}
+
+					// prepare users data for the notification message
+					if (!function_exists('get_username_string'))
+					{
+						include($this->root_path . 'includes/functions_content.' . $this->php_ext);
+					}
+					$display_username = get_username_string('no_profile', $user_id, $this->user->data['username'], $this->user->data['user_colour']);
+
+					// prepare notification data
+					$notification_data = [
+						'poi_id'			=> $poi_id,
+						'poi_name'			=> $poi_name,
+						'creator'			=> $this->user->data['username'],
+						'display_username'	=> $display_username,
+						'user_ids'			=> $usermap_mods[0]['m_release_poi'],
+						'parent'			=> 0,
+					];
+
+					if ($add_poi)
+					{
+						$notification_data = array_merge($notification_data, ['work_mode' => 'notify']);
+						// notify moderators that a new POI has been created
+						$this->notification_manager->add_notifications('mot.usermap.notification.type.notify_poi', $notification_data);
+
+						// tell user about success
+						trigger_error($this->language->lang('POI_NEW_SAVED') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_PREV')), E_USER_NOTICE);
+					}
+					else if ($add_approve_poi)
+					{
+						$notification_data = array_merge($notification_data, ['work_mode' => 'approve']);
+						// notify moderators about this new POI awaiting approval
+						$this->notification_manager->add_notifications('mot.usermap.notification.type.approve_poi', $notification_data);
+
+						// tell user about success
+						trigger_error($this->language->lang('POI_MOD_NOTIFIED') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_PREV')), E_USER_NOTICE);
+					}
 				}
-				else if ($add_approve_poi)
+				else
 				{
-					$sql_arr['disabled'] = 1;
+					trigger_error($this->language->lang('FORM_INVALID') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_PREV')), E_USER_WARNING);
 				}
+				break;
 
-				// store the data in the USERMAP_POI_TABLE
-				$sql = 'INSERT INTO ' . $this->usermap_poi_table . ' ' . $this->db->sql_build_array('INSERT', $sql_arr);
-				$this->db->sql_query($sql);
-				$poi_id = $this->db->sql_nextid();	// returns a string
-
-				// get the users supposed to get notified of a new POI
-				$query = 'SELECT user_id
-						FROM  ' . USERS_TABLE . '
-						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL, USER_FOUNDER)) . '
-						ORDER BY user_id ASC';
-				$result = $this->db->sql_query($query);
-				$users_total = $this->db->sql_fetchrowset($result);
+			//	check whether Usermap was called via BBCode
+			case 'bbcode_user':
+				$look_for = $this->request->variable('look_for', '', true);
+				$sql = 'SELECT user_id FROM ' . USERS_TABLE . '
+						WHERE username_clean = "' . $this->db->sql_escape(strtolower($look_for)) . '"';
+				$result = $this->db->sql_query($sql);
+				$look_for_id = $this->db->sql_fetchrow($result);
 				$this->db->sql_freeresult($result);
-				$users_all = array();
-				foreach ($users_total as $row)
+				if (!empty($look_for_id) && $look_for_id['user_id'] > 1)	// we got a valid user
 				{
-					$users_all[] = $row['user_id'];
+					$sql = 'SELECT * FROM ' . $this->usermap_users_table . '
+							WHERE user_id = ' . (int) $look_for_id['user_id'];
+					$result = $this->db->sql_query($sql);
+					$usermap_result = $this->db->sql_fetchrow($result);
+					$this->db->sql_freeresult($result);
+					if (empty($usermap_result))
+					{
+						trigger_error($this->language->lang('USERMAP_NO_MATCH_FOUND', $look_for), E_USER_WARNING);
+					}
+					$usermap_result['type'] = 'User';
 				}
-				$usermap_mods = $this->auth->acl_get_list($users_all, 'm_release_poi');
+				break;
 
-				// Make sure we have at least an empty array to prevent errors
-				if (empty($usermap_mods))
+			case 'bbcode_poi':
+				$look_for_poi = $look_for = $this->request->variable('look_for', '', true);
+				generate_text_for_storage($look_for_poi, $uid, $bitfield, $name_flags);
+				$sql = 'SELECT lat, lng, layer_id FROM ' . $this->usermap_poi_table . '
+						WHERE name = "' . (string) $look_for_poi . '"';
+				$result = $this->db->sql_query($sql);
+				$usermap_result = $this->db->sql_fetchrow($result);
+				$this->db->sql_freeresult($result);
+				if (empty($usermap_result))
 				{
-					$usermap_mods[0]['m_release_poi'] = array();
+					trigger_error($this->language->lang('USERMAP_NO_MATCH_FOUND', $look_for), E_USER_WARNING);
 				}
+				$usermap_result['type'] = 'POI';
+				break;
 
-				// prepare users data for the notification message
-				if (!function_exists('get_username_string'))
-				{
-					include($this->root_path . 'includes/functions_content.' . $this->php_ext);
-				}
-				$display_username = get_username_string('no_profile', $user_id, $this->user->data['username'], $this->user->data['user_colour']);
+			//	set configuration values to send them to javascript for initialising the map
+			case 'bbcode_loc':
+			case 'member':
+				$lat = $this->request->variable('lat', '');
+				$lng = $this->request->variable('lng', '');
+				// change comma to full stop
+				$lat = str_replace(',', '.', $lat);
+				$lng = str_replace(',', '.', $lng);
+				$usermap_config = [
+					'Lat'			=> $lat,
+					'Lng'			=> $lng,
+					'Zoom'			=> '13',
+				];
+				break;
 
-				// prepare notification data
-				$notification_data = array(
-					'poi_id'			=> $poi_id,
-					'poi_name'			=> $poi_name,
-					'creator'			=> $this->user->data['username'],
-					'display_username'	=> $display_username,
-					'user_ids'			=> $usermap_mods[0]['m_release_poi'],
-					'parent'			=> 0,
-				);
-
-				if ($add_poi)
-				{
-					$notification_data = array_merge($notification_data, array('work_mode' => 'notify'));
-					// notify moderators that a new POI has been created
-					$this->notification_manager->add_notifications('mot.usermap.notification.type.notify_poi', $notification_data);
-
-					// tell user about success
-					trigger_error($this->language->lang('POI_NEW_SAVED') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_PREV')), E_USER_NOTICE);
-				}
-				else if ($add_approve_poi)
-				{
-					$notification_data = array_merge($notification_data, array('work_mode' => 'approve'));
-					// notify moderators about this new POI awaiting approval
-					$this->notification_manager->add_notifications('mot.usermap.notification.type.approve_poi', $notification_data);
-
-					// tell user about success
-					trigger_error($this->language->lang('POI_MOD_NOTIFIED') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_PREV')), E_USER_NOTICE);
-				}
-			}
-			else
-			{
-				trigger_error($this->language->lang('FORM_INVALID') . $this->usermap_functions->usermap_back_link($this->helper->route('mot_usermap_route'), $this->language->lang('BACK_TO_PREV')), E_USER_WARNING);
-			}
+			default:
+				$usermap_config = [
+					'Lat'			=> $this->config['mot_usermap_lat'],
+					'Lng'			=> $this->config['mot_usermap_lon'],
+					'Zoom'			=> $this->config['mot_usermap_zoom'],
+				];
+				break;
 		}
 
-		/*
-		*	set configuration values to send them to javascript for initialising the map
-		*/
-		if ($action == 'member')
-		{
-			$lat = $this->request->variable('lat', '');
-			$lng = $this->request->variable('lng', '');
-			$usermap_config = [
-				'Lat'			=> $lat,
-				'Lng'			=> $lng,
-				'Zoom'			=> '13',
-				'radiusPC'		=> $this->config['mot_usermap_markers_pc'],
-				'radiusMobile'	=> $this->config['mot_usermap_markers_mob'],
-			];
-		}
-		else
-		{
-			$usermap_config = [
-				'Lat'			=> $this->config['mot_usermap_lat'],
-				'Lng'			=> $this->config['mot_usermap_lon'],
-				'Zoom'			=> $this->config['mot_usermap_zoom'],
-				'radiusPC'		=> $this->config['mot_usermap_markers_pc'],
-				'radiusMobile'	=> $this->config['mot_usermap_markers_mob'],
-			];
-		}
+		// Complete the usermap_config array
+		$usermap_config = array_merge($usermap_config, [
+			'radiusPC'		=> $this->config['mot_usermap_markers_pc'],
+			'radiusMobile'	=> $this->config['mot_usermap_markers_mob'],
+		]);
 
 		$poi_enabled = $this->config['mot_usermap_poi_enable'];
 
 		/*
 		*	Get data of current user
 		*/
-		$sql_arr = array(
+		$sql_arr = [
 			'SELECT'	=> 'u.user_id, u.username, um.user_lat, um.user_lng, um.user_land, um.user_plz',
-			'FROM'		=> array(
+			'FROM'		=> [
 				USERS_TABLE				=> 'u',
 				$this->usermap_users_table		=> 'um'
-			),
+			],
 			'WHERE'		=> 'u.user_id = ' . (int) $user_id . ' AND um.user_id = ' . (int) $user_id,
-		);
+		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_arr);
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
@@ -288,7 +340,8 @@ class main
 
 		// Get layer data
 		$sql = 'SELECT * FROM ' . $this->usermap_layer_table . '
-				WHERE layer_active = 1';
+				WHERE layer_active = 1
+				ORDER BY layer_position ASC';
 		$result = $this->db->sql_query($sql);
 		$layers = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
@@ -296,29 +349,34 @@ class main
 		$poi_layers = $member_layers = [];
 		foreach ($layers as &$arr)
 		{
-			$lang_vars = json_decode($arr['layer_lang_var'], true);
-			// write only current user's language variable into the layers array
-			$arr['layer_lang_var'] = array_key_exists ($this->user->data['user_lang'], $lang_vars) ? $lang_vars[$this->user->data['user_lang']] : $lang_vars['en'];
-			// and prepare layer_id and layer_name for the modal window
-			switch ($arr['member_layer'])
+			// get this layer's permitted groups and check whether this user is permitted to see this layer
+			$permitted_groups = json_decode($arr['layer_groups']);
+			if (in_array($this->user->data['group_id'], $permitted_groups))
 			{
-				// POI layer
-				case 0:
-					$poi_layers[] = $arr;
-					$this->template->assign_block_vars('poi_layer', [
-						'LAYER_ID'		=> $arr['layer_id'],
-						'LAYER_NAME'	=> $arr['layer_lang_var'],
-					]);
-					break;
+				$lang_vars = json_decode($arr['layer_lang_var'], true);
+				// write only current user's language variable into the layers array
+				$arr['layer_lang_var'] = array_key_exists ($this->user->data['user_lang'], $lang_vars) ? $lang_vars[$this->user->data['user_lang']] : $lang_vars['en'];
+				// and prepare layer_id and layer_name for the modal window
+				switch ($arr['layer_type'])
+				{
+					// Member layer
+					case 0:
+						$member_layers[] = $arr;
+						$this->template->assign_block_vars('member_layer', [
+							'LAYER_ID'		=> $arr['layer_id'],
+							'LAYER_NAME'	=> $arr['layer_lang_var'],
+						]);
+						break;
 
-				// Member layer (for future use)
-				case 1:
-					$member_layers[] = $arr;
-					$this->template->assign_block_vars('member_layer', [
-						'LAYER_ID'		=> $arr['layer_id'],
-						'LAYER_NAME'	=> $arr['layer_lang_var'],
-					]);
-					break;
+					// POI layer
+					case 1:
+						$poi_layers[] = $arr;
+						$this->template->assign_block_vars('poi_layer', [
+							'LAYER_ID'		=> $arr['layer_id'],
+							'LAYER_NAME'	=> $arr['layer_lang_var'],
+						]);
+						break;
+				}
 			}
 		}
 
@@ -330,14 +388,14 @@ class main
 			/*
 			*	Get usermap users data
 			*/
-			$sql_arr = array(
+			$sql_arr = [
 				'SELECT'	=> 'u.user_id, u.username, u.user_colour, um.user_lat, um.user_lng, um.layer_id',
-				'FROM'		=> array(
+				'FROM'		=> [
 					USERS_TABLE						=> 'u',
 					$this->usermap_users_table		=> 'um'
-				),
+				],
 				'WHERE'			=> 'u.user_id = um.user_id',
-			);
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_arr);
 			$sql .= ' ORDER BY u.user_id DESC';
 			$result = $this->db->sql_query($sql);
@@ -356,7 +414,7 @@ class main
 				ORDER BY ' . $order_legend . ' ASC';
 			$result = $this->db->sql_query($sql);
 
-			$usergroup_legend = array();
+			$usergroup_legend = [];
 			while ($row = $this->db->sql_fetchrow($result))
 			{
 				$colour_text = ($row['group_colour']) ? ' style="color:#' . $row['group_colour'] . '"' : '';
@@ -391,21 +449,21 @@ class main
 		{
 			$poi_legend = generate_text_for_display($this->config_text->get('mot_usermap_poi_legend'), $uid, $bitfield, $flags);
 
-			$query = 'SELECT * FROM ' . $this->usermap_poi_table . '
+			$sql = 'SELECT * FROM ' . $this->usermap_poi_table . '
 					WHERE disabled = 0
 					ORDER BY poi_id ASC';
-			$result = $this->db->sql_query($query);
+			$result = $this->db->sql_query($sql);
 			$poi_data = $this->db->sql_fetchrowset($result);
 			$this->db->sql_freeresult($result);
 
 			// Get icons
-			$icon_files = array();
+			$icon_files = [];
 			$icon_files = $this->usermap_functions->get_icons($this->ext_path . 'styles/all/theme/images/poi/');
 			foreach ($icon_files as $value)
 			{
-				$this->template->assign_block_vars('poi_icon', array(
+				$this->template->assign_block_vars('poi_icon', [
 					'VALUE'		=> $value,
-				));
+				]);
 			}
 
 			foreach ($poi_data as &$row)
@@ -414,7 +472,7 @@ class main
 				$row['popup'] = generate_text_for_display($row['popup'], $uid, $bitfield, $flags);
 			}
 
-			$this->template->assign_vars(array(
+			$this->template->assign_vars([
 				'POI_NUMBER'				=> $this->language->lang('POI_COUNT', count($poi_data)),
 				'POIDATA'					=> json_encode($poi_data),
 				'POI_COUNT'					=> count($poi_data),
@@ -436,7 +494,7 @@ class main
 				'GOOGLE_ENABLED'			=> $this->config['mot_usermap_google_enable'],
 				'AJAX_CALL'					=> $this->helper->route('mot_usermap_ajax'),
 				'POI_ICON_PATH'				=> json_encode(append_sid("{$this->ext_path}styles/all/theme/images/poi/")),
-			));
+			]);
 		}
 
 		$permission_overview = '';
@@ -484,7 +542,7 @@ class main
 			$tab = 3;
 		}
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'USER'						=> json_encode($current_user),
 			'VALID_USER'				=> $valid_user,
 			'MAPCONFIG'					=> json_encode($usermap_config),
@@ -495,10 +553,12 @@ class main
 			'VIEW_MAP_SUBSCRIBED'		=> $view_map_subscribed ? 1 : 0,
 			'POI_VIEW'					=> $view_poi ? 1 : 0,
 			'POI_CREATE'				=> ($add_poi || $add_approve_poi) ? 1 : 0,
+			'DISPLAY_BBCODE'			=> json_encode($usermap_result),
 			'DISPLAY_PERMISSIONS'		=> $permission_overview,
 			'TAB'						=> $tab,
-			)
-		);
+			'USERMAP_ACTIVE'			=> true,
+			'USERMAP_COPYRIGHT'			=> $this->ext_data['extra']['display-name'] . ' ' . $this->ext_data['version'] . ' &copy; Mike-on-Tour (<a href="' . $this->ext_data['homepage'] . '" target="_blank" rel="noopener">' . $this->ext_data['homepage'] . '</a>)',
+		]);
 
 		return $this->helper->render('@mot_usermap/usermap_main.html', $this->language->lang('USERMAP'));
 	}

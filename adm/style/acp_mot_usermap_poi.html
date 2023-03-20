@@ -1,7 +1,7 @@
 {% include 'overall_header.html' %}
 {% INCLUDECSS '@mot_usermap/mot_usermap_acp.css' %}
 {% if not INCLUDED_USERMAP_ACP %}
-	{% INCLUDEJS '@mot_usermap/admin_mot_usermap.js' %}
+	{% INCLUDEJS '@mot_usermap/mot_usermap_acp.js' %}
     {% set INCLUDED_USERMAP_ACP = true %}
 {% endif %}
 
@@ -29,13 +29,27 @@
 <h1>{{ lang('ACP_USERMAP_POI') }}</h1>
 <p>{{ lang('ACP_USERMAP_POI_EXPLAIN') }}</p>
 
+	<h2>{{ lang('ACP_USERMAP_POI_DATA') }}</h2>
+	
+	<form id="layer_select" method="post" action="{{ U_UM_SELECT_ACTION }}">
+		<fieldset class="quick">
+			{{ lang('ACP_USERMAP_SELECT_POI_LAYER') }}{{ lang('COLON') }} 
+			<select id="acp_usermap_select_poi_layer" name="acp_usermap_select_poi_layer" onchange="if (this.options[this.selectedIndex].value != '') this.form.submit();">
+				{% for layer_selection in layer_selection %}
+					<option value="{{ layer_selection.VALUE }}" {% if ACP_USERMAP_SELECT_POI_LAYER == layer_selection.VALUE %} selected {% endif %}{% if layer_selection.ACTIVE == 0 %} style="background: #ffff40;" {% endif %}>{{ layer_selection.NAME }}</option>
+				{% endfor %}
+			</select>
+			<input class="button2" type="submit" value="{{ lang('GO') }}" />
+			{{ S_FORM_TOKEN }}
+		</fieldset>
+	</form>
+
 	{% if pagination %}
 	<div class="pagination top-pagination">
 		{% include 'pagination.html' %}
 	</div>
 	{% endif %}
 
-	<h2>{{ lang('ACP_USERMAP_POI_DATA') }}</h2>
 	<table class="table1 zebra-table">
 		<thead>
 			<tr>
@@ -45,19 +59,22 @@
 				<th>{{ lang('ACP_USERMAP_POI_ICON') }}<br>{{ lang('ACP_USERMAP_POI_SIZE') }}<br>{{ lang('ACP_USERMAP_POI_ANCHOR') }}</th>
 				<th>{{ lang('ACP_USERMAP_DATABASE_LAT') }}<br>{{ lang('ACP_USERMAP_DATABASE_LNG') }}</th>
 				<th>{{ lang('ACP_USERMAP_POI_CREATOR') }}</th>
-				<th>{{ lang('OPTIONS') }}</th>
+				<th style="text-align: center;">{{ lang('OPTIONS') }}</th>
 			</tr>
 		</thead>
 		<tbody>
 		{% for poi in poi %}
-			<tr>
-				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.NAME }}</td>
-				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.POPUP }}</td>
-				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}{% if poi.LAYER == '' %} background-color: red;{% endif %}">{{ poi.LAYER }}</td>
-				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.ICON }}<br>{{ poi.SIZE }}<br>{{ poi.ANCHOR }}</td>
-				<td style="text-align: right;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.LAT }}<br>{{ poi.LNG }}</td>
-				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}">{{ poi.CREATOR }}</td>
-				<td style="text-align: center;{% if poi.DISABLED %} background-color: #ffff40;{% endif %}"><a href="{{ poi.U_DELETE }}">{{ lang('DELETE') }}</a><br><a href="{{ poi.U_EDIT }}">{{ lang('EDIT') }}</a></td>
+			<tr {% if poi.DISABLED %}style="background: #ffff40;"{% endif %}>
+				<td style="text-align: center;">{{ poi.NAME }}</td>
+				<td style="text-align: center;">{{ poi.POPUP }}</td>
+				<td style="text-align: center;{% if poi.LAYER == '' %} background-color: red;{% endif %}">{{ poi.LAYER }}</td>
+				<td style="text-align: center;">{{ poi.ICON }}<br>{{ poi.SIZE }}<br>{{ poi.ANCHOR }}</td>
+				<td style="text-align: right;">{{ poi.LAT }}<br>{{ poi.LNG }}</td>
+				<td style="text-align: center;">{{ poi.CREATOR }}</td>
+				<td style="text-align: center;">
+					<div class="usermap-acp-div"><a href="{{ poi.U_DELETE }}">{{ ICON_DELETE }}</a></div>
+					<div class="usermap-acp-div"><a href="{{ poi.U_EDIT }}">{{ ICON_EDIT }}</a></div>
+				</td>
 			</tr>
 		{% else %}
 		<tr>
@@ -112,7 +129,7 @@
 			<dd>
 				<select id="mot_usermap_poi_layer" name="mot_usermap_poi_layer">
 					{% for poi_layer in poi_layer %}
-						<option value="{{ poi_layer.LAYER_ID }}" {% if MOT_USERMAP_POI_LAYER_ID == poi_layer.LAYER_ID %} selected {% endif %}>{{ poi_layer.LAYER_NAME }}</option>
+						<option value="{{ poi_layer.LAYER_ID }}" {% if MOT_USERMAP_POI_LAYER_ID == poi_layer.LAYER_ID %} selected {% endif %}{% if poi_layer.ACTIVE == 0 %} style="font-style: italic;" {% endif %}>{{ poi_layer.LAYER_NAME }}</option>
 					{% endfor %}
 				</select>
 			</dd>

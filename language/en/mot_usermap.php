@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.1.2
-* @copyright (c) 2020 - 2021 Mike-on-Tour
+* @package Usermap v1.2.0
+* @copyright (c) 2020 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -34,7 +34,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// Module
 	'USERMAP'						=> 'User Map',
-	'USERMAP_NOT_AUTHORIZED'		=> 'You are not authorized to see the user map.',
+	'USERMAP_NOT_AUTHORIZED'		=> 'You are not authorised to see the user map.',
 	'USERMAP_SEARCHFORM'			=> 'Search Form',
 	'USERMAP_LEGEND'				=> 'Legend',
 	'USERMAP_CREDENTIALS'			=> 'Geo references used by Usermap courtesy of ',
@@ -70,7 +70,7 @@ $lang = array_merge($lang, [
 	// Legend
 	'POI_LEGEND_TITLE'				=> 'Legend for the POIs',
 	'STREET_DESC'					=> 'Street map',
-	'TOPO_DESC'						=> 'Topografical map',
+	'TOPO_DESC'						=> 'Topographical map',
 	'SAT_DESC'						=> 'Satellite image',
 	// Permission overview
 	'USERMAP_PERM_OVERVIEW'			=> 'Permissions on this page',
@@ -84,17 +84,18 @@ $lang = array_merge($lang, [
 	'USERMAP_PERM_ADD_POI_MOD'		=> 'You <strong>can</strong> create POIs with moderator approval.<br>',
 	// Error messages
 	'USERMAP_GN_USER_ERROR'			=> ': Geonames user does not exist or is not activated for this service!',
+	'USERMAP_NO_MATCH_FOUND'		=> 'No match found for <strong>%1$s</strong>!',
 	// User POI popup
 	'POI_INPUT_EXPL'				=> 'In this form you can create a new POI. Its coordinates will be adopted from the marker on the map left of this form.
 										This marker is draggable, you can move it with the mouse to its final destination. Its name, description as well as
 										the icon by which the marker will be represented later can be input or selected in the following form fields.',
-	'POI_NEW_SAVED'					=> 'The created POI was successfully saved in the data base and is displayed on the map.',
-	'POI_MOD_NOTIFIED'				=> 'The created POI was successfully saved in the data base, the moderators have been notified of it awaiting approval.',
+	'POI_NEW_SAVED'					=> 'The created POI was successfully saved in the database and is displayed on the map.',
+	'POI_MOD_NOTIFIED'				=> 'The created POI was successfully saved in the database, the moderators have been notified of it awaiting approval.',
 	'ACP_USERMAP_POI_NAME'			=> 'Name of POI',
 	'ACP_USERMAP_POI_NAME_EXP'		=> 'Name of this POI, is displayed as a tooltip bubble when the mouse pointer moves over the POI marker.',
 	'ACP_USERMAP_POI_POPUP'			=> 'Description of POI',
 	'ACP_USERMAP_POI_POPUP_EXP'		=> 'Description of this POI, can use up to 500 characters and may contain BBCode.<br>
-										This text is displayed in a popup bubble when the POI marker gets clicked with the mouse pointer.',
+										This text is displayed in a popup bubble when the POI marker is clicked with the mouse pointer.',
 	'ACP_USERMAP_POI_ICON'			=> 'Icon file',
 	'ACP_USERMAP_POI_ICON_EXP'		=> 'To facilitate a rudimentary categorisation of your POIs you can select from marker icons with different colours.',
 	'ACP_USERMAP_POI_SIZE'			=> 'Icon size',
@@ -107,9 +108,9 @@ $lang = array_merge($lang, [
 	'ACP_USERMAP_DATABASE_LNG'		=> 'Longitude',
 	'ACP_USERMAP_POI_LAYER'			=> 'Map overlay',
 	'ACP_USERMAP_POI_LAYER_EXP'		=> 'Select the map overlay on which this POI will be displayed.',
-	'ACP_USERMAP_DATABASE_SUCCESS'	=> 'Changes of the internal data base successfully saved.',
+	'ACP_USERMAP_DATABASE_SUCCESS'	=> 'Changes of the internal database successfully saved.',
 	'ACP_USERMAP_CONFIRM_DELETE'	=> 'Are you really certain that you want to delete this item from the database?<br>
-										<strong>This removes the item permenantly from the data base and cannot be undone!</strong>',
+										<strong>This removes the item permanently from the database and cannot be undone!</strong>',
 	'USERMAP_POI_NAME_ERROR'		=> 'The field >%1$s< must not be empty!',
 	// Notifications
 	'NOTIFICATION_USERMAP_MOD'		=> 'Moderation Notifications for the Usermap',
@@ -121,7 +122,7 @@ $lang = array_merge($lang, [
 	'POI_MOD_EXPL'					=> 'Here you can check the data of a user created new POI and edit it if you find this necessary or wish to do this for
 										another reason. You can position the marker by dragging it with the mouse. After finishing this process you can either
 										save the POI (and approve it) or delete it if it does not fit your boards policy.',
-	'USERMAP_MOD_NOT_AUTHORIZED'	=> '<strong>You are not permitted to comence this activity!</strong>',
+	'USERMAP_MOD_NOT_AUTHORIZED'	=> '<strong>You are not permitted to commence this activity!</strong>',
 	'POI_NONEXISTENT'				=> 'POI does not exist',
 	'POI_ALREADY_APPROVED'			=> 'This POI has already been approved!',
 	'APPROVE'						=> 'Approve',
@@ -140,9 +141,9 @@ $lang = array_merge($lang, [
 	'LOG_USERMAP_SETTING_UPDATED'	=> '<strong>Usermap settings changed</strong>',
 	'LOG_POI_LEGEND_UPDATED'		=> '<strong>Edited the POI legend</strong>',
 	'LOG_USERMAP_INSTALL_LANG'		=> '<strong>Added a language pack to the Usermap:</strong><br>» %s',
-	'LOG_USERMAP_ZIPCODE_NEW'		=> '<strong>Added a new data base entry to the Usermap:</strong><br>» %s',
-	'LOG_USERMAP_ZIPCODE_DELETED'	=> '<strong>Deleted a data base entry to the Usermap:</strong><br>» %s',
-	'LOG_USERMAP_ZIPCODE_EDIT'		=> '<strong>Edited a data base entry to the Usermap:</strong><br>» %s',
+	'LOG_USERMAP_ZIPCODE_NEW'		=> '<strong>Added a new database entry to the Usermap:</strong><br>» %s',
+	'LOG_USERMAP_ZIPCODE_DELETED'	=> '<strong>Deleted a database entry to the Usermap:</strong><br>» %s',
+	'LOG_USERMAP_ZIPCODE_EDIT'		=> '<strong>Edited a database entry to the Usermap:</strong><br>» %s',
 	'LOG_USERMAP_POI_NEW'			=> '<strong>Added a new POI to the Usermap:</strong><br>» %s',
 	'LOG_USERMAP_POI_EDITED'		=> '<strong>Changed POI data:</strong><br>» %s',
 	'LOG_USERMAP_GOOGLE_ERROR'		=> '<strong>The Google Maps API failed the execution with the following error message:</strong><br>» %s',
