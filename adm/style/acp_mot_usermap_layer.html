@@ -4,14 +4,15 @@
 	{% INCLUDEJS '@mot_usermap/mot_usermap_acp.js' %}
     {% set INCLUDED_USERMAP_ACP = true %}
 {% endif %}
+{% import "acp_mot_usermap_macro.html" as forms %}
+{% set switch_type = TOGGLECTRL_TYPE ?? 'toggle' %}
 
 <script type="text/javascript">
-// <![CDATA[
 	function scrollToElement(inputName) {
 		var domElement = document.getElementById(inputName);
 		window.scrollTo(0, domElement.offsetTop);
 	}
-	
+
 	var motUsermap = {};
 	/*
 	* Define error messages
@@ -20,7 +21,6 @@
 	motUsermap.layerErrorMsg2 = '{{ lang('ACP_ERR_LAYER_NO_LANG')|e('js') }}';
 	motUsermap.layerErrorMsg3 = '{{ lang('ACP_ERR_LAYER_INCORRECT')|e('js') }}';
 	motUsermap.layerErrorMsg4 = '{{ lang('ACP_ERR_LAYER_NO_EN')|e('js') }}';
- // ]]>
 </script>
 
 <h1>{{ lang('ACP_USERMAP_LAYER') }}</h1>
@@ -31,13 +31,13 @@
 
 	<form id="layer_select" method="post" action="{{ U_UM_SELECT_ACTION }}">
 		<fieldset class="quick">
-			{{ lang('ACP_USERMAP_LAYER_SELECT_TYPE') }}{{ lang('COLON') }} 
+			{{ lang('ACP_USERMAP_LAYER_SELECT_TYPE') ~ lang('COLON') }}
 			<select id="mot_usermap_select_layer_type" name="mot_usermap_select_layer_type" onchange="if (this.options[this.selectedIndex].value != '') this.form.submit();">
 				{% for layer in layers %}
 					<option value="{{ layer.VALUE }}" {% if ACP_USERMAP_SELECT_LAYER_TYPE == layer.VALUE %} selected {% endif %}>{{ layer.NAME }}</option>
 				{% endfor %}
 			</select>
-			<input class="button2" type="submit" value="{{ lang('GO') }}" />
+			<input class="button2" type="submit" value="{{ lang('GO') }}">
 			{{ S_FORM_TOKEN }}
 		</fieldset>
 	</form>
@@ -72,8 +72,8 @@
 				{% if ACP_USERMAP_SELECT_LAYER_TYPE != 0 %}<td style="text-align: center;">{{ layer.DEFAULT_ICON }}</td>{% endif %}
 				<td style="text-align: left;">{{ layer.GROUPS_VIEWING }}</td>
 				<td style="text-align: center;">
-					<div class="usermap-acp-div">{% if layer.U_MOVE_UP != '' %}<a href="{{ layer.U_MOVE_UP }}">{{ ICON_MOVE_UP }}</a>{% else %}{{ ICON_MOVE_UP_DISABLED }}{% endif %}&nbsp;{% if layer.U_DELETE != '' %}<a href="{{ layer.U_DELETE }}">{{ ICON_DELETE }}</a>{% else %}{{ ICON_DELETE_DISABLED }}{% endif %}</div>
-					<div class="usermap-acp-div">{% if layer.U_MOVE_DOWN != '' %}<a href="{{ layer.U_MOVE_DOWN }}">{{ ICON_MOVE_DOWN }}</a>{% else %}{{ ICON_MOVE_DOWN_DISABLED }}{% endif %}&nbsp;<a href="{{ layer.U_EDIT }}">{{ ICON_EDIT }}</a></div>
+					<div class="usermap-acp-div">{% if layer.U_MOVE_UP != '' %}<a href="{{ layer.U_MOVE_UP }}">{{ ICON_MOVE_UP }}</a>{% else %}{{ ICON_MOVE_UP_DISABLED }}{% endif %}&nbsp;<a href="{{ layer.U_EDIT }}">{{ ICON_EDIT }}</a></div>
+					<div class="usermap-acp-div">{% if layer.U_MOVE_DOWN != '' %}<a href="{{ layer.U_MOVE_DOWN }}">{{ ICON_MOVE_DOWN }}</a>{% else %}{{ ICON_MOVE_DOWN_DISABLED }}{% endif %}&nbsp;{% if layer.U_DELETE != '' %}<a href="{{ layer.U_DELETE }}">{{ ICON_DELETE }}</a>{% else %}{{ ICON_DELETE_DISABLED }}{% endif %}</div>
 				</td>
 			</tr>
 		{% else %}
@@ -100,27 +100,24 @@
 <form id="acp_usermap_layer" name="acp_usermap_layer" method="post" action="{{ U_ACTION }}">
 	<fieldset>
         <dl>
-			<dt><label for="mot_usermap_layer_name">{{ lang('ACP_USERMAP_LAYER_NAME') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_NAME_EXP') }}</p></dt>
-			<dd><input id="mot_usermap_layer_name" type="text" size="30" maxlength="50" name="mot_usermap_layer_name" value="{{ ACP_USERMAP_LAYER_NAME }}" /></dd>
+			<dt><label for="mot_usermap_layer_name">{{ lang('ACP_USERMAP_LAYER_NAME') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_NAME_EXP') }}</p></dt>
+			<dd><input id="mot_usermap_layer_name" type="text" size="30" maxlength="50" name="mot_usermap_layer_name" value="{{ ACP_USERMAP_LAYER_NAME }}"></dd>
 		</dl>
 		<dl>
-			<dt><label for="mot_usermap_layer_active">{{ lang('ACP_USERMAP_LAYER_ACTIVE') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_ACTIVE_EXP') }}</p></dt>
-			<dd><label><input type="radio" class="radio" name="mot_usermap_layer_active" value="1"{% if ACP_USERMAP_LAYER_ACTIVE %} id="mot_usermap_layer_active" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="mot_usermap_layer_active" value="0"{% if not ACP_USERMAP_LAYER_ACTIVE %} id="mot_usermap_layer_active" checked="checked"{%  endif %} /> {{ lang('NO') }}</label>
+			<dt><label for="mot_usermap_layer_active">{{ lang('ACP_USERMAP_LAYER_ACTIVE') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_ACTIVE_EXP') }}</p></dt>
+			<dd>{{ forms.switch('mot_usermap_layer_active', ACP_USERMAP_LAYER_ACTIVE, switch_type) }}</dd>
 		</dl>
 		<dl>
-			<dt><label for="mot_usermap_show_layer">{{ lang('ACP_USERMAP_SHOW_LAYER') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_SHOW_LAYER_EXP') }}</p></dt>
-			<dd><label><input type="radio" class="radio" name="mot_usermap_show_layer" value="1"{% if ACP_USERMAP_SHOW_LAYER %} id="mot_usermap_show_layer" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="mot_usermap_show_layer" value="0"{% if not ACP_USERMAP_SHOW_LAYER %} id="mot_usermap_show_layer" checked="checked"{%  endif %} /> {{ lang('NO') }}</label>
+			<dt><label for="mot_usermap_show_layer">{{ lang('ACP_USERMAP_SHOW_LAYER') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_SHOW_LAYER_EXP') }}</p></dt>
+			<dd>{{ forms.switch('mot_usermap_show_layer', ACP_USERMAP_SHOW_LAYER, switch_type) }}</dd>
 		</dl>
 		<dl>
-			<dt><label for="mot_usermap_enable_clusters">{{ lang('ACP_USERMAP_LAYER_CLUSTERS') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_CLUSTERS_EXP') }}</p></dt>
-			<dd><label><input type="radio" class="radio" name="mot_usermap_enable_clusters" value="1"{% if ACP_USERMAP_LAYER_CLUSTERS %} id="mot_usermap_enable_clusters" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="mot_usermap_enable_clusters" value="0"{% if not ACP_USERMAP_LAYER_CLUSTERS %} id="mot_usermap_enable_clusters" checked="checked"{%  endif %} /> {{ lang('NO') }}</label>
+			<dt><label for="mot_usermap_enable_clusters">{{ lang('ACP_USERMAP_LAYER_CLUSTERS') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_CLUSTERS_EXP') }}</p></dt>
+			<dd>{{ forms.switch('mot_usermap_enable_clusters', ACP_USERMAP_LAYER_CLUSTERS, switch_type) }}</dd>
 		</dl>
 		<dl>
 			<dt>
-				<label for="mot_usermap_layer_lang_var">{{ lang('ACP_USERMAP_LAYER_LANG_VAR') }}{{ lang('COLON') }}</label>
+				<label for="mot_usermap_layer_lang_var">{{ lang('ACP_USERMAP_LAYER_LANG_VAR') ~ lang('COLON') }}</label>
 				<p>{{ LAYER_LANG_VAR_EXP }}</p>
 			</dt>
 			<dd>
@@ -128,7 +125,7 @@
 			</dd>
 		</dl>
 		<dl id="icon_select" {% if ACP_USERMAP_SELECT_LAYER_TYPE == 0 %}hidden="true"{% endif %}>
-			<dt><label for="mot_usermap_layer_default_icon">{{ lang('ACP_USERMAP_LAYER_DEFAULTICON') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_ICON_EXP') }}</p></dt>
+			<dt><label for="mot_usermap_layer_default_icon">{{ lang('ACP_USERMAP_LAYER_DEFAULTICON') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_ICON_EXP') }}</p></dt>
 			<dd>
 				<select id="mot_usermap_layer_default_icon" name="mot_usermap_layer_default_icon">
 					{% for poi_icon in poi_icon %}
@@ -138,13 +135,13 @@
 			</dd>
 		</dl>
 		<dl>
-			<dt><label for="mot_usermap_permitted_groups">{{ lang('ACP_USERMAP_PERMITTED_GROUPS') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_PERMITTED_GROUPS_EXP') }}</p></dt>
+			<dt><label for="mot_usermap_permitted_groups">{{ lang('ACP_USERMAP_PERMITTED_GROUPS') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_PERMITTED_GROUPS_EXP') }}</p></dt>
             <dd><select class="no-scroll" id="mot_usermap_permitted_groups" name="mot_usermap_permitted_groups[]"  size="{{ ACP_USERREMINDER_GROUP_COUNT }}" multiple="multiple">{{ ACP_USERMAP_PERMITTED_GROUPS }}</select></dd>
 		</dl>
 		<p class="submit-buttons">
-			<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
+			<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">
 		</p>
-	</fieldset> 
+	</fieldset>
 	{{ S_FORM_TOKEN }}
 </form>
 {% else %}

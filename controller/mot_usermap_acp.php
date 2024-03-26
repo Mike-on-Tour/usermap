@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.2.2
-* @copyright (c) 2020 - 2022 Mike-on-Tour
+* @package Usermap v1.2.4
+* @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -179,6 +179,7 @@ class mot_usermap_acp
 		$google_key = '<a href="https://developers.google.com/maps/documentation/embed/get-api-key" target="_blank"><span style="text-decoration: underline;">';
 		$geonames_readme = '<a href="http://download.geonames.org/export/zip/readme.txt" target="_blank"><span style="text-decoration: underline;">';
 		$this->template->assign_vars([
+			'ACP_USERMAP_ALLOW_URL_FOPEN'		=> ini_get('allow_url_fopen'),
 			'USERMAP_VERSION'					=> $this->language->lang('ACP_USERMAP_VERSION', $this->usermap_version, date('Y')),
 			'ACP_USERMAP_ROWS_PER_PAGE'			=> $this->config['mot_usermap_rows_per_page'],
 			'ACP_USERMAP_LAT'					=> $this->config['mot_usermap_lat'],
@@ -906,7 +907,7 @@ class mot_usermap_acp
 				{
 					if (!empty($this->auth->acl_group_raw_data($option['group_id'], $group_acl[$layer_type_selected])))
 					{
-						$selected = in_array($option['group_id'], $permitted_groups_arr) ? ' selected="selected"' : '';
+						$selected = in_array($option['group_id'], $permitted_groups_arr) ? ' selected' : '';
 						$groups_available .= '<option ' . (($option['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $option['group_id'] . '"' . $selected . '">' . $this->group_helper->get_name($option['group_name']) . '</option>';
 						$group_count++;
 					}

@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.1.0
-* @copyright (c) 2020 - 2021 Mike-on-Tour
+* @package Usermap v1.2.4
+* @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -152,8 +152,8 @@ class approve_poi extends \phpbb\notification\type\base
 	public function get_email_template_variables()
 	{
 		$mail_vars = [
-			'CREATOR'		=> strip_tags(htmlspecialchars_decode($this->get_data('creator'))),
-			'POI_NAME'		=> strip_tags(htmlspecialchars_decode($this->get_data('poi_name'))),
+			'CREATOR'		=> strip_tags(htmlspecialchars_decode($this->get_data('creator'), ENT_COMPAT)),
+			'POI_NAME'		=> strip_tags(htmlspecialchars_decode($this->get_data('poi_name'), ENT_COMPAT)),
 			'U_APPROVE'		=> generate_board_url(true) . $this->helper->route('mot_usermap_mod_poi_route', ['work_mode' => $this->get_data('work_mode'),'poi_id' => $this->get_data('poi_id'),], false),
 		];
 		return $mail_vars;

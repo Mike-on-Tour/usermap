@@ -31,7 +31,7 @@
 					   <option value="100">100</option>
 					</select>
 					&nbsp;{{ lang('MAP_KM') }}&nbsp;
-					<input class="button1" id="plz_search_button" type="submit" value="{{ lang('SUBMIT') }}" />
+					<input class="button1" id="plz_search_button" type="submit" value="{{ lang('SUBMIT') }}">
 				</form>
 			</div>
 		</div>
@@ -39,10 +39,10 @@
 	<div id="usermap_box_2" class="inner" hidden="true">
 		<div class="usermap_search">
 			<div class="search-form">
-				<span class="search-text">{{ lang('MEMBERNAME_SEARCH') }}{{ lang('COLON') }}&nbsp;</span>
+				<span class="search-text">{{ lang('MEMBERNAME_SEARCH') ~ lang('COLON') }}&nbsp;</span>
 				<form id="membername_search">
-					<input class="inputbox autowidth" id="member_choice" type="text" />&nbsp;
-					<input class="button1" id="membername_search_button" type="submit" value="{{ lang('SUBMIT') }}" />
+					<input class="inputbox autowidth" id="member_choice" type="text">&nbsp;
+					<input class="button1" id="membername_search_button" type="submit" value="{{ lang('SUBMIT') }}">
 				</form>
 			</div>
 		</div>
@@ -50,10 +50,10 @@
 	<div id="usermap_box_3" class="inner" hidden="true">
 		<div class="usermap_search">
 			<div class="search-form">
-				<span class="search-text">{{ lang('POINAME_SEARCH') }}{{ lang('COLON') }}&nbsp;</span>
+				<span class="search-text">{{ lang('POINAME_SEARCH') ~ lang('COLON') }}&nbsp;</span>
 				<form id="poi_search">
-					<input class="inputbox autowidth" id="poi_choice" type="text" />&nbsp;
-					<input class="button1" id="poi_search_button" type="submit" value="{{ lang('SUBMIT') }}" />
+					<input class="inputbox autowidth" id="poi_choice" type="text">&nbsp;
+					<input class="button1" id="poi_search_button" type="submit" value="{{ lang('SUBMIT') }}">
 				</form>
 			</div>
 		</div>
@@ -62,10 +62,10 @@
 	<div id="usermap_box_4" class="inner" hidden="true">
 		<div class="usermap_search">
 			<div class="search-form">
-				<span class="search-text">{{ lang('ADDRESS_SEARCH') }}{{ lang('COLON') }}&nbsp;</span>
+				<span class="search-text">{{ lang('ADDRESS_SEARCH') ~ lang('COLON') }}&nbsp;</span>
 				<form id="address_search"  action="{{ AJAX_CALL }}" method="POST" data-ajax="true">
-					<input class="inputbox autowidth" id="address_choice" type="text" />&nbsp;
-					<input class="button1" id="address_search_button" type="submit" value="{{ lang('SUBMIT') }}" />
+					<input class="inputbox autowidth" id="address_choice" type="text">&nbsp;
+					<input class="button1" id="address_search_button" type="submit" value="{{ lang('SUBMIT') }}">
 				</form>
 			</div>
 		</div>

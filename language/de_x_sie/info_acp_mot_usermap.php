@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.2.0
-* @copyright (c) 2020 - 2022 Mike-on-Tour
+* @package Usermap v1.2.4
+* @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -34,11 +34,12 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// ACP
 	'ACP_USERMAP'						=> 'Mitgliederkarte',
-	'ACP_USERMAP_VERSION'				=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic" /><br>&copy; 2020 - %2$d by Mike-on-Tour',
+	'ACP_USERMAP_VERSION'				=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic"><br>&copy; 2020 - %2$d by Mike-on-Tour',
 	'SUPPORT_USERMAP'					=> 'Wenn Sie die Entwicklung der Mitgliederkarte unterstützen möchten, können Sie das hier tun:<br>',
 	// Settings tab
 	'ACP_USERMAP_SETTINGS'				=> 'Einstellungen',
 	'ACP_USERMAP_SETTINGS_EXPLAIN'		=> 'Hier können Sie die Einstellungen für die Mitgliederkarte ändern.',
+	'ACP_USERMAP_ALLOW_URL_FOPEN'		=> 'Die PHP-Option `allow_url_fopen` ist deaktiviert! Zur ordnungsgemäßen Funktion von Usermap muss sie aktiviert sein!',
 	'ACP_USERMAP_SETTING_SAVED'			=> 'Die Einstellungen für die Mitgliederkarte wurden erfolgreich gesichert.',
 	'ACP_USERMAP_GENERAL_SETTINGS'		=> 'Allgemeine Einstellungen',
 	'ACP_USERMAP_ROWS_PER_PAGE'			=> 'Zeilen pro Tabellenseite',

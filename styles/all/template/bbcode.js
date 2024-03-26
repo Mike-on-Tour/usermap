@@ -9,7 +9,7 @@ var BBCodeHTML = function() {
 	// regular expressions for the different bbcode tokens
 	var tokens = {
 		'URL' : '((?:(?:[a-z][a-z\\d+\\-.]*:\\/{2}(?:(?:[a-z0-9\\-._~\\!$&\'*+,;=:@|]+|%[\\dA-F]{2})+|[0-9.]+|\\[[a-z0-9.]+:[a-z0-9.]+:[a-z0-9.:]+\\])(?::\\d*)?(?:\\/(?:[a-z0-9\\-._~\\!$&\'*+,;=:@|]+|%[\\dA-F]{2})*)*(?:\\?(?:[a-z0-9\\-._~\\!$&\'*+,;=:@\\/?|]+|%[\\dA-F]{2})*)?(?:#(?:[a-z0-9\\-._~\\!$&\'*+,;=:@\\/?|]+|%[\\dA-F]{2})*)?)|(?:www\\.(?:[a-z0-9\\-._~\\!$&\'*+,;=:@|]+|%[\\dA-F]{2})+(?::\\d*)?(?:\\/(?:[a-z0-9\\-._~\\!$&\'*+,;=:@|]+|%[\\dA-F]{2})*)*(?:\\?(?:[a-z0-9\\-._~\\!$&\'*+,;=:@\\/?|]+|%[\\dA-F]{2})*)?(?:#(?:[a-z0-9\\-._~\\!$&\'*+,;=:@\\/?|]+|%[\\dA-F]{2})*)?)))',
-		'LINK' : '([a-z0-9\-\./]+[^"\' ]*)',
+		'LINK' : '([a-z0-9\-\.\/]+[^"\' ]*)',
 		'EMAIL' : '((?:[\\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*(?:[\\w\!\#$\%\'\*\+\-\/\=\?\^\`{\|\}\~]|&)+@(?:(?:(?:(?:(?:[a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(?:\\d{1,3}\.){3}\\d{1,3}(?:\:\\d{1,5})?))',
 		'TEXT' : '(.*?)',
 		'SIMPLETEXT' : '([a-zA-Z0-9-+.,_ ]+)',
@@ -167,10 +167,10 @@ var BBCodeHTML = function() {
 	me.addBBCode('[url]{URL}[/url]', '<a href="{URL}" class="postlink">{URL}</a>');
 	me.addBBCode('[url={LINK}]{TEXT}[/url]', '<a href="{LINK}" class="postlink">{TEXT}</a>');
 	me.addBBCode('[url]{LINK}[/url]', '<a href="{LINK}" class="postlink">{LINK}</a>');
-//	me.addBBCode('[img={URL} width={NUMBER1} height={NUMBER2}]{TEXT}[/img]', '<img src="{URL}" width="{NUMBER1}" height="{NUMBER2}" alt="{TEXT}" />');
-//	me.addBBCode('[img]{URL}[/img]', '<img src="{URL}" alt="{URL}" />');
-//	me.addBBCode('[img={LINK} width={NUMBER1} height={NUMBER2}]{TEXT}[/img]', '<img src="{LINK}" width="{NUMBER1}" height="{NUMBER2}" alt="{TEXT}" />');
-//	me.addBBCode('[img]{LINK}[/img]', '<img src="{LINK}" alt="{LINK}" />');
+//	me.addBBCode('[img={URL} width={NUMBER1} height={NUMBER2}]{TEXT}[/img]', '<img src="{URL}" width="{NUMBER1}" height="{NUMBER2}" alt="{TEXT}">');
+//	me.addBBCode('[img]{URL}[/img]', '<img src="{URL}" alt="{URL}">');
+//	me.addBBCode('[img={LINK} width={NUMBER1} height={NUMBER2}]{TEXT}[/img]', '<img src="{LINK}" width="{NUMBER1}" height="{NUMBER2}" alt="{TEXT}">');
+//	me.addBBCode('[img]{LINK}[/img]', '<img src="{LINK}" alt="{LINK}">');
 	me.addBBCode('[color={COLOR}]{TEXT}[/color]', '<span style="color: {COLOR};">{TEXT}</span>');
 //	me.addBBCode('[highlight={COLOR}]{TEXT}[/highlight]', '<span style="background-color: {COLOR}">{TEXT}</span>');
 //	me.addBBCode('[quote="{TEXT1}"]{TEXT2}[/quote]', '<div class="quote"><cite>{TEXT1}</cite><p>{TEXT2}</p></div>');

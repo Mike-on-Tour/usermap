@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Adds a usermap to your forum",
 	"homepage": "https://www.mike-on-tour.com",
-	"version": "1.2.2",
-	"time": "2022-11-18 12:11:57",
+	"version": "1.2.4",
+	"time": "2024-01-05 12:11:57",
 	"license": "GPL-2.0-only",
 	"authors": [
 		{
@@ -12,36 +12,16 @@
 			"email": "webmaster@mike-on-tour.de",
 			"homepage": "https://www.mike-on-tour.com",
 			"role": "Developer"
-		},
-        {
-            "name": "Jorge (Jorup16), Raul [ThE KuKa]",
-            "role": "Spanish translation"
-        },
-        {
-            "name": "Nico (NicoM)",
-            "role": "French translation"
-        },
-		{
-			"name": "Leszek Rymsza (Lech-u)",
-			"role": "Polish translation"
-        },
-		{
-			"name": "warmweer, janus_zonstraal",
-			"role": "Dutch translation"
-		}
-	],
+		}	],
 	"require": {
-		"php": ">=7.2",
-        "phpbb/phpbb": ">=3.2",
+		"php": ">=7.2.24, <8.3.0",
+        "phpbb/phpbb": ">=3.2.0, <3.4.0@dev",
         "composer/installers": "~1.0.0"
-	},
-	"require-dev": {
-		"phpbb/epv": "dev-master"
 	},
 	"extra": {
 		"display-name": "Usermap for phpBB",
-		"soft-require": {
-			"phpbb/phpbb": ">=3.2.0"
+        "soft-require": {
+            "phpbb/phpbb": ">=3.2.0, <3.4.0@dev"
 		},
 		"version-check": {
 			"host": "www.mike-on-tour.com",

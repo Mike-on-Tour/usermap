@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.2.0
-* @copyright (c) 2020 - 2022 Mike-on-Tour
+* @package Usermap v1.2.3
+* @copyright (c) 2020 - 2023 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -89,6 +89,8 @@ class mod_poi
 		$this->usermap_layer_table = $mot_usermap_layer_table;
 
 		$this->ext_path = $this->phpbb_extension_manager->get_extension_path('mot/usermap', true);
+		$this->md_manager = $this->phpbb_extension_manager->create_extension_metadata_manager('mot/usermap');
+		$this->ext_data = $this->md_manager->get_metadata();
 	}
 
 	/**
@@ -277,6 +279,17 @@ class mod_poi
 				}
 			}
 		}
+
+		$this->template->assign_vars([
+			'USERMAP_ACTIVE'			=> true,
+			'USERMAP_COPYRIGHT'			=> $this->ext_data['extra']['display-name'] . ' ' . $this->ext_data['version'] . ' &copy; Mike-on-Tour (<a href="' . $this->ext_data['homepage'] . '" target="_blank" rel="noopener">' . $this->ext_data['homepage'] . '</a>)',
+		]);
+
+		// Add breadcrumbs link
+		$this->template->assign_block_vars('navlinks', [
+			'FORUM_NAME'	=> $this->language->lang('USERMAP'),
+			'U_VIEW_FORUM'	=> $this->helper->route('mot_usermap_mod_poi_route'),
+		]);
 
 		return $this->helper->render('@mot_usermap/usermap_mod_poi.html', $this->language->lang('USERMAP'));
 	}

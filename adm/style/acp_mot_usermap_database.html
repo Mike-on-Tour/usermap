@@ -6,7 +6,6 @@
 {% endif %}
 
 <script type="text/javascript">
-// <![CDATA[
 	function scrollToElement(inputName) {
 		var domElement = document.getElementById(inputName);
 		window.scrollTo(0, domElement.offsetTop);
@@ -17,7 +16,6 @@
 	motUsermap.databaseError = '{{ lang('ACP_USERMAP_DATABASE_BIG_ERR')|e('js') }}';
 	motUsermap.databaseErrorCC = '{{ ERROR_CC|e('js') }}';
 	motUsermap.databaseErrorZC = '{{ ERROR_ZC|e('js') }}';
- // ]]>
 </script>
 
 <h1>{{ lang('ACP_USERMAP_DATABASE') }}</h1>
@@ -66,36 +64,36 @@
 		{% include 'pagination.html' %}
 	</div>
 	{% endif %}
-	
+
 <form id="acp_usermap_database" method="post" action="{{ U_ACTION }}">
 	<fieldset>
 		<legend>{{ lang('ACP_USERMAP_DATABASE_NEW') }}</legend>
 		<dl>
-			<dt><label for="mot_usermap_database_cc">{{ lang('ACP_USERMAP_DATABASE_CC') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_DATABASE_CC_EXP') }}</p></dt>
-			<dd><input id="mot_usermap_database_cc" type="text" size="2" maxlength="2" name="mot_usermap_database_cc" value="{{ ACP_USERMAP_DATABASE_CC }}" /></dd>
+			<dt><label for="mot_usermap_database_cc">{{ lang('ACP_USERMAP_DATABASE_CC') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_DATABASE_CC_EXP') }}</p></dt>
+			<dd><input id="mot_usermap_database_cc" type="text" size="2" maxlength="2" name="mot_usermap_database_cc" value="{{ ACP_USERMAP_DATABASE_CC }}"></dd>
 		</dl>
 		<dl>
-			<dt><label for="mot_usermap_database_zc">{{ lang('ACP_USERMAP_DATABASE_ZIPCODE') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_DATABASE_ZC_EXP') }}</p></dt>
-			<dd><input id="mot_usermap_database_zc" type="text" size="10" maxlength="10" name="mot_usermap_database_zc" value="{{ ACP_USERMAP_DATABASE_ZC }}" /></dd>
+			<dt><label for="mot_usermap_database_zc">{{ lang('ACP_USERMAP_DATABASE_ZIPCODE') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_DATABASE_ZC_EXP') }}</p></dt>
+			<dd><input id="mot_usermap_database_zc" type="text" size="10" maxlength="10" name="mot_usermap_database_zc" value="{{ ACP_USERMAP_DATABASE_ZC }}"></dd>
 		</dl>
 		<dl>
-			<dt><label for="mot_usermap_database_name">{{ lang('ACP_USERMAP_DATABASE_NAME') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_DATABASE_NAME_EXP') }}</p></dt>
+			<dt><label for="mot_usermap_database_name">{{ lang('ACP_USERMAP_DATABASE_NAME') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_DATABASE_NAME_EXP') }}</p></dt>
 			<dd><input id="mot_usermap_database_name" type="text" size="20" maxlength="25" name="mot_usermap_database_name" value="{{ ACP_USERMAP_DATABASE_NAME }}"></dd>
 		</dl>
 		<dl>
-            <dt><label for="mot_usermap_database_lat">{{ lang('ACP_USERMAP_DATABASE_LAT') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAT_EXP') }}</p></dt>
-            <dd><input id="mot_usermap_database_lat" type="text" size="11" maxlength="10" name="mot_usermap_database_lat" value="{{ ACP_USERMAP_DATABASE_LAT }}" /></dd>
+            <dt><label for="mot_usermap_database_lat">{{ lang('ACP_USERMAP_DATABASE_LAT') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAT_EXP') }}</p></dt>
+            <dd><input id="mot_usermap_database_lat" type="text" size="11" maxlength="10" name="mot_usermap_database_lat" value="{{ ACP_USERMAP_DATABASE_LAT }}"></dd>
         </dl>
         <dl>
-            <dt><label for="mot_usermap_database_lon">{{ lang('ACP_USERMAP_DATABASE_LNG') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LON_EXP') }}</dt>
-            <dd><input id="mot_usermap_database_lon" type="text" size="11" maxlength="11" name="mot_usermap_database_lon" value="{{ ACP_USERMAP_DATABASE_LON }}" /></dd>
+            <dt><label for="mot_usermap_database_lon">{{ lang('ACP_USERMAP_DATABASE_LNG') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LON_EXP') }}</dt>
+            <dd><input id="mot_usermap_database_lon" type="text" size="11" maxlength="11" name="mot_usermap_database_lon" value="{{ ACP_USERMAP_DATABASE_LON }}"></dd>
         </dl>
         <p class="submit-buttons">
-            <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />{#&nbsp;
-            <input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" /> #}
+            <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">{#&nbsp;
+            <input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}"> #}
         </p>
 	{{ S_FORM_TOKEN }}
-	</fieldset> 
+	</fieldset>
 </form>
 
 <p class="centered_text">

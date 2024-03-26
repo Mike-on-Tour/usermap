@@ -4,9 +4,10 @@
 	{% INCLUDEJS '@mot_usermap/mot_usermap_acp.js' %}
     {% set INCLUDED_USERMAP_ACP = true %}
 {% endif %}
+{% import "acp_mot_usermap_macro.html" as forms %}
+{% set switch_type = TOGGLECTRL_TYPE ?? 'toggle' %}
 
 <script type="text/javascript">
-// <![CDATA[
 	var form_name = 'acp_usermap_poi';
 	var text_name = 'mot_usermap_poi_popup';
 
@@ -14,7 +15,7 @@
 		var domElement = document.getElementById(inputName);
 		window.scrollTo(0, domElement.offsetTop);
 	}
-	
+
 	var motUsermap = {};
 	motUsermap.jsLayersArr = {{ LAYERS_ARR }};
 	/*
@@ -23,23 +24,22 @@
 	motUsermap.poiErrorNoName = '{{ lang('ACP_ERR_POI_NO_NAME')|e('js') }}';
 	motUsermap.poiErrorNoLat = '{{ lang('ACP_ERR_POI_NO_LAT')|e('js') }}';
 	motUsermap.poiErrorNoLng = '{{ lang('ACP_ERR_POI_NO_LNG')|e('js') }}';
- // ]]>
 </script>
 
 <h1>{{ lang('ACP_USERMAP_POI') }}</h1>
 <p>{{ lang('ACP_USERMAP_POI_EXPLAIN') }}</p>
 
 	<h2>{{ lang('ACP_USERMAP_POI_DATA') }}</h2>
-	
+
 	<form id="layer_select" method="post" action="{{ U_UM_SELECT_ACTION }}">
 		<fieldset class="quick">
-			{{ lang('ACP_USERMAP_SELECT_POI_LAYER') }}{{ lang('COLON') }} 
+			{{ lang('ACP_USERMAP_SELECT_POI_LAYER') ~ lang('COLON') }}
 			<select id="acp_usermap_select_poi_layer" name="acp_usermap_select_poi_layer" onchange="if (this.options[this.selectedIndex].value != '') this.form.submit();">
 				{% for layer_selection in layer_selection %}
 					<option value="{{ layer_selection.VALUE }}" {% if ACP_USERMAP_SELECT_POI_LAYER == layer_selection.VALUE %} selected {% endif %}{% if layer_selection.ACTIVE == 0 %} style="background: #ffff40;" {% endif %}>{{ layer_selection.NAME }}</option>
 				{% endfor %}
 			</select>
-			<input class="button2" type="submit" value="{{ lang('GO') }}" />
+			<input class="button2" type="submit" value="{{ lang('GO') }}">
 			{{ S_FORM_TOKEN }}
 		</fieldset>
 	</form>
@@ -72,8 +72,7 @@
 				<td style="text-align: right;">{{ poi.LAT }}<br>{{ poi.LNG }}</td>
 				<td style="text-align: center;">{{ poi.CREATOR }}</td>
 				<td style="text-align: center;">
-					<div class="usermap-acp-div"><a href="{{ poi.U_DELETE }}">{{ ICON_DELETE }}</a></div>
-					<div class="usermap-acp-div"><a href="{{ poi.U_EDIT }}">{{ ICON_EDIT }}</a></div>
+					<a href="{{ poi.U_EDIT }}">{{ ICON_EDIT }}</a>&nbsp;<a href="{{ poi.U_DELETE }}">{{ ICON_DELETE }}</a>
 				</td>
 			</tr>
 		{% else %}
@@ -104,19 +103,19 @@
 <form id="acp_usermap_poi" name="acp_usermap_poi" method="post" action="{{ U_ACTION }}">
 	<fieldset>
         <dl>
-			<dt><label for="mot_usermap_poi_name">{{ lang('ACP_USERMAP_POI_NAME') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_POI_NAME_EXP') }}</p></dt>
-			<dd><input id="mot_usermap_poi_name" type="text" size="50" maxlength="50" name="mot_usermap_poi_name" value="{{ ACP_USERMAP_POI_NAME }}" /></dd>
+			<dt><label for="mot_usermap_poi_name">{{ lang('ACP_USERMAP_POI_NAME') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_POI_NAME_EXP') }}</p></dt>
+			<dd><input id="mot_usermap_poi_name" type="text" size="50" maxlength="50" name="mot_usermap_poi_name" value="{{ ACP_USERMAP_POI_NAME }}"></dd>
 		</dl>
         <dl>
 			<dt>
-				<label for="mot_usermap_poi_popup">{{ lang('ACP_USERMAP_POI_POPUP') }}{{ lang('COLON') }}</label>
+				<label for="mot_usermap_poi_popup">{{ lang('ACP_USERMAP_POI_POPUP') ~ lang('COLON') }}</label>
 				<p>{{ lang('ACP_USERMAP_POI_POPUP_EXP') }}</p>
 				<p>{% include('acp_posting_buttons.html') %}</p>
 				<p id="color_palette_placeholder" data-orientation="h" data-height="12" data-width="15" data-bbcode="true"></p>
 			</dt>
 			<dd>
 				<textarea id="mot_usermap_poi_popup" name="mot_usermap_poi_popup" rows="11" cols="50" maxlength="500" accept-charset="utf-8" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();">{{ ACP_USERMAP_POI_POPUP }}</textarea>
-				<br><input class="button2" type="submit" name="preview" formaction="{{ U_ACTION_PREVIEW }}" value="{{ lang('PREVIEW') }}" />
+				<br><input class="button2" type="submit" name="preview" formaction="{{ U_ACTION_PREVIEW }}" value="{{ lang('PREVIEW') }}">
 			</dd>
 		</dl>
 		<dl>
@@ -125,7 +124,7 @@
 		</dl>
 		<hr>
 		<dl>
-            <dt><label for="mot_usermap_poi_layer">{{ lang('ACP_USERMAP_POI_LAYER') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_POI_LAYER_EXP') }}</p></dt>
+            <dt><label for="mot_usermap_poi_layer">{{ lang('ACP_USERMAP_POI_LAYER') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_POI_LAYER_EXP') }}</p></dt>
 			<dd>
 				<select id="mot_usermap_poi_layer" name="mot_usermap_poi_layer">
 					{% for poi_layer in poi_layer %}
@@ -135,14 +134,13 @@
 			</dd>
         </dl>
 		<dl>
-            <dt><label for="mot_usermap_show_poi">{{ lang('ACP_USERMAP_POI_VISIBLE') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_POI_VISIBLE_EXP') }}</p></dt>
-			<dd><label><input type="radio" class="radio" name="mot_usermap_show_poi" value="0"{% if not ACP_USERMAP_SHOW_POI %} id="mot_usermap_show_poi" checked="checked"{%  endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="mot_usermap_show_poi" value="1"{% if ACP_USERMAP_SHOW_POI %} id="mot_usermap_show_poi" checked="checked"{%  endif %} /> {{ lang('NO') }}</label>
+            <dt><label for="mot_usermap_show_poi">{{ lang('ACP_USERMAP_POI_VISIBLE') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_POI_VISIBLE_EXP') }}</p></dt>
+			<dd>{{ forms.switch('mot_usermap_show_poi', !ACP_USERMAP_SHOW_POI, switch_type) }}</dd>
         </dl>
 		<hr>
         <dl>
 			<dt>
-				<label for="mot_usermap_poi_icon">{{ lang('ACP_USERMAP_POI_ICON') }}{{ lang('COLON') }}</label>
+				<label for="mot_usermap_poi_icon">{{ lang('ACP_USERMAP_POI_ICON') ~ lang('COLON') }}</label>
 				<p>{{ lang('ACP_USERMAP_POI_ICON_EXP') }}</p>
 			</dt>
 			<dd>
@@ -155,36 +153,36 @@
 		</dl>
 		<dl>
 			<dt>
-				<label for='mot_usermap_poi_icon_size'>{{ lang('ACP_USERMAP_POI_SIZE') }}{{ lang('COLON') }}</label>
+				<label for='mot_usermap_poi_icon_size'>{{ lang('ACP_USERMAP_POI_SIZE') ~ lang('COLON') }}</label>
 				<p>{{ lang('ACP_USERMAP_POI_SIZE_EXP') }}</p>
 			</dt>
 			<dd>
-				<input id="mot_usermap_poi_icon_size" type="text" size="11" maxlength="10" name="mot_usermap_poi_icon_size" onblur="motUsermap.cleanInput('mot_usermap_poi_icon_size', '{{ DEFAULT_POI_ICON_SIZE|e('js') }}')" value="{{ ACP_USERMAP_POI_ICON_SIZE }}" />
+				<input id="mot_usermap_poi_icon_size" type="text" size="11" maxlength="10" name="mot_usermap_poi_icon_size" onblur="motUsermap.cleanInput('mot_usermap_poi_icon_size', '{{ DEFAULT_POI_ICON_SIZE|e('js') }}')" value="{{ ACP_USERMAP_POI_ICON_SIZE }}">
 			</dd>
 		</dl>
 		<dl>
 			<dt>
-				<label for='mot_usermap_poi_icon_anchor'>{{ lang('ACP_USERMAP_POI_ANCHOR') }}{{ lang('COLON') }}</label>
+				<label for='mot_usermap_poi_icon_anchor'>{{ lang('ACP_USERMAP_POI_ANCHOR') ~ lang('COLON') }}</label>
 				<p>{{ lang('ACP_USERMAP_POI_ANCHOR_EXP') }}</p>
 			</dt>
 			<dd>
-				<input id="mot_usermap_poi_icon_anchor" type="text" size="11" maxlength="10" name="mot_usermap_poi_icon_anchor" onblur="motUsermap.cleanInput('mot_usermap_poi_icon_anchor', '{{ DEFAULT_POI_ICON_ANCHOR|e('js') }}')" value="{{ ACP_USERMAP_POI_ICON_ANCHOR }}" />
+				<input id="mot_usermap_poi_icon_anchor" type="text" size="11" maxlength="10" name="mot_usermap_poi_icon_anchor" onblur="motUsermap.cleanInput('mot_usermap_poi_icon_anchor', '{{ DEFAULT_POI_ICON_ANCHOR|e('js') }}')" value="{{ ACP_USERMAP_POI_ICON_ANCHOR }}">
 			</dd>
 		</dl>
 		<hr>
 		<dl>
-            <dt><label for="mot_usermap_poi_lat">{{ lang('ACP_USERMAP_DATABASE_LAT') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAT_EXP') }}</p></dt>
-            <dd><input id="mot_usermap_poi_lat" type="text" size="11" maxlength="10" name="mot_usermap_poi_lat" value="{{ ACP_USERMAP_POI_LAT }}" /></dd>
+            <dt><label for="mot_usermap_poi_lat">{{ lang('ACP_USERMAP_DATABASE_LAT') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAT_EXP') }}</p></dt>
+            <dd><input id="mot_usermap_poi_lat" type="text" size="11" maxlength="10" name="mot_usermap_poi_lat" value="{{ ACP_USERMAP_POI_LAT }}"></dd>
         </dl>
         <dl>
-            <dt><label for="mot_usermap_poi_lon">{{ lang('ACP_USERMAP_DATABASE_LNG') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LON_EXP') }}</p></dt>
-            <dd><input id="mot_usermap_poi_lon" type="text" size="11" maxlength="11" name="mot_usermap_poi_lon" value="{{ ACP_USERMAP_POI_LON }}" /></dd>
+            <dt><label for="mot_usermap_poi_lon">{{ lang('ACP_USERMAP_DATABASE_LNG') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LON_EXP') }}</p></dt>
+            <dd><input id="mot_usermap_poi_lon" type="text" size="11" maxlength="11" name="mot_usermap_poi_lon" value="{{ ACP_USERMAP_POI_LON }}"></dd>
         </dl>
 		<hr>
         <p class="submit-buttons">
-            <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
+            <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">
         </p>
-	</fieldset> 
+	</fieldset>
 	{{ S_FORM_TOKEN }}
 </form>
 

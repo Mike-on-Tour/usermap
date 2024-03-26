@@ -1,6 +1,6 @@
 # **Usermap for phpBB**
 
-![Version: 1.2.2](https://img.shields.io/badge/Version-1.2.2-green)  
+![Version: 1.2.4](https://img.shields.io/badge/Version-1.2.4-green)  
   
 ![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)  
@@ -99,6 +99,7 @@ and notification settings - be notified that a new POI was created.
   
 If a user has entered a valid combination of country code and postal code in the UCP this user's location will be displayed on the map. In addition there is a
 link from the user's profile to this position on the map. Clicking on this link will open the map, center it on the user marker's position and zoom into the map.
+This link will be displayed only if the user visiting the profile is on the Usermap himself.
   
 #### *Administrator*
 Administrators will find the `User Map` section within the ACP's `Extensions` tab providing itself five tabs:
@@ -214,7 +215,7 @@ Administrators will find the `User Map` section within the ACP's `Extensions` ta
 	you or your moderators approve a user-created POI.  
 	With the last setting you can restrict the default groups permitted to see e.g. POIs (it will work with the user overlay, too). The way this works is as
 	follows:  
-	While creating a new overlay by default no groups are selected so you have to select the groups wihich you want to see this overlay. When editing an
+	While creating a new overlay by default no groups are selected so you have to select the groups which you want to see this overlay. When editing an
 	existing overlay the groups you have already selected are highlighted. But how does this work? We assume that you gave the default groups "Registered users"
 	"Administrators" and "Global moderators" the permission to view POIs through phpBB's permission system. In this case you will see those three groups listed
 	in the selection field. If you want to share this overlay (and the POIs you create on it) only with administrators and the global moderators you select these

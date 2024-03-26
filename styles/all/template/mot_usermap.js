@@ -1,7 +1,7 @@
 /**
 *
-* package Usermap v1.2.0
-* copyright (c) 2020 - 2022 Mike-on-Tour
+* package Usermap v1.2.4
+* copyright (c) 2020 - 2024 Mike-on-Tour
 * license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -611,8 +611,13 @@ motUsermap.layerControl = new L.control.layers(motUsermap.baseMap, userOverlays)
 if (motUsermap.jsDisplayBBCode['type'] == 'User') {
 	motUsermap.goToUser(motUsermap.jsDisplayBBCode['user_lat'], motUsermap.jsDisplayBBCode['user_lng'], motUsermap.jsDisplayBBCode['layer_id']);
 }
+
 if (motUsermap.jsDisplayBBCode['type'] == 'POI') {
 	motUsermap.goToPoi(motUsermap.jsDisplayBBCode['lat'], motUsermap.jsDisplayBBCode['lng'], motUsermap.jsDisplayBBCode['layer_id']);
+}
+
+if (motUsermap.jsMapConfig['setMarker']) {
+	L.marker([motUsermap.jsMapConfig['Lat'], motUsermap.jsMapConfig['Lng']]).addTo(motUsermap.map);
 }
 
 /* ---------------------------------------------------------------------------------------	Functions for the modal POI input	--------------------------------------------------------------------------------------- */

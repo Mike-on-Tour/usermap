@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.1.3
-* @copyright (c) 2020 - 2021 Mike-on-Tour
+* @package Usermap v1.2.4
+* @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -156,7 +156,7 @@ class main_listener implements EventSubscriberInterface
 		{
 			$j = 0;		// start with first geonames user
 			// set the error message for missing geonames users
-			$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br /><br />' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
+			$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br><br>' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
 			if ($gn_username[0] == '')
 			{
 				trigger_error($message, E_USER_ERROR);
@@ -193,7 +193,7 @@ class main_listener implements EventSubscriberInterface
 			// set the error message for missing geonmaes user according to activation mode
 			if ($event['mode'] == 'activate')	// activation by email
 			{
-				$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br /><br />' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
+				$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br><br>' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
 			}
 			if ($event['mode'] == 'flip')	// activation by administrator
 			{
@@ -269,7 +269,7 @@ class main_listener implements EventSubscriberInterface
 	*/
 	public function ucp_profile_info_modify_sql_ary($event)
 	{
-		$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br /><br />' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
+		$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br><br>' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
 		$this->process_user_profile_data($this->user->data['user_id'], $event['cp_data'], $message, E_USER_ERROR);
 	}
 
@@ -311,12 +311,18 @@ class main_listener implements EventSubscriberInterface
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-		if (!empty($row))
+		if (!empty($row))	// Okay, this user is on the map so we can show him
 		{
 			$this->template->assign_vars([
 				'U_USERMAP_SHOW_MEMBER'	=> $this->helper->route('mot_usermap_route', ['action' => 'member', 'lat' => $row['user_lat'], 'lng' => $row['user_lng'],]),
 			]);
-			$show_link = true;
+			// And now we check whether the requesting user is on the map and allow or deny him to see this link
+			$sql = 'SELECT * FROM ' . $this->usermap_users_table . '
+					WHERE user_id = ' . (int) $this->user->data['user_id'];
+			$result = $this->db->sql_query($sql);
+			$row = $this->db->sql_fetchrow($result);
+			$this->db->sql_freeresult($result);
+			$show_link = !empty($row) ? true : false;
 		}
 		$this->template->assign_vars([
 			'USERMAP_SHOW_LINK'	=> $show_link,

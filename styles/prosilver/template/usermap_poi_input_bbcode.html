@@ -2,16 +2,16 @@
 
 {% if S_BBCODE_ALLOWED %}
 <div id="format-buttons">
-	<input type="button" class="button2" accesskey="b" name="addbbcode0" value=" B " style="font-weight:bold; width: 30px" onclick="bbstyle(0)" title="{{ lang('BBCODE_B_HELP') }}" />
-	<input type="button" class="button2" accesskey="i" name="addbbcode2" value=" i " style="font-style:italic; width: 30px" onclick="bbstyle(2)" title="{{ lang('BBCODE_I_HELP') }}" />
-	<input type="button" class="button2" accesskey="u" name="addbbcode4" value=" u " style="text-decoration: underline; width: 30px" onclick="bbstyle(4)" title="{{ lang('BBCODE_U_HELP') }}" />
+	<input type="button" class="button2" accesskey="b" name="addbbcode0" value=" B " style="font-weight:bold; width: 30px" onclick="bbstyle(0)" title="{{ lang('BBCODE_B_HELP') }}">
+	<input type="button" class="button2" accesskey="i" name="addbbcode2" value=" i " style="font-style:italic; width: 30px" onclick="bbstyle(2)" title="{{ lang('BBCODE_I_HELP') }}">
+	<input type="button" class="button2" accesskey="u" name="addbbcode4" value=" u " style="text-decoration: underline; width: 30px" onclick="bbstyle(4)" title="{{ lang('BBCODE_U_HELP') }}">
 	{% if S_LINKS_ALLOWED %}
-		<input type="button" class="button2" accesskey="w" name="addbbcode6" value="URL" style="text-decoration: underline; width: 40px" onclick="bbstyle(6)" title="{{ lang('BBCODE_W_HELP') }}" />
+		<input type="button" class="button2" accesskey="w" name="addbbcode6" value="URL" style="text-decoration: underline; width: 40px" onclick="bbstyle(6)" title="{{ lang('BBCODE_W_HELP') }}">
 	{% endif %}
 	<select name="addbbcode8" onchange="bbfontstyle('[size=' + this.form.addbbcode8.options[this.form.addbbcode8.selectedIndex].value + ']', '[/size]');this.form.addbbcode8.selectedIndex = 2;" title="{{ lang('BBCODE_F_HELP') }}">
 		<option value="50">{{ lang('FONT_TINY') }}</option>
 		<option value="85">{{ lang('FONT_SMALL') }}</option>
-		<option value="100" selected="selected">{{ lang('FONT_NORMAL') }}</option>
+		<option value="100" selected>{{ lang('FONT_NORMAL') }}</option>
 		{% if not MAX_FONT_SIZE or MAX_FONT_SIZE >= 150 %}
 		<option value="150">{{ lang('FONT_LARGE') }}</option>
 		{% if not MAX_FONT_SIZE or MAX_FONT_SIZE >= 200 %}
@@ -19,6 +19,6 @@
 		{% endif %}
 		{% endif %}
 	</select>
-	<input type="button" class="button2" accesskey="s" name="addbbcode10" value=" S " style="font-weight:bold; width: 30px" onclick="bbstyle(10)" title="{{ lang('BBCODE_S_HELP') }}" />
+	<input type="button" class="button2" accesskey="s" name="addbbcode10" value=" S " style="font-weight:bold; width: 30px" onclick="bbstyle(10)" title="{{ lang('BBCODE_S_HELP') }}">
 </div>
 {% endif %}

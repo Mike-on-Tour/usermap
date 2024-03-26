@@ -37,7 +37,7 @@ class functions_usermap
 	 */
 	public function usermap_back_link($u_action, $lang_str)
 	{
-		return '<br /><br /><a href="' . $u_action . '">&laquo; ' . $lang_str . '</a>';
+		return '<br><br><a href="' . $u_action . '">&laquo; ' . $lang_str . '</a>';
 	}
 
 	/*
@@ -54,7 +54,7 @@ class functions_usermap
 
 		foreach ($path as $element)
 		{
-			if (is_file ($dir.'/'.$element))
+			if (is_file ($dir . '/' . $element))
 			{
 				$return[] = $element;
 			}

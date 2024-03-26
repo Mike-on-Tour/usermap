@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.2.0
-* @copyright (c) 2020 - 2022 Mike-on-Tour
+* @package Usermap v1.2.4
+* @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -34,11 +34,12 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// ACP
 	'ACP_USERMAP'						=> 'User Map',
-	'ACP_USERMAP_VERSION'				=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic" /><br>&copy; 2020 - %2$d by Mike-on-Tour',
+	'ACP_USERMAP_VERSION'				=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic"><br>&copy; 2020 - %2$d by Mike-on-Tour',
 	'SUPPORT_USERMAP'					=> 'If you want to donate to Usermap´s development please use this link:<br>',
 	// Settings tab
 	'ACP_USERMAP_SETTINGS'				=> 'Settings',
 	'ACP_USERMAP_SETTINGS_EXPLAIN'		=> 'This is where you customise your user map.',
+	'ACP_USERMAP_ALLOW_URL_FOPEN'		=> 'PHP option `allow_url_fopen` is disabled! It must be enabled in order for  Usermap to function!',
 	'ACP_USERMAP_SETTING_SAVED'			=> 'Settings for the user map successfully saved.',
 	'ACP_USERMAP_GENERAL_SETTINGS'		=> 'General settings',
 	'ACP_USERMAP_ROWS_PER_PAGE'			=> 'Rows per table page',

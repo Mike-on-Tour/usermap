@@ -4,14 +4,47 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.2.2] - 2022-11-18
+## [1.2.4] - 2024-01-05
 
 ### Added
 
 ### Changed
+-	The usage of either toggles, checkboxes or radio buttons according to a general template variable called `TOGGLECTRL_TYPE` which is implemented with the
+	`lukewcs/togglectrl` extension, default is still 'toggles'
 
 ### Fixed
--	Two missing lines in `controller/mot_usermap_acp.php` which prevented the database tab from selecting entries for editng and deleting
+-	A missing marker for the location BBCode
+
+### Removed
+-	All language packs except en, de and de_x_sie
+-	All remnants of XHTML
+  
+  
+## [1.2.3] - 2023-10-21
+
+### Added
+-	A check for the maximum PHP version allowed in the `ext.php` file
+-	A link in the breadcrumbs line
+-	A check for enabled PHP option `allow_url_fopen` in the `controller/mot_usermap_acp.php` file including an error box to be displayed in the
+	`adm/style/acp_mot_usermap_settings.html` file if this option is disabled
+
+### Changed
+
+### Fixed
+-	Permissions for displaying the link to a user in his profile in order that a user who is not on the Usermap can not see the link
+
+### Removed
+  
+  
+## [1.2.2] - 2022-11-28
+
+### Added
+
+### Changed
+-	The Yes/No radio buttons in the ACP settings, POI and layer pages to a toggle
+
+### Fixed
+-	Two missing lines in `controller/mot_usermap_acp.php` which prevented the database tab from selecting entries for editing and deleting
 
 ### Removed
   

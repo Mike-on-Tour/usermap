@@ -159,8 +159,6 @@ dt label {
 /* Input div's paragraphs */
 .input-p  {
 	font-size: x-small;
-	voice-family: "\"}\"";
-	voice-family: inherit;
 	margin-bottom: 0.7em;
 	line-height: 1.30em;
 }

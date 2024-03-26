@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.2.0
-* @copyright (c) 2020 - 2022 Mike-on-Tour
+* @package Usermap v1.2.4
+* @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -33,7 +33,7 @@ class main
 	/** @var \phpbb\user */
 	protected $user;
 
-	/** @var \phpbb\language\language $language Language object */
+	/** @var \phpbb\language\language $language */
 	protected $language;
 
 	/** @var \phpbb\extension\manager */
@@ -290,6 +290,7 @@ class main
 					'Lat'			=> $lat,
 					'Lng'			=> $lng,
 					'Zoom'			=> '13',
+					'setMarker'		=> $action == 'bbcode_loc',
 				];
 				break;
 
@@ -298,6 +299,7 @@ class main
 					'Lat'			=> $this->config['mot_usermap_lat'],
 					'Lng'			=> $this->config['mot_usermap_lon'],
 					'Zoom'			=> $this->config['mot_usermap_zoom'],
+					'setMarker'		=> false,
 				];
 				break;
 		}
@@ -558,6 +560,12 @@ class main
 			'TAB'						=> $tab,
 			'USERMAP_ACTIVE'			=> true,
 			'USERMAP_COPYRIGHT'			=> $this->ext_data['extra']['display-name'] . ' ' . $this->ext_data['version'] . ' &copy; Mike-on-Tour (<a href="' . $this->ext_data['homepage'] . '" target="_blank" rel="noopener">' . $this->ext_data['homepage'] . '</a>)',
+		]);
+
+		// Add breadcrumbs link
+		$this->template->assign_block_vars('navlinks', [
+			'FORUM_NAME'	=> $this->language->lang('USERMAP'),
+			'U_VIEW_FORUM'	=> $this->helper->route('mot_usermap_route'),
 		]);
 
 		return $this->helper->render('@mot_usermap/usermap_main.html', $this->language->lang('USERMAP'));

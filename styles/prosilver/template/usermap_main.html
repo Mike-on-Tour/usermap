@@ -17,7 +17,7 @@
 	{% INCLUDEJS '@mot_usermap/mot_usermap_tabs.js' %}
 	{% set INCLUDED_LEAFLETJS = true %}
 {% endif %}
- 
+
 <div id="page-body" class="page-body">
 
 {% if VIEW_MAP_ALWAYS || (VIEW_MAP_SUBSCRIBED && VALID_USER) || (POI_ENABLED && POI_VIEW) %}
@@ -128,7 +128,6 @@
 
 {# Handover of all necessary data to the js script #}
 <script>
-// <![CDATA[
 	var motUsermap = {};
 	motUsermap.tab = {{ TAB }};
 
@@ -138,7 +137,7 @@
 	motUsermap.jsPoiEnabled = {{ POI_ENABLED }};
 	motUsermap.jsPoiView = {{ POI_VIEW }};
 	motUsermap.jsPoiCreate = {{ POI_CREATE }};
-	
+
 	motUsermap.defaultPoiIconSize = '{{ DEFAULT_POI_ICON_SIZE|e('js') }}';
 	motUsermap.defaultPoiIconAnchor = '{{ DEFAULT_POI_ICON_ANCHOR|e('js') }}';
 	motUsermap.jsMapConfig = {{ MAPCONFIG }};
@@ -153,23 +152,19 @@
 	motUsermap.jsTopoDesc = "{{ lang('TOPO_DESC')|e('js') }}";
 	motUsermap.jsSatDesc = "{{ lang('SAT_DESC')|e('js') }}";
 	motUsermap.jsDisplayBBCode = {{ DISPLAY_BBCODE }};
-// ]]>
 </script>
 
 {# if user is permitted to see members the following data must be handed over #}
 {% if VIEW_MAP_ALWAYS || VIEW_MAP_SUBSCRIBED %}
 	<script>
-	// <![CDATA[
 		motUsermap.jsMemberData = {{ MEMBERDATA }};
 		motUsermap.jsMemberLayers = {{ MEMBER_LAYERDATA }};
-	// ]]>
 	</script>
 {% endif %}
 
 {# if POIs are enabled the following data must be handed over #}
 {% if POI_ENABLED %}
 	<script>
-	// <![CDATA[
 		motUsermap.poiIconPath = {{ POI_ICON_PATH }};
 		motUsermap.poiIconPath = motUsermap.poiIconPath.slice(0,motUsermap.poiIconPath.lastIndexOf('/')+1); // prevent misconfigured(?) (mobile) browsers from not getting images
 
@@ -182,7 +177,6 @@
 		motUsermap.jsPoiNoResult = "{{ lang('POINAME_NORESULT')|e('js') }}";
 		motUsermap.jsPoiLayers = {{ POI_LAYERDATA }};
 		motUsermap.jsAjaxCall = '{{ AJAX_CALL|e('js') }}';
-	// ]]>
 	</script>
 {% endif %}
 
