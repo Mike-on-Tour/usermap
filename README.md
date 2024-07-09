@@ -1,6 +1,6 @@
 # **Usermap for phpBB**
 
-![Version: 1.2.4](https://img.shields.io/badge/Version-1.2.4-green)  
+![Version: 1.2.5](https://img.shields.io/badge/Version-1.2.5-green)  
   
 ![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)  

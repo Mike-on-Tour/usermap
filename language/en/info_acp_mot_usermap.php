@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.2.4
+* @package Usermap v1.2.5
 * @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -35,11 +35,14 @@ $lang = array_merge($lang, [
 	// ACP
 	'ACP_USERMAP'						=> 'User Map',
 	'ACP_USERMAP_VERSION'				=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic"><br>&copy; 2020 - %2$d by Mike-on-Tour',
-	'SUPPORT_USERMAP'					=> 'If you want to donate to Usermap´s development please use this link:<br>',
+	'ACP_SUPPORT_USERMAP'				=> 'If you want to donate to Usermap´s development please use this link:<br>',
+	'ACP_USERMAP_PAYPAL_TITLE'			=> 'PayPal - The safer, easier way to pay online!',
+	'ACP_USERMAP_PAYPAL_ALT'			=> 'Donate with PayPal button',
+
 	// Settings tab
 	'ACP_USERMAP_SETTINGS'				=> 'Settings',
 	'ACP_USERMAP_SETTINGS_EXPLAIN'		=> 'This is where you customise your user map.',
-	'ACP_USERMAP_ALLOW_URL_FOPEN'		=> 'PHP option `allow_url_fopen` is disabled! It must be enabled in order for  Usermap to function!',
+	'ACP_USERMAP_ALLOW_URL_FOPEN'		=> 'PHP option `allow_url_fopen` is disabled! It must be enabled in order for Usermap to function!',
 	'ACP_USERMAP_SETTING_SAVED'			=> 'Settings for the user map successfully saved.',
 	'ACP_USERMAP_GENERAL_SETTINGS'		=> 'General settings',
 	'ACP_USERMAP_ROWS_PER_PAGE'			=> 'Rows per table page',

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.2.4
+* @package Usermap v1.2.5
 * @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -322,7 +322,7 @@ class main_listener implements EventSubscriberInterface
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
-			$show_link = !empty($row) ? true : false;
+			$show_link = !empty($row);
 		}
 		$this->template->assign_vars([
 			'USERMAP_SHOW_LINK'	=> $show_link,
@@ -638,7 +638,7 @@ class main_listener implements EventSubscriberInterface
 	{
 		$google_key = $this->config['mot_usermap_google_apikey'];
 		// set an array with status messages we are not listing into the error log
-		$status_ary = array('OK','ZERO_RESULTS');
+		$status_ary = ['OK','ZERO_RESULTS'];
 
 		// set the default return value (no match found or something went wrong)
 		$return = false;
