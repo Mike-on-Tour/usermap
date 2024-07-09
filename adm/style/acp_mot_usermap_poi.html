@@ -76,9 +76,9 @@
 				</td>
 			</tr>
 		{% else %}
-		<tr>
-			<td colspan="5" style="text-align: center;">{{ lang('ACP_USERMAP_DATABASE_NOENTRY') }}</td>
-		</tr>
+			<tr>
+				<td colspan="7" style="text-align: center;">{{ lang('ACP_USERMAP_DATABASE_NOENTRY') }}</td>
+			</tr>
 		{% endfor %}
 		</tbody>
 	</table>
@@ -135,7 +135,7 @@
         </dl>
 		<dl>
             <dt><label for="mot_usermap_show_poi">{{ lang('ACP_USERMAP_POI_VISIBLE') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_POI_VISIBLE_EXP') }}</p></dt>
-			<dd>{{ forms.switch('mot_usermap_show_poi', !ACP_USERMAP_SHOW_POI, switch_type) }}</dd>
+			<dd>{{ forms.switch('mot_usermap_show_poi', ACP_USERMAP_SHOW_POI, switch_type) }}</dd>
         </dl>
 		<hr>
         <dl>

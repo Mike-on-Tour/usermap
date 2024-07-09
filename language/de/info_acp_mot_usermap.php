@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.2.4
+* @package Usermap v1.2.5
 * @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -40,7 +40,10 @@ $lang = array_merge($lang, [
 	// ACP
 	'ACP_USERMAP'						=> 'Mitgliederkarte',
 	'ACP_USERMAP_VERSION'				=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic"><br>&copy; 2020 - %2$d by Mike-on-Tour',
-	'SUPPORT_USERMAP'					=> 'Wenn du die Entwicklung der Mitgliederkarte unterstützen möchtest, kannst du das hier tun:<br>',
+	'ACP_SUPPORT_USERMAP'				=> 'Wenn du die Entwicklung der Mitgliederkarte unterstützen möchtest, kannst du das hier tun:<br>',
+	'ACP_USERMAP_PAYPAL_TITLE'			=> 'PayPal - Der sicherere, einfachere Weg um online zu bezahlen!',
+	'ACP_USERMAP_PAYPAL_ALT'			=> 'Spende mit PayPal Button',
+
 	// Settings tab
 	'ACP_USERMAP_SETTINGS'				=> 'Einstellungen',
 	'ACP_USERMAP_SETTINGS_EXPLAIN'		=> 'Hier kannst du die Einstellungen für die Mitgliederkarte ändern.',

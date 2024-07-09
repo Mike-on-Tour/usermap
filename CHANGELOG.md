@@ -4,6 +4,20 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.5] - 2024-06-17
+
+### Added
+
+### Changed
+-	Maximum PHP version raised to 8.3.x
+-	Some code improvements
+
+### Fixed
+-	A problem with selecting the visibility of a POI in the ACP "POI handling" tab
+
+### Removed
+  
+  
 ## [1.2.4] - 2024-01-05
 
 ### Added

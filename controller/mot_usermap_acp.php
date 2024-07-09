@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.2.4
+* @package Usermap v1.2.5
 * @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -471,8 +471,7 @@ class mot_usermap_acp
 		// get the total number of zip codes
 		$count_query = "SELECT COUNT(zip_code) AS 'zip_count' FROM " . $this->usermap_zipcode_table;
 		$result = $this->db->sql_query($count_query);
-		$row = $this->db->sql_fetchrow($result);
-		$db_size = $row['zip_count'];
+		$db_size = $this->db->sql_fetchfield('zip_count');
 		$this->db->sql_freeresult($result);
 
 		// load the 'usermap_zipcodes' table
@@ -566,7 +565,7 @@ class mot_usermap_acp
 					'ACP_USERMAP_POI_LAT'			=> $row['lat'],
 					'ACP_USERMAP_POI_LON'			=> $row['lng'],
 					'MOT_USERMAP_POI_LAYER_ID'		=> $row['layer_id'],
-					'ACP_USERMAP_SHOW_POI'			=> $row['disabled'],
+					'ACP_USERMAP_SHOW_POI'			=> $row['disabled'] == 1 ? false : true,
 				]);
 				$this->u_action_preview = $this->u_action_preview . '&amp;poi_id=' . $poi_id;
 				$act = '&amp;action=submit_changes&amp;poi_id=' . $poi_id;
@@ -601,7 +600,7 @@ class mot_usermap_acp
 					'lng'			=> $this->request->variable('mot_usermap_poi_lon', 0.0),
 					'icon_size'		=> $this->request->variable('mot_usermap_poi_icon_size', ''),
 					'icon_anchor'	=> $this->request->variable('mot_usermap_poi_icon_anchor', ''),
-					'disabled'		=> $this->request->variable('mot_usermap_show_poi', 0),
+					'disabled'		=> $this->request->variable('mot_usermap_show_poi', 0) == 0 ? 1 : 0,
 					'layer_id'		=> $this->request->variable('mot_usermap_poi_layer', 0),
 				];
 				$sql = 'UPDATE ' . $this->usermap_poi_table . '
@@ -659,7 +658,7 @@ class mot_usermap_acp
 					'icon_size'		=> $this->request->variable('mot_usermap_poi_icon_size', ''),
 					'icon_anchor'	=> $this->request->variable('mot_usermap_poi_icon_anchor', ''),
 					'creator_id'	=> $this->user->data['user_id'],
-					'disabled'		=> $this->request->variable('mot_usermap_show_poi', 0),
+					'disabled'		=> $this->request->variable('mot_usermap_show_poi', 0) == 0 ? 1 : 0,
 					'layer_id'		=> $this->request->variable('mot_usermap_poi_layer', 0),
 				];
 				$sql = 'INSERT INTO ' . $this->usermap_poi_table . ' ' . $this->db->sql_build_array('INSERT', $sql_arr);
@@ -687,7 +686,7 @@ class mot_usermap_acp
 					'ACP_USERMAP_POI_LAT'			=> $this->request->variable('mot_usermap_poi_lat', ''),
 					'ACP_USERMAP_POI_LON'			=> $this->request->variable('mot_usermap_poi_lon', ''),
 					'MOT_USERMAP_POI_LAYER_ID'		=> $this->request->variable('mot_usermap_poi_layer', 0),
-					'ACP_USERMAP_SHOW_POI'			=> $this->request->variable('mot_usermap_show_poi', 0),
+					'ACP_USERMAP_SHOW_POI'			=> $this->request->variable('mot_usermap_show_poi', 0) == 1 ? false : true,
 				]);
 
 				if ($poi_id > 0)		// Preview was called from inside the Edit mode
@@ -745,8 +744,7 @@ class mot_usermap_acp
 			$count_query .= ' WHERE layer_id = ' . (int) $selected_layer;
 		}
 		$result = $this->db->sql_query($count_query);
-		$row = $this->db->sql_fetchrow($result);
-		$poi_count = $row['poi_count'];
+		$poi_count = $this->db->sql_fetchfield('poi_count');
 		$this->db->sql_freeresult($result);
 
 		// load the 'usermap_poi' table
@@ -1132,16 +1130,12 @@ class mot_usermap_acp
 		));
 	}
 
-	public function route()
-	{
-	}
-
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Set custom form action.
 	 *
-	 * @param	string	$u_action	Custom form action
+	 * @param	string		$u_action	Custom form action
 	 * @return	acp		$this		This controller for chaining calls
 	 */
 	public function set_page_url($u_action)

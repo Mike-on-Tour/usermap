@@ -110,7 +110,7 @@
 		<p>{{ lang('ACP_USERMAP_POI_TEXT') }}</p>
  		<dl>
 			<dt><label for="mot_usermap_poi_enable">{{ lang('ACP_USERMAP_POI_ENABLE') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_POI_ENABLE_EXP') }}</p></dt>
-			<dd>{{ forms.switch('mot_usermap_poi_enable', ACP_USERMAP_POI_ENABLE, switch_type	) }}</dd>
+			<dd>{{ forms.switch('mot_usermap_poi_enable', ACP_USERMAP_POI_ENABLE, switch_type) }}</dd>
 		</dl>
 	</fieldset>
 
@@ -187,13 +187,11 @@
 
 <fieldset>
 	<dl>
-		<dt><label>{{ lang('SUPPORT_USERMAP') }}</label></dt>
+		<dt><label>{{ lang('ACP_SUPPORT_USERMAP') }}</label></dt>
 		<dd>
-{#			<a href="https://www.paypal.com/donate/?hosted_button_id=3LXA3G5TKEHP4" target="_blank"><img src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" border="0" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button"></a>#}
 			<form action="https://www.paypal.com/donate" method="post" target="_top">
-{#				<input type="hidden" name="hosted_button_id" value="3LXA3G5TKEHP4">#}
 				<input type="hidden" name="hosted_button_id" value="JQQ5R6VM2XHW4">
-				<input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button">
+				<input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="{{ lang('ACP_USERMAP_PAYPAL_TITLE') }}" alt="{{ lang('ACP_USERMAP_PAYPAL_ALT') }}">
 				<img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1">
 			</form>
 		</dd>

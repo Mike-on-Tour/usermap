@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.2.0
-* @copyright (c) 2020 - 2022 Mike-on-Tour
+* @package Usermap v1.2.5
+* @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -75,8 +75,7 @@ class functions_usermap
 		$count_query = "SELECT COUNT(layer_id) AS 'layer_count' FROM " . $this->usermap_layer_table . "
 						WHERE layer_type = " . (int) $type;
 		$result = $this->db->sql_query($count_query);
-		$row = $this->db->sql_fetchrow($result);
-		$layer_count = $row['layer_count'];
+		$layer_count = $this->db->sql_fetchfield('layer_count');
 		$this->db->sql_freeresult($result);
 		return $layer_count;
 	}
