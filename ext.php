@@ -2,7 +2,7 @@
 
 /**
 *
-* @package Usermap v1.2.5
+* @package Usermap v1.2.6
 * @copyright (c) 2019 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -16,7 +16,7 @@ class ext extends \phpbb\extension\base
 	protected $phpbb_min_ver = '3.2.0';
 	protected $phpbb_below_ver = '3.4.0@dev';
 	protected $php_min_ver = '7.2.24';
-	protected $php_below_ver = '8.4.0';
+	protected $php_below_ver = '8.5.0';
 
 	public function is_enableable()
 	{

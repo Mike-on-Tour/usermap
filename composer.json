@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Adds a usermap to your forum",
 	"homepage": "https://www.mike-on-tour.com",
-	"version": "1.2.5",
-	"time": "2024-06-17 12:11:57",
+	"version": "1.2.6",
+	"time": "2024-11-23 12:11:57",
 	"license": "GPL-2.0-only",
 	"authors": [
 		{
@@ -14,7 +14,7 @@
 			"role": "Developer"
 		}	],
 	"require": {
-		"php": ">=7.2.24, <8.3.0",
+		"php": ">=7.2.24, <8.5.0",
         "phpbb/phpbb": ">=3.2.0, <3.4.0@dev",
         "composer/installers": "~1.0.0"
 	},

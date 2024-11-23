@@ -4,6 +4,20 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.6] - 2024-11-23
+
+### Added
+
+### Changed
+-	Maximum PHP version raised to 8.4.x
+-	Some code improvements
+
+### Fixed
+
+### Removed
+-	E_USER_ERROR for compatibility with PHP 8.4
+  
+  
 ## [1.2.5] - 2024-06-17
 
 ### Added

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Usermap v1.2.5
+* @package Usermap v1.2.6
 * @copyright (c) 2020 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -95,7 +95,7 @@ class main_listener implements EventSubscriberInterface
 		$this->db = $db;
 		$this->user = $user;
 		$this->log = $log;
-		$this->phpbb_extension_manager 	= $phpbb_extension_manager;
+		$this->phpbb_extension_manager = $phpbb_extension_manager;
 		$this->language = $language;
 		$this->php_ext = $php_ext;
 		$this->root_path = $root_path;
@@ -159,7 +159,7 @@ class main_listener implements EventSubscriberInterface
 			$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br><br>' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
 			if ($gn_username[0] == '')
 			{
-				trigger_error($message, E_USER_ERROR);
+				trigger_error($message, E_USER_WARNING);
 			}
 
 			// check if location was provided during registration
@@ -270,7 +270,7 @@ class main_listener implements EventSubscriberInterface
 	public function ucp_profile_info_modify_sql_ary($event)
 	{
 		$message = $this->language->lang('MOT_UCP_GEONAMES_ERROR') . '<br><br>' . sprintf($this->language->lang('RETURN_UCP'), '<a href="' . $this->u_action . '">', '</a>');
-		$this->process_user_profile_data($this->user->data['user_id'], $event['cp_data'], $message, E_USER_ERROR);
+		$this->process_user_profile_data($this->user->data['user_id'], $event['cp_data'], $message, E_USER_WARNING);
 	}
 
 
@@ -694,24 +694,18 @@ class main_listener implements EventSubscriberInterface
 	function db_search($postal_code, $country_code, &$db_lat, &$db_lng)
 	{
 		$return = false;
-		$sql_array = array(
+		$sql_array = [
 			'country_code'	=> $country_code,
 			'zip_code'		=> $postal_code,
-		);
-		$sql = 'SELECT COUNT(country_code) AS cc_count
-				FROM ' . $this->usermap_zipcode_table . '
+		];
+		$sql = 'SELECT * FROM ' . $this->usermap_zipcode_table . '
 				WHERE ' . $this->db->sql_build_array('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
-		$cc_count = (int) $this->db->sql_fetchfield('cc_count');
+		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-		if ($cc_count == 1)
+		if ($row)
 		{
-			$sql = 'SELECT * FROM ' . $this->usermap_zipcode_table . '
-					WHERE ' . $this->db->sql_build_array('SELECT', $sql_array);
-			$result = $this->db->sql_query($sql);
-			$row = $this->db->sql_fetchrow($result);
-			$this->db->sql_freeresult($result);
 			$db_lat = $row['lat'];
 			$db_lng = $row['lng'];
 			$return = true;
