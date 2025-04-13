@@ -34,12 +34,15 @@
 	<form id="layer_select" method="post" action="{{ U_UM_SELECT_ACTION }}">
 		<fieldset class="quick">
 			{{ lang('ACP_USERMAP_SELECT_POI_LAYER') ~ lang('COLON') }}
+
 			<select id="acp_usermap_select_poi_layer" name="acp_usermap_select_poi_layer" onchange="if (this.options[this.selectedIndex].value != '') this.form.submit();">
 				{% for layer_selection in layer_selection %}
 					<option value="{{ layer_selection.VALUE }}" {% if ACP_USERMAP_SELECT_POI_LAYER == layer_selection.VALUE %} selected {% endif %}{% if layer_selection.ACTIVE == 0 %} style="background: #ffff40;" {% endif %}>{{ layer_selection.NAME }}</option>
 				{% endfor %}
 			</select>
+
 			<input class="button2" type="submit" value="{{ lang('GO') }}">
+
 			{{ S_FORM_TOKEN }}
 		</fieldset>
 	</form>
@@ -131,6 +134,7 @@
 						<option value="{{ poi_layer.LAYER_ID }}" {% if MOT_USERMAP_POI_LAYER_ID == poi_layer.LAYER_ID %} selected {% endif %}{% if poi_layer.ACTIVE == 0 %} style="font-style: italic;" {% endif %}>{{ poi_layer.LAYER_NAME }}</option>
 					{% endfor %}
 				</select>
+				{{ forms.select('mot_usermap_poi_layer', ACP_USERMAP_LAYER_TYPE) }}
 			</dd>
         </dl>
 		<dl>

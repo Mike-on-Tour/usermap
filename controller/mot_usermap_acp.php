@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.2.5
-* @copyright (c) 2020 - 2024 Mike-on-Tour
+* @package Usermap v1.3.0
+* @copyright (c) 2020 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -586,9 +586,9 @@ class mot_usermap_acp
 				$name = htmlspecialchars_decode($name, ENT_COMPAT);
 				// Remove some unwanted characters
 				$name = str_replace($this->usermap_functions::MOT_USERMAP_POI_NONECHARS, '', $name);
-				// and encode it again as done by the request classes type_cast_helper
-				$name = htmlentities($name, ENT_COMPAT, 'UTF-8');
-				generate_text_for_storage($name, $uid, $bitfield, $name_flags);
+				$name = trim($name);
+				$name = trim($name, ',');
+
 				$popup_value = $this->request->variable('mot_usermap_poi_popup', '', true);
 				generate_text_for_storage($popup_value, $uid, $bitfield, $flags, true, true);
 
@@ -643,9 +643,9 @@ class mot_usermap_acp
 				$name = htmlspecialchars_decode($name, ENT_COMPAT);
 				// Remove some unwanted characters
 				$name = str_replace($this->usermap_functions::MOT_USERMAP_POI_NONECHARS, '', $name);
-				// and encode it again as done by the request classes type_cast_helper
-				$name = htmlentities($name, ENT_COMPAT, 'UTF-8');
-				generate_text_for_storage($name, $uid, $bitfield, $name_flags);
+				$name = trim($name);
+				$name = trim($name, ',');
+
 				$popup_value = $this->request->variable('mot_usermap_poi_popup', '', true);
 				generate_text_for_storage($popup_value, $uid, $bitfield, $flags, true, true);
 
@@ -857,29 +857,51 @@ class mot_usermap_acp
 		$this->u_action .= '&amp;mot_usermap_select_layer_type=' . $layer_type_selected;
 
 		// Get the group properties of those groups used as default
-		$sql = 'SELECT g.group_id, g.group_type, g.group_name, u.group_id FROM ' .
-				GROUPS_TABLE . ' AS g, ' . USERS_TABLE . ' AS u
-				WHERE g.group_id = u.group_id
-				GROUP BY u.group_id
-				ORDER BY g.group_type DESC, g.group_name ASC';
+		$sql_arr = [
+			'SELECT'	=> 'g.group_id, g.group_type, g.group_name, u.group_id',
+			'FROM'		=> [
+					GROUPS_TABLE	=> 'g',
+					USERS_TABLE		=> 'u',
+			],
+			'WHERE'		=> 'g.group_id = u.group_id',
+			'GROUP_BY'	=> 'u.group_id',
+			'ORDER_BY'	=> 'g.group_type DESC, g.group_name ASC',
+		];
+		$sql = $this->db->sql_build_query('SELECT', $sql_arr);
 		$result = $this->db->sql_query($sql);
 		$groups = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
-		$groups_available = '';
+
 		$group_acl = [
 			self::MEMBER_LAYER	=> ['u_view_map_always', 'u_view_map_inscribed',],
 			self::POI_LAYER		=> ['u_view_poi'],
 		];
 
-		$group_count = 0;
+		$icon_arr = [];
+		$icon_files = $this->usermap_functions->get_icons($this->icon_path);
+		foreach ($icon_files as $value)
+		{
+			$icon_arr += [
+				$value	=> $value
+			];
+		}
+		$layer_icons = $this->select_struct('', $icon_arr);
+
+		$permitted_groups = [];
 		foreach ($groups as $option)
 		{
 			if (!empty($this->auth->acl_group_raw_data($option['group_id'], $group_acl[$layer_type_selected])))
 			{
-				$groups_available .= '<option ' . (($option['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $option['group_id'] . '">' . $this->group_helper->get_name($option['group_name']) . '</option>';
-				$group_count++;
+				$permitted_groups += [
+					$this->group_helper->get_name($option['group_name']) => [
+						$option['group_id'],
+						$option['group_type'] == GROUP_SPECIAL,
+					],
+				];
 			}
 		}
+		$group_count = count($permitted_groups);
+		$groups_available = $this->select_struct([], $permitted_groups);
 
 		switch ($action)
 		{
@@ -898,28 +920,17 @@ class mot_usermap_acp
 				}
 				$lang_str = trim($lang_str);
 
-				$permitted_groups_arr = json_decode($row['layer_groups']);
-				$groups_available = '';
-				$group_count = 0;
-				foreach ($groups as $option)
-				{
-					if (!empty($this->auth->acl_group_raw_data($option['group_id'], $group_acl[$layer_type_selected])))
-					{
-						$selected = in_array($option['group_id'], $permitted_groups_arr) ? ' selected' : '';
-						$groups_available .= '<option ' . (($option['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $option['group_id'] . '"' . $selected . '">' . $this->group_helper->get_name($option['group_name']) . '</option>';
-						$group_count++;
-					}
-				}
+				$layer_icons = $this->select_struct($row['default_icon'], $icon_arr);
+				$groups_available = $this->select_struct(json_decode($row['layer_groups']), $permitted_groups);
 
-				$this->template->assign_vars(array(
+				$this->template->assign_vars([
 					'ACP_USERMAP_LAYER_NAME'			=> $row['layer_name'],
 					'ACP_USERMAP_LAYER_TYPE'			=> $row['layer_type'],
 					'ACP_USERMAP_LAYER_ACTIVE'			=> $row['layer_active'] == 1 ? true : false,
 					'ACP_USERMAP_SHOW_LAYER'			=> $row['show_layer'] == 1 ? true : false,
 					'ACP_USERMAP_LAYER_CLUSTERS'		=> $row['enable_clusters'] == 1 ? true : false,
 					'ACP_USERMAP_LAYER_LANG_VAR'		=> $lang_str,
-					'ACP_USERMAP_LAYER_DEFAULT_ICON'	=> $row['default_icon'],
-				));
+				]);
 				$act = '&amp;action=submit_changes&amp;layer_id=' . $layer_id;
 				$new_layer = false;
 				break;
@@ -955,7 +966,7 @@ class mot_usermap_acp
 						SET ' . $this->db->sql_build_array('UPDATE', $sql_arr) . '
 						WHERE layer_id = ' . (int) $layer_id;
 				$this->db->sql_query($sql);
-				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_USERMAP_LAYER_EDITED', false, array($name));
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_USERMAP_LAYER_EDITED', false, [$name]);
 				trigger_error($this->language->lang('ACP_USERMAP_LAYER_SUCCESS', $name) . adm_back_link($this->u_action), E_USER_NOTICE);
 				break;
 
@@ -1011,7 +1022,7 @@ class mot_usermap_acp
 				if ($layer_type_selected > self::MEMBER_LAYER)
 				{
 					$this->db->sql_query($sql);
-					$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_USERMAP_LAYER_NEW', false, array($name));
+					$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_USERMAP_LAYER_NEW', false, [$name]);
 					trigger_error($this->language->lang('ACP_USERMAP_LAYER_SUCCESS', $name) . adm_back_link($this->u_action), E_USER_NOTICE);
 				}
 				break;
@@ -1089,24 +1100,6 @@ class mot_usermap_acp
 			]);
 		}
 
-		$layer_types = [self::MEMBER_LAYER, self::POI_LAYER];
-		foreach ($layer_types as $value)
-		{
-			$this->template->assign_block_vars('layers', [
-				'VALUE'		=> $value,
-				'NAME'		=> $this->layer_names[$value],
-			]);
-		}
-
-		$icon_files = [];
-		$icon_files = $this->usermap_functions->get_icons($this->icon_path);
-		foreach ($icon_files as $value)
-		{
-			$this->template->assign_block_vars('poi_icon', [
-				'VALUE'		=> $value,
-			]);
-		}
-
 		$act = ($act == '') ? '&amp;action=submit' : $act;
 
 		if ($new_layer)
@@ -1118,16 +1111,21 @@ class mot_usermap_acp
 		}
 
 		$red_span = '<span style="color:red">';
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'ACP_USERMAP_SELECT_LAYER_TYPE'	=> $layer_type_selected,
+			'ACP_USERMAP_LAYER_TYPE'		=> $this->select_struct($layer_type_selected, [
+				$this->layer_names[self::MEMBER_LAYER]	=> self::MEMBER_LAYER,
+				$this->layer_names[self::POI_LAYER]		=> self::POI_LAYER,
+			]),
 			'NEW_LAYER'						=> $new_layer,
-			'ACP_USERREMINDER_GROUP_COUNT'	=> $group_count,
+			'ACP_USERMAP_LAYER_ICON'		=> $layer_icons,
+			'ACP_USERMAP_GROUP_COUNT'		=> $group_count,
 			'ACP_USERMAP_PERMITTED_GROUPS'	=> $groups_available,
 			'U_ACTION'						=> $this->u_action . $act,
 			'U_UM_SELECT_ACTION'			=> $this->u_action . '&amp;action=select_layer',
 			'LAYER_LANG_VAR_EXP'			=> $this->language->lang('ACP_USERMAP_LAYER_LANG_VAR_EXP', $red_span),
 			'USERMAP_VERSION'				=> $this->language->lang('ACP_USERMAP_VERSION', $this->usermap_version, date('Y')),
-		));
+		]);
 	}
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1143,5 +1141,26 @@ class mot_usermap_acp
 		$this->u_action = $u_action;
 
 		return $this;
+	}
+
+	private function select_struct($cfg_value, array $options): array
+	{
+		$options_tpl = [];
+
+		foreach ($options as $opt_key => $opt_value)
+		{
+			if (!is_array($opt_value))
+			{
+				$opt_value = [$opt_value];
+			}
+			$options_tpl[] = [
+				'label'		=> $opt_key,
+				'value'		=> $opt_value[0],
+				'bold'		=> $opt_value[1] ?? false,
+				'selected'	=> is_array($cfg_value) ? in_array($opt_value[0], $cfg_value) : $opt_value[0] == $cfg_value,
+			];
+		}
+
+		return $options_tpl;
 	}
 }

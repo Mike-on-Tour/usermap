@@ -1,7 +1,7 @@
 /**
 *
-* package Usermap v1.1.0
-* copyright (c) 2020 - 2021 Mike-on-Tour
+* package Usermap v1.3.0
+* copyright (c) 2020 - 2025 Mike-on-Tour
 * license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -190,6 +190,13 @@ $("#acp_usermap_poi").submit(function() {
 */
 $("#mot_usermap_poi_layer").change(function() {
 	$("#mot_usermap_poi_icon").val(motUsermap.jsLayersArr[$(this).prop('selectedIndex')]['default_icon']).change();
+});
+
+/*
+* Submit the form if the layer type of the layer table to be displayed has been changed
+*/
+$("#mot_usermap_select_layer_type").change(function() {
+	$("#layer_select").submit();
 });
 
 /*

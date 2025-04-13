@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.2.4
-* @copyright (c) 2020 - 2024 Mike-on-Tour
+* @package Usermap v1.3.0
+* @copyright (c) 2020 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -143,9 +143,9 @@ class main
 					$poi_name = htmlspecialchars_decode($poi_name, ENT_COMPAT);
 					// Remove some unwanted characters
 					$poi_name = str_replace($this->usermap_functions::MOT_USERMAP_POI_NONECHARS, '', $poi_name);
-					// and encode it again as done by the request classes type_cast_helper
-					$poi_name = htmlentities($poi_name, ENT_COMPAT, 'UTF-8');
-					generate_text_for_storage($poi_name, $uid, $bitfield, $name_flags);
+					$poi_name = trim($poi_name);
+					$poi_name = trim($poi_name, ',');
+
 					$popup_value = $this->request->variable('usermap_poi_popup', '', true);
 					generate_text_for_storage($popup_value, $uid, $bitfield, $flags, true, true);
 					$icon_size = $this->request->variable('usermap_poi_icon_size', '');
@@ -329,8 +329,8 @@ class main
 		$this->db->sql_freeresult($result);
 		if (!empty($row))
 		{
-			$current_user = $row['user_id']."|".$row['username']."|".$row['user_plz']."|".$row['user_lat']."|".$row['user_lng'];
-			$zip_code = '"'.$row['user_land'].'-'.$row['user_plz'].'"';
+			$current_user = $row['user_id'] . "|" . $row['username'] . "|" . $row['user_plz'] . "|" . $row['user_lat'] . "|" . $row['user_lng'];
+			$zip_code = '"' . $row['user_land'] . '-' . $row['user_plz'] . '"';
 			$valid_user = 1;			// the current user is listed in the usermap_users table and therefore authorized to use the map search - MUST NOT be true since js needs 1 or 0 instead of boolean values
 		}
 		else

@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.2.0
-* @copyright (c) 2020 - 2022 Mike-on-Tour
+* @package Usermap v1.3.0
+* @copyright (c) 2020 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -32,6 +32,7 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 $lang = array_merge($lang, [
+	'USERMAP_COUNTRY_CODE'			=> 'en',		// MUST be set according to the language key of the respective language file BUT MUST NOT include any special denominators indicating a formal or informal honorific (e.g. 'de_x_sie' MUST use 'de'), but supplements like en-US are permitted !!!!
 	// Module
 	'USERMAP'						=> 'User Map',
 	'USERMAP_NOT_AUTHORIZED'		=> 'You are not authorised to see the user map.',
@@ -66,6 +67,7 @@ $lang = array_merge($lang, [
 	'POINAME_NORESULT'				=> 'There are no POIs with a name matching your request.',
 	'ADDRESS_SEARCH'				=> 'Enter the search term (e.g. an address) for which you want to find coordinates (e.g. to create a POI)',
 	'ADDRESS_RESULT'				=> 'Search term has been found and is displayed with a marker on the map.',
+	'ADDRESS_MULTIPLE_RESULTS'		=> 'Found the following matches with the search term (click to display on the map):',
 	'ADDRESS_NORESULT'				=> 'Unable to retrieve coordinates matching the given search term.',
 	// Legend
 	'POI_LEGEND_TITLE'				=> 'Legend for the POIs',

@@ -1,3 +1,11 @@
+{#
+*
+* @package Usermap v1.3.0
+* @copyright (c) 2020 - 2025 Mike-on-Tour
+* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+*
+#}
+
 {% include 'overall_header.html' %}
 {% INCLUDECSS '@mot_usermap/mot_usermap_acp.css' %}
 {% if not INCLUDED_USERMAP_ACP %}
@@ -9,7 +17,7 @@
 
 <script type="text/javascript">
 	function scrollToElement(inputName) {
-		var domElement = document.getElementById(inputName);
+		let domElement = document.getElementById(inputName);
 		window.scrollTo(0, domElement.offsetTop);
 	}
 
@@ -32,12 +40,11 @@
 	<form id="layer_select" method="post" action="{{ U_UM_SELECT_ACTION }}">
 		<fieldset class="quick">
 			{{ lang('ACP_USERMAP_LAYER_SELECT_TYPE') ~ lang('COLON') }}
-			<select id="mot_usermap_select_layer_type" name="mot_usermap_select_layer_type" onchange="if (this.options[this.selectedIndex].value != '') this.form.submit();">
-				{% for layer in layers %}
-					<option value="{{ layer.VALUE }}" {% if ACP_USERMAP_SELECT_LAYER_TYPE == layer.VALUE %} selected {% endif %}>{{ layer.NAME }}</option>
-				{% endfor %}
-			</select>
+
+			{{ forms.select('mot_usermap_select_layer_type', ACP_USERMAP_LAYER_TYPE) }}
+
 			<input class="button2" type="submit" value="{{ lang('GO') }}">
+
 			{{ S_FORM_TOKEN }}
 		</fieldset>
 	</form>
@@ -103,18 +110,22 @@
 			<dt><label for="mot_usermap_layer_name">{{ lang('ACP_USERMAP_LAYER_NAME') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_NAME_EXP') }}</p></dt>
 			<dd><input id="mot_usermap_layer_name" type="text" size="30" maxlength="50" name="mot_usermap_layer_name" value="{{ ACP_USERMAP_LAYER_NAME }}"></dd>
 		</dl>
+
 		<dl>
 			<dt><label for="mot_usermap_layer_active">{{ lang('ACP_USERMAP_LAYER_ACTIVE') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_ACTIVE_EXP') }}</p></dt>
 			<dd>{{ forms.switch('mot_usermap_layer_active', ACP_USERMAP_LAYER_ACTIVE, switch_type) }}</dd>
 		</dl>
+
 		<dl>
 			<dt><label for="mot_usermap_show_layer">{{ lang('ACP_USERMAP_SHOW_LAYER') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_SHOW_LAYER_EXP') }}</p></dt>
 			<dd>{{ forms.switch('mot_usermap_show_layer', ACP_USERMAP_SHOW_LAYER, switch_type) }}</dd>
 		</dl>
+
 		<dl>
 			<dt><label for="mot_usermap_enable_clusters">{{ lang('ACP_USERMAP_LAYER_CLUSTERS') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_CLUSTERS_EXP') }}</p></dt>
 			<dd>{{ forms.switch('mot_usermap_enable_clusters', ACP_USERMAP_LAYER_CLUSTERS, switch_type) }}</dd>
 		</dl>
+
 		<dl>
 			<dt>
 				<label for="mot_usermap_layer_lang_var">{{ lang('ACP_USERMAP_LAYER_LANG_VAR') ~ lang('COLON') }}</label>
@@ -124,20 +135,17 @@
 				<textarea class="autowidth" id="mot_usermap_layer_lang_var" name="mot_usermap_layer_lang_var" rows="7" cols="30">{{ ACP_USERMAP_LAYER_LANG_VAR }}</textarea>
 			</dd>
 		</dl>
+
 		<dl id="icon_select" {% if ACP_USERMAP_SELECT_LAYER_TYPE == 0 %}hidden="true"{% endif %}>
 			<dt><label for="mot_usermap_layer_default_icon">{{ lang('ACP_USERMAP_LAYER_DEFAULTICON') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_LAYER_ICON_EXP') }}</p></dt>
-			<dd>
-				<select id="mot_usermap_layer_default_icon" name="mot_usermap_layer_default_icon">
-					{% for poi_icon in poi_icon %}
-						<option value="{{ poi_icon.VALUE }}" {% if ACP_USERMAP_LAYER_DEFAULT_ICON == poi_icon.VALUE %} selected {% endif %}>{{ poi_icon.VALUE }}</option>
-					{% endfor %}
-				</select>
-			</dd>
+			<dd>{{ forms.select('mot_usermap_layer_default_icon', ACP_USERMAP_LAYER_ICON) }}</dd>
 		</dl>
+
 		<dl>
 			<dt><label for="mot_usermap_permitted_groups">{{ lang('ACP_USERMAP_PERMITTED_GROUPS') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERMAP_PERMITTED_GROUPS_EXP') }}</p></dt>
-            <dd><select class="no-scroll" id="mot_usermap_permitted_groups" name="mot_usermap_permitted_groups[]"  size="{{ ACP_USERREMINDER_GROUP_COUNT }}" multiple="multiple">{{ ACP_USERMAP_PERMITTED_GROUPS }}</select></dd>
+            <dd>{{ forms.select('mot_usermap_permitted_groups', ACP_USERMAP_PERMITTED_GROUPS, true, ACP_USERMAP_GROUP_COUNT) }}</dd>
 		</dl>
+
 		<p class="submit-buttons">
 			<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">
 		</p>

@@ -1,7 +1,7 @@
 /**
 *
-* package Usermap v1.2.4
-* copyright (c) 2020 - 2024 Mike-on-Tour
+* package Usermap v1.3.0
+* copyright (c) 2020 - 2025 Mike-on-Tour
 * license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -99,24 +99,59 @@ $("#poi_search").submit(function(evt) {
 $("#address_search_button").click(function(evt) {
 	evt.preventDefault();
 	$("#loading_indicator").show();
-	var address = $("#address_choice").val().toLowerCase();
+	let address = $("#address_choice").val().toLowerCase();
 	$(this).blur();
-	$.post(motUsermap.jsAjaxCall,
+	$.post(
+		motUsermap.jsAjaxCall,
 		{address: address},
 		function(result) {
 			if (result['success']) {
-				var lat = parseFloat(result['lat']);
-				var lng = parseFloat(result['lng']);
-				$("#seperation_hr").html('<hr>' + motUsermap.jsAddressResult + '<br>');
-				L.marker([lat, lng]).addTo(motUsermap.map);
-				motUsermap.jumpTo(motUsermap.map, lat, lng, 13);
+				motUsermap.showGoogleSearch(result['items']);
 			} else {
 				$("#seperation_hr").html('<hr>' + motUsermap.jsAddressNoResult);
 			}
-			$("#loading_indicator").hide();
 		}
 	);
+	$("#loading_indicator").hide();
 });
+
+motUsermap.showGoogleSearch = function(resultArray) {
+	let itemCount = resultArray.length;
+	if (itemCount > 1) {
+		let outPut = '<ul class="username-coloured links">';
+		for (let i = 0; i < itemCount; i++) {
+			if (outPut != '<ul class="username-coloured links">') {
+				outPut = outPut + '<br>';
+			}
+			outPut = outPut + '<li onclick="motUsermap.jumpToGoogleItem(' + resultArray[i]['lat'] + ', ' + resultArray[i]['lng'] + ', 13);"><a>'
+							+ resultArray[i]['name'] + '</a></li>';
+		}
+		outPut = outPut + '</ul>';
+
+		$("#seperation_hr").html('<hr>' + this.jsMultipleAddressResults + '<br>');
+		$("#solution").html(outPut);
+	} else {
+		let lat = parseFloat(resultArray[0]['lat']);
+		let lng = parseFloat(resultArray[0]['lng']);
+		$("#seperation_hr").html('<hr>' + this.jsAddressResult + '<br>');
+		this.jumpToGoogleItem(lat, lng, 13);
+	}
+}
+
+motUsermap.jumpToGoogleItem = function(lat, lng, zoom) {
+	this.removeMarkers();
+	let latlng = new L.latLng(lat, lng);
+	L.marker(latlng).addTo(this.map);
+	this.map.setView(latlng, zoom);
+}
+
+motUsermap.removeMarkers = function() {
+	this.map.eachLayer( function(layer) {
+		if (layer instanceof L.Marker) {
+			layer.remove();
+		}
+	});
+}
 
 /* --------------------------------------------------------------------------------------- 	Search functions	--------------------------------------------------------------------------------------- */
 
@@ -392,13 +427,13 @@ motUsermap.searchPoiByName = function() {
 /*
 *	Adds a new user marker to the map
 *
-*	@params	L.layerGroup	myLayerGroup	layer object to which this marker is to be added
+*	@params	L.layerGroup	myLayerGroup		layer object to which this marker is to be added
 *			decimal		lat			the marker's latitude
 *			decimal		lng			the marker's longitude
-*			string		colour		the user's default group colour to fill the marker
-*			string		myName		the user's name to be displayed with a tooltip while resting the mouse pointer on it and in the popup as link to the profile
-*			string		myId			the user's user_id  to generate the lnk to the profile
-*			integer		circleRadius	the marker's radius in pixels
+*			string			colour		the user's default group colour to fill the marker
+*			string			myName		the user's name to be displayed with a tooltip while resting the mouse pointer on it and in the popup as link to the profile
+*			string			myId			the user's user_id  to generate the lnk to the profile
+*			integer		circleRadius		the marker's radius in pixels
 *
 *	@return	none
 */
@@ -420,13 +455,13 @@ motUsermap.addUserLayer = function(myLayerGroup, lat, lng, colour, myName, myId,
 /*
 *	Adds a POI marker to the map layer
 *
-*	@params	L.layerGroup	myLayerGroup	layer object to which this marker is to be added
-*			string		myIconPath		relative path to the icon file
+*	@params	L.layerGroup	myLayerGroup		layer object to which this marker is to be added
+*			string		myIconPath			relative path to the icon file
 *			decimal		lat			the marker's latitude
 *			decimal		lng			the marker's longitude
-*			string		myName		the POI name to be displayed with a tooltip while resting the mouse pointer on it
-*			string		myPopup		POI description to be displayed in a popup
-*			array (x, y)		myIconSize	size of the icon image in pixels
+*			string			myName		the POI name to be displayed with a tooltip while resting the mouse pointer on it
+*			string			myPopup		POI description to be displayed in a popup
+*			array (x, y)		myIconSize		size of the icon image in pixels
 *			array (x, y)		myIconAnchor	coordinates of the "tip" of the icon (relative to its top left corner), icon will be aligned so that this point is at the marker's geographical location
 *
 *	@return	none
@@ -434,8 +469,8 @@ motUsermap.addUserLayer = function(myLayerGroup, lat, lng, colour, myName, myId,
 motUsermap.addPoiLayer = function(myLayerGroup, myIconPath, lat, lng, myName, myPopup, myIconSize, myIconAnchor) {
 	var iconOptions = {
 		iconUrl:	myIconPath,
-		iconAnchor:	myIconAnchor.split(","),
-		iconSize:	myIconSize.split(","),
+		iconAnchor:	myIconAnchor,
+		iconSize:	myIconSize,
 	}
 	var customIcon = L.icon(iconOptions);
 	var markerOptions = {

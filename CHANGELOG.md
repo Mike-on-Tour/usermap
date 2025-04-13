@@ -4,6 +4,25 @@ All changes to `Usermap for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.0] - 2025-04-12
+
+### Added
+-	Code to show multiple results with the Google Maps Search
+
+### Changed
+-	The HTML encoded select input fields used in `adm/style/acp_usermap_layer.html` to a macro stored in `adm/style/acp_mot_usermap_macro.html` (Many thanks to LukeWCS for the
+	macro and the PHP function to create its content)
+-	The Google Maps Search to include the user language key with the Google API call since without it the Google API assumes that the user language is en and does show only results
+	for the en language
+-	The storage of POI names because of problems with German "Umlaute"
+
+### Fixed
+-	A bug in the `controller/mot_usermap_acp.php` file's function `layer()` that prevented the layer editing function from "remembering" the permitted user groups for this layer
+-	A bug in the `styles/all/template/mot_usermap.js` file's function `motUsermap.addPoiLayer()` that panned the map at the first click on a POI marker
+
+### Removed
+  
+  
 ## [1.2.6] - 2024-11-23
 
 ### Added

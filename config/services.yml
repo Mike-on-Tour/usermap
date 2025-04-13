@@ -98,6 +98,7 @@ services:
         class: mot\usermap\controller\ajax_call
         arguments:
             - '@config'
+            - '@language'
             - '@request'
 
     mot.usermap.notification.type.approve_poi:

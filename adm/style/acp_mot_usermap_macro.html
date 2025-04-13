@@ -1,3 +1,11 @@
+{#
+*
+* @package Usermap v1.3.0
+* @copyright (c) 2020 - 2025 Mike-on-Tour
+* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+*
+#}
+
 {% macro switch(name, checked = false, type = 'toggle') -%}
 	{% if type == 'toggle' || type == 'checkbox' -%}
 		<input type="checkbox" class="{{ type }}" name="{{ name }}" value="1"{{ checked ? ' checked' }}>
@@ -5,4 +13,18 @@
 		<label><input type="radio" class="radio" name="{{ name }}" value="1"{{ checked ? ' checked' }}> {{ lang('YES') }}</label>
 		<label><input type="radio" class="radio" name="{{ name }}" value="0"{{ !checked ? ' checked' }}> {{ lang('NO') }}</label>
 	{%- endif %}
+{%- endmacro %}
+
+{% macro select(name, options, multiple = null, size = null) -%}
+	<select id="{{ name }}" name="{{ name }}{{ multiple ? '[]' }}"{{
+		(size !== null ? ' size="' ~ size ~ '"') ~
+		(multiple ? ' multiple')
+	}}>
+		{% for opt in options %}
+			<option value="{{ opt.value }}"{{
+				(opt.bold ? ' class="sep"') ~
+				(opt.selected ? ' selected')
+			}}>{{ lang(opt.label) }}</option>
+		{% endfor %}
+	</select>
 {%- endmacro %}

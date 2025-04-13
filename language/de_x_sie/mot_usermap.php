@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.2.0
-* @copyright (c) 2020 - 2022 Mike-on-Tour
+* @package Usermap v1.3.0
+* @copyright (c) 2020 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -32,6 +32,7 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 $lang = array_merge($lang, [
+	'USERMAP_COUNTRY_CODE'			=> 'de',		// MUST be set according to the language key of the respective language file BUT MUST NOT include any special denominators indicating a formal or informal honorific (e.g. 'de_x_sie' MUST use 'de'), but supplements like en-US are permitted !!!!
 	// Module
 	'USERMAP'						=> 'Mitgliederkarte',
 	'USERMAP_NOT_AUTHORIZED'		=> 'Sie sind nicht befugt, die Mitgliederkarte zu sehen.',
@@ -67,6 +68,7 @@ $lang = array_merge($lang, [
 	'ADDRESS_SEARCH'				=> 'Geben Sie den Suchbegriff (z.B. eine Adresse) ein, der auf der Karte angezeigt werden soll (um Koordinaten z.B.
 										zum Erstellen von POIs zu erhalten)',
 	'ADDRESS_RESULT'				=> 'Suchbegriff wurde gefunden und ist auf der Karte markiert.',
+	'ADDRESS_MULTIPLE_RESULTS'		=> 'Zum angegebenen Suchbegriff wurden folgende Ergebnisse gefunden (Anklicken zeigt Ergebnis auf der Karte):',
 	'ADDRESS_NORESULT'				=> 'Zum angegebenen Suchbegriff wurden keine gültigen Koordinaten gefunden.',
 	// Legend
 	'POI_LEGEND_TITLE'				=> 'Legende für die Darstellung der POIs',

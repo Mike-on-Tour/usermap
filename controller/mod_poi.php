@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Usermap v1.2.3
-* @copyright (c) 2020 - 2023 Mike-on-Tour
+* @package Usermap v1.3.0
+* @copyright (c) 2020 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -123,9 +123,8 @@ class mod_poi
 				$poi_name = htmlspecialchars_decode($poi_name, ENT_COMPAT);
 				// Remove some unwanted characters
 				$poi_name = str_replace($this->usermap_functions::MOT_USERMAP_POI_NONECHARS, '', $poi_name);
-				// and encode it again as done by the request classes type_cast_helper
-				$poi_name = htmlentities($poi_name, ENT_COMPAT, 'UTF-8');
-				generate_text_for_storage($poi_name, $uid, $bitfield, $name_flags);
+				$poi_name = trim($poi_name);
+				$poi_name = trim($poi_name, ',');
 
 				$popup_value = $this->request->variable('usermap_poi_popup', '', true);
 				if ($popup_value != '')
