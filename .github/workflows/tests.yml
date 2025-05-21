@@ -20,8 +20,8 @@ jobs:
         uses: phpbb-extensions/test-framework/.github/workflows/tests.yml@3.3.x # The phpBB branch to run tests with
         with:
             EXTNAME: mot/usermap   # Your extension vendor/package name
-            PHPBB_BRANCH: 3.3.x  # The phpBB branch to run tests on
             RUN_MYSQL_JOBS: 0
             RUN_PGSQL_JOBS: 0
             RUN_MSSQL_JOBS: 0
             RUN_WINDOWS_JOBS: 0
+            PRIMARY_PHP_VERSION: '8.4'
